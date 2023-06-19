@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('教师授课列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>授课教师姓名：</label>
+                                <input type="text" name="fTeacherName"/>
+                            </li>
+                            <li>
+                                <label>教师类别：</label>
+                                <select name="fTeacherType" th:with="type=${@dict.getType('tea_teacher_type')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>专业名称：</label>
+                                <input type="text" name="fProName"/>
+                            </li>
+                            <li>
+                                <label>专业代码：</label>
+                                <input type="text" name="fProCode"/>
+                            </li>
+                            <li>
+                                <label>专业层次：</label>
+                                <select name="fProLevel" th:with="type=${@dict.getType('tec_pro_level')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>学制：</label>
+                                <select name="fAcademic" th:with="type=${@dict.getType('tec_academic')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>培养方式：</label>
+                                <select name="fCulMethods" th:with="type=${@dict.getType('tec_cul')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="tec:lesson:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="tec:lesson:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="tec:lesson:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="tec:lesson:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('tec:lesson:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('tec:lesson:remove')}]];
+        var fTeacherTypeDatas = [[${@dict.getType('tea_teacher_type')}]];
+        var fProLevelDatas = [[${@dict.getType('tec_pro_level')}]];
+        var fAcademicDatas = [[${@dict.getType('tec_academic')}]];
+        var fCulMethodsDatas = [[${@dict.getType('tec_cul')}]];
+        var fTecTaskDatas = [[${@dict.getType('tec_task')}]];
+        var prefix = ctx + "tec/lesson";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "教师授课",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'fId',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'fTeacherNo',
+                    title: '授课教师工号'
+                },
+                {
+                    field: 'fTeacherName',
+                    title: '授课教师姓名'
+                },
+                {
+                    field: 'fTeacherType',
+                    title: '教师类别',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fTeacherTypeDatas, value);
+                    }
+                },
+                {
+                    field: 'fProName',
+                    title: '专业名称'
+                },
+                {
+                    field: 'fProCode',
+                    title: '专业代码'
+                },
+                {
+                    field: 'fProLevel',
+                    title: '专业层次',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fProLevelDatas, value);
+                    }
+                },
+                {
+                    field: 'fAcademic',
+                    title: '学制',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fAcademicDatas, value);
+                    }
+                },
+                {
+                    field: 'fCulMethods',
+                    title: '培养方式',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fCulMethodsDatas, value);
+                    }
+                },
+                {
+                    field: 'fSpcForm',
+                    title: '具体形式'
+                },
+                {
+                    field: 'fSourceType',
+                    title: '生源类型'
+                },
+                {
+                    field: 'fGrade',
+                    title: '授课年级'
+                },
+                {
+                    field: 'fCourseName',
+                    title: '课程名称'
+                },
+                {
+                    field: 'fCourseCode',
+                    title: '课程代码'
+                },
+                {
+                    field: 'fTecSemesters',
+                    title: '授课学期'
+                },
+                {
+                    field: 'fClassName',
+                    title: '班级名称'
+                },
+                {
+                    field: 'fTecTask',
+                    title: '授课任务',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fTecTaskDatas, value);
+                    }
+                },
+                {
+                    field: 'fTecTime',
+                    title: '教学工作量'
+                },
+                {
+                    field: 'fOnlineTime',
+                    title: '教学工作量'
+                },
+                {
+                    field: 'fFiller',
+                    title: '填报人'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.fId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.fId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

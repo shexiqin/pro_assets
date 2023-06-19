@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增人事数据')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-staff-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">院系部名称：</label>
+                <div class="col-sm-8">
+                    <input name="fDepartmentname" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">编号：</label>
+                <div class="col-sm-8">
+                    <input name="fNumbering" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">姓名：</label>
+                <div class="col-sm-8">
+                    <input name="fName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">性别：</label>
+                <div class="col-sm-8">
+                    <select name="fSex" class="form-control m-b" th:with="type=${@dict.getType('sys_user_sex')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">出生日期：</label>
+                <div class="col-sm-8">
+                    <input name="fBirthdate" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学历：</label>
+                <div class="col-sm-8">
+                    <select name="fDegree" class="form-control m-b" th:with="type=${@dict.getType('per_degree')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学位：</label>
+                <div class="col-sm-8">
+                    <select name="fAcademicdegrees" class="form-control m-b" th:with="type=${@dict.getType('per_academicdegrees')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">职务：</label>
+                <div class="col-sm-8">
+                    <input name="fDuties" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">人员类别：</label>
+                <div class="col-sm-8">
+                    <select name="fPersonnelcategory" class="form-control m-b" th:with="type=${@dict.getType('per_personnelcategory')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">专业领域：</label>
+                <div class="col-sm-8">
+                    <select name="fSpecialized" class="form-control m-b" th:with="type=${@dict.getType('per_specialized')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">研究特长：</label>
+                <div class="col-sm-8">
+                    <input name="fDevelopment" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">发证单位：</label>
+                <div class="col-sm-8">
+                    <input name="fLssuingunit" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">获取日期：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="fGetdate" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">专业名称：</label>
+                <div class="col-sm-8">
+                    <input name="fProfessionalname" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">行政所属专业：</label>
+                <div class="col-sm-8">
+                    <input name="fAdministrativemajor" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">教学名师：</label>
+                <div class="col-sm-8">
+                    <select name="fFamousteachers" class="form-control m-b" th:with="type=${@dict.getType('per_famousteachers')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否专业：</label>
+                <div class="col-sm-8">
+                    <input name="fFlgHead" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否专业带头人：</label>
+                <div class="col-sm-8">
+                    <input name="fFlgLeaders" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">担任年限：</label>
+                <div class="col-sm-8">
+                    <input name="fYearsservice" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">政治面貌：</label>
+                <div class="col-sm-8">
+                    <select name="fPoliticalStatus" class="form-control m-b" th:with="type=${@dict.getType('political_status')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "per/staff"
+        $("#form-staff-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-staff-add').serialize());
+            }
+        }
+
+        $("input[name='fGetdate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

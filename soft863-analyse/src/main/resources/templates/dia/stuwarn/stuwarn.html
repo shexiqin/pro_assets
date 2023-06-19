@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('学生预警列表')" />
+</head>
+<body class="gray-bg">
+
+
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>学生学号：</label>
+                                <input type="text" name="fSno"/>
+                            </li>
+                            <li>
+                                <label>教工号：</label>
+                                <input type="text" name="fTno"/>
+                            </li>
+                            <li>
+                                <label>预警类型：</label>
+                                <select name="fWarnType" th:with="type=${@dict.getType('dia_warn')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>是否处理预警：</label>
+                                <select name="fStatue" th:with="type=${@dict.getType('dia_warn_deal')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+<!--                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="dia:stuwarn:add">-->
+<!--                    <i class="fa fa-plus"></i> 添加-->
+<!--                </a>-->
+<!--                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="dia:stuwarn:edit">-->
+<!--                    <i class="fa fa-edit"></i> 修改-->
+<!--                </a>-->
+<!--                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="dia:stuwarn:remove">-->
+<!--                    <i class="fa fa-remove"></i> 删除-->
+<!--                </a>-->
+<!--                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="dia:stuwarn:export">-->
+<!--                    <i class="fa fa-download"></i> 导出-->
+<!--                </a>-->
+                <a class="btn btn-warning" onclick="updateList()" shiro:hasPermission="dia:stuwarn:update">
+                    <i class="fa fa-download"></i> 更新学生预警表
+                </a>
+                <a class="btn btn-warning" onclick="showWarnInfo()" shiro:hasPermission="dia:stuwarn:update">
+                    <i class="fa fa-download"></i> 学生预警画像
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+<!-- 引入 Echarts 脚本-->
+    <th:block th:include="include :: echarts-js" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('dia:stuwarn:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('dia:stuwarn:remove')}]];
+        var fWarnTypeDatas = [[${@dict.getType('dia_warn')}]];
+        var fStatueDatas = [[${@dict.getType('dia_warn_deal')}]];
+        var prefix = ctx + "dia/stuwarn";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "学生预警",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'fId',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'fSno',
+                    title: '学生学号'
+                },
+                {
+                    field: 'fSname',
+                    title: '学生姓名'
+                },
+                {
+                    field: 'fTno',
+                    title: '教工号'
+                },
+                {
+                    field: 'fTname',
+                    title: '教工姓名'
+                },
+                {
+                    field: 'fWarnType',
+                    title: '预警类型',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fWarnTypeDatas, value);
+                    }
+                },
+                {
+                    field: 'fTime',
+                    title: '预警时间'
+                },
+                {
+                    field: 'fStatue',
+                    title: '是否处理预警',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fStatueDatas, value);
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:" onclick="showOneWarn(this)"><i class="fa fa-edit"></i>个人预警画像</a> ');
+                        return actions.join('');
+                    }
+                }
+                ]
+            };
+            $.table.init(options);
+
+        });
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+        function updateList(){
+            location.href='/dia/stuwarn/update';
+        }
+        function showWarnInfo(){
+            location.href='/dia/stuwarn/showWarnInfo';
+        }
+        function showOneWarn(obj){
+            var sno=obj.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling
+            .previousElementSibling.previousElementSibling.previousElementSibling.innerHTML;
+
+            // location.href='/dia/stuwarn/showOneWarn/'+sno;
+
+            // 触发请求
+            var url = prefix + "/showOneWarn/"+sno;
+            // 调用封装好的 modal 模态框的方法 open方法，打开一个模态框
+            // 参数一：模态框的名字
+            // 参数二：模态框中页面展示的请求路径
+            $.modal.open('学生个人预警画像', url);
+        }
+
+    </script>
+</body>
+</html>

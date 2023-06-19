@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbdiaStudentMapper">
+    
+    <resultMap type="TbdiaStudent" id="TbdiaStudentResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fName"    column="f_name"    />
+        <result property="fNo"    column="f_no"    />
+        <result property="fSex"    column="f_sex"    />
+        <result property="fBirth"    column="f_birth"    />
+        <result property="fFaculties"    column="f_faculties"    />
+        <result property="fClazz"    column="f_clazz"    />
+        <result property="fMajor"    column="f_major"    />
+        <result property="fNowgrade"    column="f_nowgrade"    />
+        <result property="fAcademic"    column="f_academic"    />
+        <result property="fNationality"    column="f_nationality"    />
+        <result property="fCardid"    column="f_cardid"    />
+        <result property="fBirthplace"    column="f_birthplace"    />
+        <result property="fPoliticsstatus"    column="f_politicsstatus"    />
+        <result property="fFamMoney"    column="f_fam_money"    />
+        <result property="fStucategory"    column="f_stucategory"    />
+        <result property="fStuGpa"    column="f_stu_gpa"    />
+        <result property="fLeaveNum"    column="f_leave_num"    />
+        <result property="fStipendNum"    column="f_stipend_num"    />
+        <result property="fScholNum"    column="f_schol_num"    />
+        <result property="fGainnum"    column="f_gainnum"    />
+        <result property="fRemaining"    column="f_remaining"    />
+        <result property="fConsumption"    column="f_consumption"    />
+    </resultMap>
+
+    <sql id="selectTbdiaStudentVo">
+        select f_id, f_name, f_no, f_sex, f_birth, f_faculties, f_clazz, f_major, f_nowgrade, f_academic, f_nationality, f_cardid, f_birthplace, f_politicsstatus, f_fam_money, f_stucategory, f_stu_gpa, f_leave_num, f_stipend_num, f_schol_num, f_gainnum, f_remaining, f_consumption from tbdia_student
+    </sql>
+
+    <select id="selectTbdiaStudentList" parameterType="TbdiaStudent" resultMap="TbdiaStudentResult">
+        <include refid="selectTbdiaStudentVo"/>
+        <where>  
+            <if test="fName != null  and fName != ''"> and f_name like concat('%', #{fName}, '%')</if>
+            <if test="fNo != null  and fNo != ''"> and f_no = #{fNo}</if>
+            <if test="fSex != null  and fSex != ''"> and f_sex = #{fSex}</if>
+            <if test="fBirth != null "> and f_birth = #{fBirth}</if>
+            <if test="fFaculties != null  and fFaculties != ''"> and f_faculties like concat('%', #{fFaculties}, '%')</if>
+            <if test="fClazz != null  and fClazz != ''"> and f_clazz like concat('%', #{fClazz}, '%')</if>
+            <if test="fMajor != null  and fMajor != ''"> and f_major like concat('%', #{fMajor}, '%')</if>
+            <if test="fNowgrade != null  and fNowgrade != ''"> and f_nowgrade = #{fNowgrade}</if>
+            <if test="fAcademic != null  and fAcademic != ''"> and f_academic = #{fAcademic}</if>
+            <if test="fNationality != null  and fNationality != ''"> and f_nationality = #{fNationality}</if>
+            <if test="fCardid != null  and fCardid != ''"> and f_cardid = #{fCardid}</if>
+            <if test="fBirthplace != null  and fBirthplace != ''"> and f_birthplace = #{fBirthplace}</if>
+            <if test="fPoliticsstatus != null  and fPoliticsstatus != ''"> and f_politicsstatus = #{fPoliticsstatus}</if>
+            <if test="fFamMoney != null  and fFamMoney != ''"> and f_fam_money = #{fFamMoney}</if>
+            <if test="fStucategory != null  and fStucategory != ''"> and f_stucategory = #{fStucategory}</if>
+            <if test="fStuGpa != null "> and f_stu_gpa = #{fStuGpa}</if>
+            <if test="fLeaveNum != null "> and f_leave_num = #{fLeaveNum}</if>
+            <if test="fStipendNum != null  and fStipendNum != ''"> and f_stipend_num = #{fStipendNum}</if>
+            <if test="fScholNum != null "> and f_schol_num = #{fScholNum}</if>
+            <if test="fGainnum != null "> and f_gainnum = #{fGainnum}</if>
+            <if test="fRemaining != null "> and f_remaining = #{fRemaining}</if>
+            <if test="fConsumption != null "> and f_consumption = #{fConsumption}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbdiaStudentByFId" parameterType="Long" resultMap="TbdiaStudentResult">
+        <include refid="selectTbdiaStudentVo"/>
+        where f_id = #{fId}
+    </select>
+    <select id="excellentNum" resultType="java.lang.String">
+        select count(1) from tbdia_student t where t.f_schol_num>0 and f_gainnum>0
+    </select>
+
+    <select id="sexNum" resultType="java.util.Map">
+        select
+            case
+                when f_sex=1 then '女'
+                when f_sex=0 then '男' end name,count(1) value from tbdia_student group by name
+    </select>
+
+    <select id="birthplace" resultType="java.util.Map">
+        select f_birthplace as 'name',count(1) as 'value' from tbdia_student group by f_birthplace
+    </select>
+
+    <select id="deptNum" resultType="java.util.Map">
+        select t2.f_maj as 'major',count(1) 'num' from tbdia_student t1 left join tbdia_major t2 on f_major=t2.f_code group by t2.f_maj
+    </select>
+
+    <select id="award" resultType="java.util.Map">
+        select
+            case
+                when f_schol_num>0 then '获奖人数'
+                when f_schol_num=0 then '未获奖人数' end name,count(1) value from tbdia_student group by name
+    </select>
+
+    <select id="test" resultType="java.lang.String">
+        select count(1) from tbdia_student t where
+            t.f_gainnum>0
+    </select>
+
+    <select id="allNum" resultType="java.lang.String">
+        select count(1) from tbdia_student
+    </select>
+
+    <select id="help" resultType="java.lang.String">
+        select count(1) from tbdia_student where f_schol_num>0
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select distinct  f_major from tbdia_student
+    </select>
+
+    <select id="fNo" resultMap="TbdiaStudentResult">
+        select * from tbdia_student where f_no=#{fNo}
+    </select>
+    <select id="sc" resultType="java.lang.String">
+        select f_compisite_score as '综合成绩' from tbdia_student where f_no=#{fNo}
+    </select>
+    <select id="absent" resultType="java.lang.String">
+        select f_absenteeism as '缺勤次数' from tbdia_student where f_no=#{fNo}
+    </select>
+
+    <select id="stuSC" resultType="java.util.Map">
+        select f_daily_per_average 'avg' from tbdia_student_session_score where f_stu_id =#{fNo}
+    </select>
+
+    <select id="stuDia" resultType="java.util.Map">
+        select f_compisite_score 'zh',f_schol_num 'jj',f_gainnum 'hj',
+                f_leave_num 'qj',f_absenteeism 'qq', f_stu_gpa 'jd'
+        from tbdia_student
+        where f_no=#{fNo}
+    </select>
+    <select id="yearSC" resultType="java.util.Map">
+        select
+            case
+                when f_year=1 then '第一学年'
+                when f_year=2 then '第二学年'
+                when f_year=3 then '第三学年'
+                when f_year=4 then '第四学年'
+                when f_year=5 then '第五学年'
+                end 'year',f_comprehensive_score 'sc' from tbdia_student_session_score where f_stu_id =#{fNo}
+    </select>
+
+    <insert id="insertTbdiaStudent" parameterType="TbdiaStudent" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbdia_student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fName != null">f_name,</if>
+            <if test="fNo != null">f_no,</if>
+            <if test="fSex != null">f_sex,</if>
+            <if test="fBirth != null">f_birth,</if>
+            <if test="fFaculties != null">f_faculties,</if>
+            <if test="fClazz != null">f_clazz,</if>
+            <if test="fMajor != null">f_major,</if>
+            <if test="fNowgrade != null">f_nowgrade,</if>
+            <if test="fAcademic != null">f_academic,</if>
+            <if test="fNationality != null">f_nationality,</if>
+            <if test="fCardid != null">f_cardid,</if>
+            <if test="fBirthplace != null">f_birthplace,</if>
+            <if test="fPoliticsstatus != null">f_politicsstatus,</if>
+            <if test="fFamMoney != null">f_fam_money,</if>
+            <if test="fStucategory != null">f_stucategory,</if>
+            <if test="fStuGpa != null">f_stu_gpa,</if>
+            <if test="fLeaveNum != null">f_leave_num,</if>
+            <if test="fStipendNum != null">f_stipend_num,</if>
+            <if test="fScholNum != null">f_schol_num,</if>
+            <if test="fGainnum != null">f_gainnum,</if>
+            <if test="fRemaining != null">f_remaining,</if>
+            <if test="fConsumption != null">f_consumption,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fName != null">#{fName},</if>
+            <if test="fNo != null">#{fNo},</if>
+            <if test="fSex != null">#{fSex},</if>
+            <if test="fBirth != null">#{fBirth},</if>
+            <if test="fFaculties != null">#{fFaculties},</if>
+            <if test="fClazz != null">#{fClazz},</if>
+            <if test="fMajor != null">#{fMajor},</if>
+            <if test="fNowgrade != null">#{fNowgrade},</if>
+            <if test="fAcademic != null">#{fAcademic},</if>
+            <if test="fNationality != null">#{fNationality},</if>
+            <if test="fCardid != null">#{fCardid},</if>
+            <if test="fBirthplace != null">#{fBirthplace},</if>
+            <if test="fPoliticsstatus != null">#{fPoliticsstatus},</if>
+            <if test="fFamMoney != null">#{fFamMoney},</if>
+            <if test="fStucategory != null">#{fStucategory},</if>
+            <if test="fStuGpa != null">#{fStuGpa},</if>
+            <if test="fLeaveNum != null">#{fLeaveNum},</if>
+            <if test="fStipendNum != null">#{fStipendNum},</if>
+            <if test="fScholNum != null">#{fScholNum},</if>
+            <if test="fGainnum != null">#{fGainnum},</if>
+            <if test="fRemaining != null">#{fRemaining},</if>
+            <if test="fConsumption != null">#{fConsumption},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbdiaStudent" parameterType="TbdiaStudent">
+        update tbdia_student
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fName != null">f_name = #{fName},</if>
+            <if test="fNo != null">f_no = #{fNo},</if>
+            <if test="fSex != null">f_sex = #{fSex},</if>
+            <if test="fBirth != null">f_birth = #{fBirth},</if>
+            <if test="fFaculties != null">f_faculties = #{fFaculties},</if>
+            <if test="fClazz != null">f_clazz = #{fClazz},</if>
+            <if test="fMajor != null">f_major = #{fMajor},</if>
+            <if test="fNowgrade != null">f_nowgrade = #{fNowgrade},</if>
+            <if test="fAcademic != null">f_academic = #{fAcademic},</if>
+            <if test="fNationality != null">f_nationality = #{fNationality},</if>
+            <if test="fCardid != null">f_cardid = #{fCardid},</if>
+            <if test="fBirthplace != null">f_birthplace = #{fBirthplace},</if>
+            <if test="fPoliticsstatus != null">f_politicsstatus = #{fPoliticsstatus},</if>
+            <if test="fFamMoney != null">f_fam_money = #{fFamMoney},</if>
+            <if test="fStucategory != null">f_stucategory = #{fStucategory},</if>
+            <if test="fStuGpa != null">f_stu_gpa = #{fStuGpa},</if>
+            <if test="fLeaveNum != null">f_leave_num = #{fLeaveNum},</if>
+            <if test="fStipendNum != null">f_stipend_num = #{fStipendNum},</if>
+            <if test="fScholNum != null">f_schol_num = #{fScholNum},</if>
+            <if test="fGainnum != null">f_gainnum = #{fGainnum},</if>
+            <if test="fRemaining != null">f_remaining = #{fRemaining},</if>
+            <if test="fConsumption != null">f_consumption = #{fConsumption},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbdiaStudentByFId" parameterType="Long">
+        delete from tbdia_student where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbdiaStudentByFIds" parameterType="String">
+        delete from tbdia_student where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改教师科研业绩')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-results-edit" th:object="${tbsciResults}">
+            <input name="fId" th:field="*{fId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">教师姓名：</label>
+                <div class="col-sm-8">
+                    <input name="fTeachername" th:field="*{fTeachername}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">教工号：</label>
+                <div class="col-sm-8">
+                    <input name="fTeacherno" th:field="*{fTeacherno}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">项目名称：</label>
+                <div class="col-sm-8">
+                    <input name="fProjectName" th:field="*{fProjectName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">教工类别(专任教师/校内兼课教师/其它）：</label>
+                <div class="col-sm-8">
+                    <select name="fTeacherType" class="form-control m-b" th:with="type=${@dict.getType('sci_teacher_type')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fTeacherType}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">项目类型：</label>
+                <div class="col-sm-8">
+                    <select name="fProjectType" class="form-control m-b" th:with="type=${@dict.getType('sci_project_type')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fProjectType}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">派出部门级别：</label>
+                <div class="col-sm-8">
+                    <select name="fDepartLevel" class="form-control m-b" th:with="type=${@dict.getType('sci_depart_level')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fDepartLevel}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">课题分类(自然科学与技术/人文科学与技术）：</label>
+                <div class="col-sm-8">
+                    <select name="fSubjectClass" class="form-control m-b" th:with="type=${@dict.getType('sci_subject_class')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fSubjectClass}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">课题性质：</label>
+                <div class="col-sm-8">
+                    <select name="fSubjectPropert" class="form-control m-b" th:with="type=${@dict.getType('sci_subject_propert')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fSubjectPropert}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否横向课题 (是/否)：</label>
+                <div class="col-sm-8">
+                    <div class="radio-box" th:each="dict : ${@dict.getType('sci_cross_flg')}">
+                        <input type="radio" th:id="${'fCrossFlg_' + dict.dictCode}" name="fCrossFlg" th:value="${dict.dictValue}" th:field="*{fCrossFlg}">
+                        <label th:for="${'fCrossFlg_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">完成人顺序：</label>
+                <div class="col-sm-8">
+                    <select name="fOrder" class="form-control m-b" th:with="type=${@dict.getType('sci_order')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fOrder}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">本学年行业工作时间：</label>
+                <div class="col-sm-8">
+                    <input name="fWorkTime" th:field="*{fWorkTime}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">评审结果：</label>
+                <div class="col-sm-8">
+                    <select name="fResult" class="form-control m-b" th:with="type=${@dict.getType('sci_result')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fResult}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">课题来源：</label>
+                <div class="col-sm-8">
+                    <select name="fSubjectSource" class="form-control m-b" th:with="type=${@dict.getType('sci_subject_source')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fSubjectSource}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">课题级别：</label>
+                <div class="col-sm-8">
+                    <select name="fSubjectLevel" class="form-control m-b" th:with="type=${@dict.getType('sci_subject_level')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fSubjectLevel}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否相关部门备案：</label>
+                <div class="col-sm-8">
+                    <div class="radio-box" th:each="dict : ${@dict.getType('sci_record_flg')}">
+                        <input type="radio" th:id="${'fRecordFlg_' + dict.dictCode}" name="fRecordFlg" th:value="${dict.dictValue}" th:field="*{fRecordFlg}">
+                        <label th:for="${'fRecordFlg_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">纵向批准部门：</label>
+                <div class="col-sm-8">
+                    <input name="fVertical" th:field="*{fVertical}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "sci/results";
+        $("#form-results-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-results-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

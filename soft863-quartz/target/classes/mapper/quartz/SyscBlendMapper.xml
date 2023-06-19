@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.quartz.mapper.SyncBlendMapper">
+    <!--学生融合-->
+    <sql id="studentVo">
+        (select  s1.f_name,s1.f_no,s1.f_sex,s1.f_birthday,s1.f_faculty,s1.f_class,s1.f_major,s1.f_grade,s1.f_academic,s1.f_nation,
+        s1.f_identitycard,s1.f_birthplace,s1.f_politicsstatus,gr.f_fam_money,s1.f_category,gr.f_stu_gpa,le.leave_num,scl.schol_num,
+        gran.gran_num,aw.aw_num from tbstu_info s1
+        left join tbdia_grants_assessment gr on s1.f_no = gr.f_no
+        left join (select t1.f_num,count(1) leave_num from tbstu_leave t1 group by f_num) le on s1.f_no = le.f_num
+        left join (select f_sname,count(1) schol_num from tbstu_award where f_award_type =1 group by f_sname) scl on s1.f_name = scl.f_sname
+        left join (select f_sname,count(1) gran_num from tbstu_award where f_award_type =2 group by f_sname) gran on s1.f_name = gran.f_sname
+        left join (select t1.f_sname,count(1) aw_num from tbstu_awardinfo t1  group by f_sname) aw on s1.f_name = aw.f_sname
+        )
+    </sql>
+    <insert id="syncStudent">
+        insert into tbdia_student
+        (f_name, f_no, f_sex, f_birth, f_faculties, f_clazz, f_major, f_nowgrade, f_academic, f_nationality,f_cardid, f_birthplace,
+        f_politicsstatus, f_fam_money, f_stucategory, f_stu_gpa, f_leave_num, f_stipend_num, f_schol_num, f_gainnum)
+        <include refid="studentVo"/>
+    </insert>
+    <delete id="truncateStu">
+        truncate table tbdia_student
+    </delete>
+
+
+    <!--    教师融合数据-->
+    <insert id="insert">
+        insert into tbdia_teach (f_tno, f_tname, f_sex, f_birth, f_polit, f_nation, f_edu, f_post, f_dept,
+                                 f_post_type, f_pro_code, f_course_id, f_course_score, f_profess, f_salary, f_workday)
+        select s1.f_numbering, s1.f_name, s1.f_sex, s1.f_birthdate, s1.f_political_status, s1.f_nation,
+               s1.f_degree, s1.f_duties, s1.f_departmentname, s1.f_personnelcategory,c1.f_pro_code,c1.f_course_code
+                ,s2.f_course_score,s1.f_specialized,s1.f_salary, s1.f_yearsservice
+        from tbper_staff s1
+                 left join tbdia_student_evaluation s2 on s1.f_numbering=s2.f_teacher_id
+                 left join tbtec_lesson c1 on c1.f_teacher_no=s2.f_teacher_id
+        where not exists(select * from tbdia_teach t where  t.f_tno=s1.f_numbering );
+    </insert>
+    <update id="update">
+        update tbdia_teach t
+        inner join
+        (select s1.f_numbering, s1.f_name, s1.f_sex, s1.f_birthdate, s1.f_political_status, s1.f_nation,
+        s1.f_degree, s1.f_duties, s1.f_departmentname, s1.f_personnelcategory,c1.f_pro_code,c1.f_course_code
+        ,s2.f_course_score,s1.f_specialized,s1.f_salary, s1.f_yearsservice
+        from tbper_staff s1
+        left join tbdia_student_evaluation s2 on s1.f_numbering=s2.f_teacher_id
+        left join tbtec_lesson c1 on s1.f_numbering=c1.f_teacher_no) s3
+        set t.f_tno=s3.f_numbering, t.f_tname=s3.f_name, t.f_sex=s3.f_sex,t.f_birth=s3.f_birthdate,
+        t.f_polit=s3.f_political_status,t.f_nation=s3.f_nation,t.f_edu=s3.f_degree,t.f_post=s3.f_duties,t.f_dept=s3.f_departmentname,
+        t.f_post_type=s3.f_personnelcategory,t.f_pro_code=s3.f_pro_code,t.f_course_id=s3.f_course_code,
+        t.f_course_score=s3.f_course_score,t.f_profess=s3.f_specialized,t.f_salary=s3.f_salary,t.f_workday=s3.f_yearsservice
+        where t.f_tno=s3.f_numbering;
+    </update>
+    <delete id="delete">
+        DELETE from tbdia_teach where f_tno not in (select f_numbering from tbper_staff );
+    </delete>
+    <!--    将教师画像表字段 数据替换-->
+    <update id="updateEdu">
+        <include refid="updateEdu"></include>
+    </update>
+    <sql id="updateEdu">
+        update tbdia_teach set f_edu=replace(f_edu,0,'专科及以下'),f_edu=replace(f_edu,1,'本科'),
+                               f_edu=replace(f_edu,2,'硕士研究生'),f_edu=replace(f_edu,3,'博士研究生')
+                ,f_sex=replace(f_sex,0,'男'),f_sex=replace(f_sex,1,'女'),f_sex=replace(f_sex,2,'未知'),
+                               f_polit=replace(f_polit,0,'中共党员'),f_polit=replace(f_polit,1,'中共预备党员')
+                ,f_polit=replace(f_polit,2,'共青团员'),f_polit=replace(f_polit,3,'民革'),
+                               f_polit=replace(f_polit,4,'民盟'),f_polit=replace(f_polit,5,'民建'),
+                               f_polit=replace(f_polit,6,'民进'),f_polit=replace(f_polit,7,'农工'),
+                               f_polit=replace(f_polit,8,'群众');
+    </sql>
+</mapper>

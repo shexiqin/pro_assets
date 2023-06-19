@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('教师预警列表')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <!--预警数量-->
+        <div class="col-sm-6" style="margin-top: 20px;height: 350px">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <span class="label  pull-right" style="font-size: 15px"><a href="/dia/tecwarn/more">更多>></a></span>
+                    <h3>预警</h3>
+                    <table class="table table-stripped m-t-md">
+                        <tr>
+                            <td></td>
+                            <td>学院</td>
+                            <td>预警数量</td>
+                        </tr>
+                        <tr th:each="item:${warnList}">
+                            <td class="no-borders">
+                                <i class="fa fa-circle text-navy"></i>
+                            </td>
+                            <td th:text="${item.faculties}" class="no-borders">
+                            </td>
+                            <td th:text="${item.count}" class="no-borders">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--预警处理比例-->
+        <div class="col-sm-6" style="margin-top: 20px;height: 350px">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h3>预警处理比例</h3>
+                    <table class="table table-stripped m-t-md">
+                        <tr>
+                            <td></td>
+                            <td>学院</td>
+                            <td>处理比例</td>
+                        </tr>
+                        <tr th:each="item:${warnProportion}">
+                            <td class="no-borders">
+                                <i class="fa fa-circle text-navy"></i>
+                            </td>
+                            <td th:text="${item.faculties}" class="no-borders">
+                            </td>
+                            <td th:text="${item.proportion}" class="no-borders">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--预警半年记录折线图-->
+        <div class="col-sm-6" style="margin-top: 20px">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h3>半年预警</h3>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="#">选项1</a>
+                            </li>
+                            <li><a href="#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="echarts" id="echarts-line-chart"></div>
+                </div>
+            </div>
+        </div>
+        <!--月预警 饼状图分析 -->
+        <div class="col-sm-6" style="margin-top: 20px">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h3>本月预警</h3>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="#">选项1</a>
+                            </li>
+                            <li><a href="#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="echarts" id="echarts-pie-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer"/>
+    <th:block th:include="include :: echarts-js"/>
+    <script th:inline="javascript">
+        $(function () {
+            //折线图操作
+            var lineChart = echarts.init(document.getElementById("echarts-line-chart"));
+            var lineoption = {
+                title: {
+                    text: '半年预警趋势'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['总数', '已处理']
+                },
+                grid: {
+                    x: 40,
+                    x2: 40,
+                    y2: 24
+                },
+                calculable: true,
+                xAxis: [
+                    {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: [[${month}]]
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        axisLabel: {
+                            formatter: '{value}'
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '总数',
+                        type: 'line',
+                        data: [[${count1}]],
+                        /*markPoint : {
+                            data : [
+                                {type : 'max', name: '最大值'},
+                                {type : 'min', name: '最小值'}
+                            ]
+                        },
+                        markLine : {
+                            data : [
+                                {type : 'average', name: '平均值'}
+                            ]
+                        }*/
+                    },
+                    {
+                        name: '已处理',
+                        type: 'line',
+                        data: [[${count2}]],
+                        /*markPoint : {
+                            data : [
+                                {name : '月已处理', value : -2, xAxis: 1, yAxis: -1.5}
+                            ]
+                        },
+                        markLine : {
+                            data : [
+                                {type : 'average', name : '平均值'}
+                            ]
+                        }*/
+                    }
+                ]
+            };
+            lineChart.setOption(lineoption);
+            $(window).resize(lineChart.resize);
+
+            //饼状图
+            var pieChart = echarts.init(document.getElementById("echarts-pie-chart"));
+            var pieoption = {
+                title : {
+                    text: '本月预警',
+                    //subtext: '纯属虚构',
+                    x:'center'
+                },
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient : 'vertical',
+                    x : 'left',
+                    data:['毕业预警','逃课预警','挂科预警','失联预警']
+                },
+                calculable : true,
+                series : [
+                    {
+                        name:'预警数量',
+                        type:'pie',
+                        radius : '55%',
+                        center: ['50%', '60%'],
+                        data:[[${currentMonthWarn}]]
+                    }
+                ]
+            };
+            pieChart.setOption(pieoption);
+            $(window).resize(pieChart.resize);
+        });
+    </script>
+</div>
+</body>
+</html>

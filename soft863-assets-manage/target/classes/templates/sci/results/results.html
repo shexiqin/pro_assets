@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('教师科研业绩列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>教师姓名：</label>
+                                <input type="text" name="fTeachername"/>
+                            </li>
+                            <li>
+                                <label>项目名称：</label>
+                                <input type="text" name="fProjectName"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="sci:results:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="sci:results:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="sci:results:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="sci:results:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('sci:results:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('sci:results:remove')}]];
+        var fTeacherTypeDatas = [[${@dict.getType('sci_teacher_type')}]];
+        var fProjectTypeDatas = [[${@dict.getType('sci_project_type')}]];
+        var fDepartLevelDatas = [[${@dict.getType('sci_depart_level')}]];
+        var fSubjectClassDatas = [[${@dict.getType('sci_subject_class')}]];
+        var fSubjectPropertDatas = [[${@dict.getType('sci_subject_propert')}]];
+        var fCrossFlgDatas = [[${@dict.getType('sci_cross_flg')}]];
+        var fOrderDatas = [[${@dict.getType('sci_order')}]];
+        var fResultDatas = [[${@dict.getType('sci_result')}]];
+        var fSubjectSourceDatas = [[${@dict.getType('sci_subject_source')}]];
+        var fSubjectLevelDatas = [[${@dict.getType('sci_subject_level')}]];
+        var fRecordFlgDatas = [[${@dict.getType('sci_record_flg')}]];
+        var prefix = ctx + "sci/results";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "教师科研业绩",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'fTeachername',
+                    title: '教师姓名'
+                },
+                {
+                    field: 'fTeacherno',
+                    title: '教工号'
+                },
+                {
+                    field: 'fProjectName',
+                    title: '项目名称'
+                },
+                {
+                    field: 'fTeacherType',
+                    title: '教工类别(专任教师/校内兼课教师/其它）',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fTeacherTypeDatas, value);
+                    }
+                },
+                {
+                    field: 'fProjectType',
+                    title: '项目类型',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fProjectTypeDatas, value);
+                    }
+                },
+                {
+                    field: 'fDepartLevel',
+                    title: '派出部门级别',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fDepartLevelDatas, value);
+                    }
+                },
+                {
+                    field: 'fSubjectClass',
+                    title: '课题分类(自然科学与技术/人文科学与技术）',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fSubjectClassDatas, value);
+                    }
+                },
+                {
+                    field: 'fSubjectPropert',
+                    title: '课题性质',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fSubjectPropertDatas, value);
+                    }
+                },
+                {
+                    field: 'fCrossFlg',
+                    title: '是否横向课题 (是/否)',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fCrossFlgDatas, value);
+                    }
+                },
+                {
+                    field: 'fOrder',
+                    title: '完成人顺序',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fOrderDatas, value);
+                    }
+                },
+                {
+                    field: 'fWorkTime',
+                    title: '本学年行业工作时间'
+                },
+                {
+                    field: 'fResult',
+                    title: '评审结果',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fResultDatas, value);
+                    }
+                },
+                {
+                    field: 'fSubjectSource',
+                    title: '课题来源',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fSubjectSourceDatas, value);
+                    }
+                },
+                {
+                    field: 'fSubjectLevel',
+                    title: '课题级别',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fSubjectLevelDatas, value);
+                    }
+                },
+                {
+                    field: 'fRecordFlg',
+                    title: '是否相关部门备案',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fRecordFlgDatas, value);
+                    }
+                },
+                {
+                    field: 'fVertical',
+                    title: '纵向批准部门'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.fId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.fId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增教师授课')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-lesson-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">授课教师工号：</label>
+                <div class="col-sm-8">
+                    <input name="fTeacherNo" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">授课教师姓名：</label>
+                <div class="col-sm-8">
+                    <input name="fTeacherName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">教师类别：</label>
+                <div class="col-sm-8">
+                    <select name="fTeacherType" class="form-control m-b" th:with="type=${@dict.getType('tea_teacher_type')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">专业名称：</label>
+                <div class="col-sm-8">
+                    <input name="fProName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">专业代码：</label>
+                <div class="col-sm-8">
+                    <input name="fProCode" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">专业层次：</label>
+                <div class="col-sm-8">
+                    <select name="fProLevel" class="form-control m-b" th:with="type=${@dict.getType('tec_pro_level')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学制：</label>
+                <div class="col-sm-8">
+                    <select name="fAcademic" class="form-control m-b" th:with="type=${@dict.getType('tec_academic')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">培养方式：</label>
+                <div class="col-sm-8">
+                    <select name="fCulMethods" class="form-control m-b" th:with="type=${@dict.getType('tec_cul')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">具体形式：</label>
+                <div class="col-sm-8">
+                    <input name="fSpcForm" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">生源类型：</label>
+                <div class="col-sm-8">
+                    <input name="fSourceType" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">授课年级：</label>
+                <div class="col-sm-8">
+                    <input name="fGrade" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">课程名称：</label>
+                <div class="col-sm-8">
+                    <input name="fCourseName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">课程代码：</label>
+                <div class="col-sm-8">
+                    <input name="fCourseCode" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">授课学期：</label>
+                <div class="col-sm-8">
+                    <input name="fTecSemesters" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">班级名称：</label>
+                <div class="col-sm-8">
+                    <input name="fClassName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">授课任务：</label>
+                <div class="col-sm-8">
+                    <select name="fTecTask" class="form-control m-b" th:with="type=${@dict.getType('tec_task')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">教学工作量：</label>
+                <div class="col-sm-8">
+                    <input name="fTecTime" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">教学工作量：</label>
+                <div class="col-sm-8">
+                    <input name="fOnlineTime" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">填报人：</label>
+                <div class="col-sm-8">
+                    <input name="fFiller" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "tec/lesson"
+        $("#form-lesson-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-lesson-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

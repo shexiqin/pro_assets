@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbfinExpendMapper">
+    
+    <resultMap type="TbfinExpend" id="TbfinExpendResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fLandBuy"    column="f_land_buy"    />
+        <result property="fFacilityConstruction"    column="f_facility_construction"    />
+        <result property="fFacilityBuy"    column="f_facility_buy"    />
+        <result property="fFacilityTeach"    column="f_facility_teach"    />
+        <result property="fBookBuy"    column="f_book_buy"    />
+        <result property="fPracticalFacility"    column="f_practical_facility"    />
+        <result property="fTeachFacility"    column="f_teach_facility"    />
+        <result property="fPracticeSpecial"    column="f_practice_special"    />
+        <result property="fPartTimeTeach"    column="f_part_time_teach"    />
+        <result property="fSports"    column="f_sports"    />
+        <result property="fPoliticalSpecial"    column="f_political_special"    />
+        <result property="fPolitical"    column="f_political"    />
+        <result property="fSchoolProject"    column="f_school_project"    />
+        <result property="fPracticeInsurance"    column="f_practice_insurance"    />
+        <result property="fOtherTeach"    column="f_other_teach"    />
+        <result property="fCourse"    column="f_course"    />
+        <result property="fTextbook"    column="f_textbook"    />
+        <result property="fTeachingReform"    column="f_teaching_reform"    />
+        <result property="fEducationReform"    column="f_education_reform"    />
+        <result property="fResearch"    column="f_research"    />
+        <result property="fSkillStudio"    column="f_skill_studio"    />
+        <result property="fInnovateTeam"    column="f_innovate_team"    />
+        <result property="fTalents"    column="f_talents"    />
+        <result property="fStaffTrain"    column="f_staff_train"    />
+        <result property="fOfftcots"    column="f_offtcots"    />
+        <result property="fSalary"    column="f_salary"    />
+        <result property="fResearchPeople"    column="f_research_people"    />
+        <result property="fActivity"    column="f_activity"    />
+        <result property="fStartBusiness"    column="f_start_business"    />
+        <result property="fMental"    column="f_mental"    />
+        <result property="fScholarship"    column="f_scholarship"    />
+        <result property="fGovernment"    column="f_government"    />
+        <result property="fRepayment"    column="f_repayment"    />
+        <result property="fOther"    column="f_other"    />
+        <result property="fCreator"    column="f_creator"    />
+    </resultMap>
+
+    <sql id="selectTbfinExpendVo">
+        select f_id, f_land_buy, f_facility_construction, f_facility_buy, f_facility_teach, f_book_buy, f_practical_facility, f_teach_facility, f_practice_special, f_part_time_teach, f_sports, f_political_special, f_political, f_school_project, f_practice_insurance, f_other_teach, f_course, f_textbook, f_teaching_reform, f_education_reform, f_research, f_skill_studio, f_innovate_team, f_talents, f_staff_train, f_offtcots, f_salary, f_research_people, f_activity, f_start_business, f_mental, f_scholarship, f_government, f_repayment, f_other, f_creator from tbfin_expend
+    </sql>
+
+    <select id="selectTbfinExpendList" parameterType="TbfinExpend" resultMap="TbfinExpendResult">
+        <include refid="selectTbfinExpendVo"/>
+        <where>  
+            <if test="fId != null "> and f_id = #{fId}</if>
+            <if test="fLandBuy != null "> and f_land_buy = #{fLandBuy}</if>
+            <if test="fFacilityConstruction != null "> and f_facility_construction = #{fFacilityConstruction}</if>
+            <if test="fFacilityBuy != null "> and f_facility_buy = #{fFacilityBuy}</if>
+            <if test="fFacilityTeach != null "> and f_facility_teach = #{fFacilityTeach}</if>
+            <if test="fBookBuy != null "> and f_book_buy = #{fBookBuy}</if>
+            <if test="fPracticalFacility != null "> and f_practical_facility = #{fPracticalFacility}</if>
+            <if test="fTeachFacility != null "> and f_teach_facility = #{fTeachFacility}</if>
+            <if test="fPracticeSpecial != null "> and f_practice_special = #{fPracticeSpecial}</if>
+            <if test="fPartTimeTeach != null "> and f_part_time_teach = #{fPartTimeTeach}</if>
+            <if test="fSports != null "> and f_sports = #{fSports}</if>
+            <if test="fPoliticalSpecial != null "> and f_political_special = #{fPoliticalSpecial}</if>
+            <if test="fPolitical != null "> and f_political = #{fPolitical}</if>
+            <if test="fSchoolProject != null "> and f_school_project = #{fSchoolProject}</if>
+            <if test="fPracticeInsurance != null "> and f_practice_insurance = #{fPracticeInsurance}</if>
+            <if test="fOtherTeach != null "> and f_other_teach = #{fOtherTeach}</if>
+            <if test="fCourse != null "> and f_course = #{fCourse}</if>
+            <if test="fTextbook != null "> and f_textbook = #{fTextbook}</if>
+            <if test="fTeachingReform != null "> and f_teaching_reform = #{fTeachingReform}</if>
+            <if test="fEducationReform != null "> and f_education_reform = #{fEducationReform}</if>
+            <if test="fResearch != null "> and f_research = #{fResearch}</if>
+            <if test="fSkillStudio != null "> and f_skill_studio = #{fSkillStudio}</if>
+            <if test="fInnovateTeam != null "> and f_innovate_team = #{fInnovateTeam}</if>
+            <if test="fTalents != null "> and f_talents = #{fTalents}</if>
+            <if test="fStaffTrain != null "> and f_staff_train = #{fStaffTrain}</if>
+            <if test="fOfftcots != null "> and f_offtcots = #{fOfftcots}</if>
+            <if test="fSalary != null "> and f_salary = #{fSalary}</if>
+            <if test="fResearchPeople != null "> and f_research_people = #{fResearchPeople}</if>
+            <if test="fActivity != null "> and f_activity = #{fActivity}</if>
+            <if test="fStartBusiness != null "> and f_start_business = #{fStartBusiness}</if>
+            <if test="fMental != null "> and f_mental = #{fMental}</if>
+            <if test="fScholarship != null "> and f_scholarship = #{fScholarship}</if>
+            <if test="fGovernment != null "> and f_government = #{fGovernment}</if>
+            <if test="fRepayment != null "> and f_repayment = #{fRepayment}</if>
+            <if test="fOther != null "> and f_other = #{fOther}</if>
+            <if test="fCreator != null  and fCreator != ''"> and f_creator like concat(%#{fCreator}%)</if>
+        </where>
+    </select>
+    
+    <select id="selectTbfinExpendByFId" parameterType="Long" resultMap="TbfinExpendResult">
+        <include refid="selectTbfinExpendVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbfinExpend" parameterType="TbfinExpend" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbfin_expend
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fLandBuy != null">f_land_buy,</if>
+            <if test="fFacilityConstruction != null">f_facility_construction,</if>
+            <if test="fFacilityBuy != null">f_facility_buy,</if>
+            <if test="fFacilityTeach != null">f_facility_teach,</if>
+            <if test="fBookBuy != null">f_book_buy,</if>
+            <if test="fPracticalFacility != null">f_practical_facility,</if>
+            <if test="fTeachFacility != null">f_teach_facility,</if>
+            <if test="fPracticeSpecial != null">f_practice_special,</if>
+            <if test="fPartTimeTeach != null">f_part_time_teach,</if>
+            <if test="fSports != null">f_sports,</if>
+            <if test="fPoliticalSpecial != null">f_political_special,</if>
+            <if test="fPolitical != null">f_political,</if>
+            <if test="fSchoolProject != null">f_school_project,</if>
+            <if test="fPracticeInsurance != null">f_practice_insurance,</if>
+            <if test="fOtherTeach != null">f_other_teach,</if>
+            <if test="fCourse != null">f_course,</if>
+            <if test="fTextbook != null">f_textbook,</if>
+            <if test="fTeachingReform != null">f_teaching_reform,</if>
+            <if test="fEducationReform != null">f_education_reform,</if>
+            <if test="fResearch != null">f_research,</if>
+            <if test="fSkillStudio != null">f_skill_studio,</if>
+            <if test="fInnovateTeam != null">f_innovate_team,</if>
+            <if test="fTalents != null">f_talents,</if>
+            <if test="fStaffTrain != null">f_staff_train,</if>
+            <if test="fOfftcots != null">f_offtcots,</if>
+            <if test="fSalary != null">f_salary,</if>
+            <if test="fResearchPeople != null">f_research_people,</if>
+            <if test="fActivity != null">f_activity,</if>
+            <if test="fStartBusiness != null">f_start_business,</if>
+            <if test="fMental != null">f_mental,</if>
+            <if test="fScholarship != null">f_scholarship,</if>
+            <if test="fGovernment != null">f_government,</if>
+            <if test="fRepayment != null">f_repayment,</if>
+            <if test="fOther != null">f_other,</if>
+            <if test="fCreator != null">f_creator,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fLandBuy != null">#{fLandBuy},</if>
+            <if test="fFacilityConstruction != null">#{fFacilityConstruction},</if>
+            <if test="fFacilityBuy != null">#{fFacilityBuy},</if>
+            <if test="fFacilityTeach != null">#{fFacilityTeach},</if>
+            <if test="fBookBuy != null">#{fBookBuy},</if>
+            <if test="fPracticalFacility != null">#{fPracticalFacility},</if>
+            <if test="fTeachFacility != null">#{fTeachFacility},</if>
+            <if test="fPracticeSpecial != null">#{fPracticeSpecial},</if>
+            <if test="fPartTimeTeach != null">#{fPartTimeTeach},</if>
+            <if test="fSports != null">#{fSports},</if>
+            <if test="fPoliticalSpecial != null">#{fPoliticalSpecial},</if>
+            <if test="fPolitical != null">#{fPolitical},</if>
+            <if test="fSchoolProject != null">#{fSchoolProject},</if>
+            <if test="fPracticeInsurance != null">#{fPracticeInsurance},</if>
+            <if test="fOtherTeach != null">#{fOtherTeach},</if>
+            <if test="fCourse != null">#{fCourse},</if>
+            <if test="fTextbook != null">#{fTextbook},</if>
+            <if test="fTeachingReform != null">#{fTeachingReform},</if>
+            <if test="fEducationReform != null">#{fEducationReform},</if>
+            <if test="fResearch != null">#{fResearch},</if>
+            <if test="fSkillStudio != null">#{fSkillStudio},</if>
+            <if test="fInnovateTeam != null">#{fInnovateTeam},</if>
+            <if test="fTalents != null">#{fTalents},</if>
+            <if test="fStaffTrain != null">#{fStaffTrain},</if>
+            <if test="fOfftcots != null">#{fOfftcots},</if>
+            <if test="fSalary != null">#{fSalary},</if>
+            <if test="fResearchPeople != null">#{fResearchPeople},</if>
+            <if test="fActivity != null">#{fActivity},</if>
+            <if test="fStartBusiness != null">#{fStartBusiness},</if>
+            <if test="fMental != null">#{fMental},</if>
+            <if test="fScholarship != null">#{fScholarship},</if>
+            <if test="fGovernment != null">#{fGovernment},</if>
+            <if test="fRepayment != null">#{fRepayment},</if>
+            <if test="fOther != null">#{fOther},</if>
+            <if test="fCreator != null">#{fCreator},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbfinExpend" parameterType="TbfinExpend">
+        update tbfin_expend
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fLandBuy != null">f_land_buy = #{fLandBuy},</if>
+            <if test="fFacilityConstruction != null">f_facility_construction = #{fFacilityConstruction},</if>
+            <if test="fFacilityBuy != null">f_facility_buy = #{fFacilityBuy},</if>
+            <if test="fFacilityTeach != null">f_facility_teach = #{fFacilityTeach},</if>
+            <if test="fBookBuy != null">f_book_buy = #{fBookBuy},</if>
+            <if test="fPracticalFacility != null">f_practical_facility = #{fPracticalFacility},</if>
+            <if test="fTeachFacility != null">f_teach_facility = #{fTeachFacility},</if>
+            <if test="fPracticeSpecial != null">f_practice_special = #{fPracticeSpecial},</if>
+            <if test="fPartTimeTeach != null">f_part_time_teach = #{fPartTimeTeach},</if>
+            <if test="fSports != null">f_sports = #{fSports},</if>
+            <if test="fPoliticalSpecial != null">f_political_special = #{fPoliticalSpecial},</if>
+            <if test="fPolitical != null">f_political = #{fPolitical},</if>
+            <if test="fSchoolProject != null">f_school_project = #{fSchoolProject},</if>
+            <if test="fPracticeInsurance != null">f_practice_insurance = #{fPracticeInsurance},</if>
+            <if test="fOtherTeach != null">f_other_teach = #{fOtherTeach},</if>
+            <if test="fCourse != null">f_course = #{fCourse},</if>
+            <if test="fTextbook != null">f_textbook = #{fTextbook},</if>
+            <if test="fTeachingReform != null">f_teaching_reform = #{fTeachingReform},</if>
+            <if test="fEducationReform != null">f_education_reform = #{fEducationReform},</if>
+            <if test="fResearch != null">f_research = #{fResearch},</if>
+            <if test="fSkillStudio != null">f_skill_studio = #{fSkillStudio},</if>
+            <if test="fInnovateTeam != null">f_innovate_team = #{fInnovateTeam},</if>
+            <if test="fTalents != null">f_talents = #{fTalents},</if>
+            <if test="fStaffTrain != null">f_staff_train = #{fStaffTrain},</if>
+            <if test="fOfftcots != null">f_offtcots = #{fOfftcots},</if>
+            <if test="fSalary != null">f_salary = #{fSalary},</if>
+            <if test="fResearchPeople != null">f_research_people = #{fResearchPeople},</if>
+            <if test="fActivity != null">f_activity = #{fActivity},</if>
+            <if test="fStartBusiness != null">f_start_business = #{fStartBusiness},</if>
+            <if test="fMental != null">f_mental = #{fMental},</if>
+            <if test="fScholarship != null">f_scholarship = #{fScholarship},</if>
+            <if test="fGovernment != null">f_government = #{fGovernment},</if>
+            <if test="fRepayment != null">f_repayment = #{fRepayment},</if>
+            <if test="fOther != null">f_other = #{fOther},</if>
+            <if test="fCreator != null">f_creator = #{fCreator},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbfinExpendByFId" parameterType="Long">
+        delete from tbfin_expend where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbfinExpendByFIds" parameterType="String">
+        delete from tbfin_expend where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

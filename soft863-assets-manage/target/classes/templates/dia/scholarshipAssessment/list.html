@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('奖学金评估列表')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label>专业：</label>
+                            <input type="text" name="fMajor"/>
+                        </li>
+                        <li>
+                            <label>班级：</label>
+                            <input type="text" name="fClass"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="weight()">
+                权重与名额设置
+            </a>
+            <a class="btn btn-warning" onclick="estimate()">
+                评估条件设置
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('md:catalog:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('md:catalog:remove')}]];
+    var fStateDatas = [[${@dict.getType('sys_job_status')}]];
+    var prefix = ctx + "dia/scholarshipAssessment";
+
+    function weight(){
+        $.modal.open("权重与名额设置",prefix+"/weight");
+    }
+
+    function estimate(){
+        $.modal.open("评估条件设置",prefix+"/estimate");
+    }
+
+    $(function() {
+        var options = {
+            url: prefix + "/list",
+            removeUrl: prefix + "/remove",
+            modalName: "奖学金评估",
+            columns: [
+                {
+                    field: 'fStuId',
+                    title: '学号'
+                },
+                {
+                    field: 'fStuName',
+                    title: '学生姓名'
+                },
+                {
+                    field: 'fMajor',
+                    title: '专业'
+                },
+                {
+                    field: 'fClass',
+                    title: '班级'
+                },
+                {
+                    field: 'fCompisiteScore',
+                    title: '成绩'
+                },
+                {
+                    field: 'fStuGpa',
+                    title: '绩点'
+                },
+                {
+                    field: 'fStuGpa',
+                    title: '获奖次数'
+                },
+                {
+                    field: 'fAssessmentSocre',
+                    title: '最终评估分'
+                },
+                {
+                    field: 'fScholarshipLevel',
+                    title: '奖学金等级'
+                }]
+        };
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>

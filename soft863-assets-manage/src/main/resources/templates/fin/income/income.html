@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('学校经费收入列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                           <!-- <li>
+                                <label>学费收入：</label>
+                                <input type="text" name="params.beginFTuition"/>
+                                <input type="text" name="params.endFTuition"/>
+                            </li>-->
+                            <li>
+                                <label>填报人：</label>
+                                <input type="text" name="fInformant"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="fin:income:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="fin:income:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="fin:income:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="fin:income:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('fin:income:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('fin:income:remove')}]];
+        var prefix = ctx + "fin/income";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "学校经费收入",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'fId',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'fTuition',
+                    title: '学费收入'
+                },
+                {
+                    field: 'fAccommodationFee',
+                    title: '住宿费收入'
+                },
+                {
+                    field: 'fTrainingFee',
+                    title: '培训费收入'
+                },
+                {
+                    field: 'fAdultEducationFee',
+                    title: '成人教育收费收入'
+                },
+                {
+                    field: 'fOtherEducationFee',
+                    title: '其他教育事业收入'
+                },
+                {
+                    field: 'fHorizontalResearchFee',
+                    title: '横向科研事业收入'
+                },
+                {
+                    field: 'fVerticalResearchFee',
+                    title: '纵向科研事业收入'
+                },
+                {
+                    field: 'fOtherResearchFee',
+                    title: '其他科研事业收入'
+                },
+                {
+                    field: 'fAverageFinancialExpense',
+                    title: '财政生均拨款收入'
+                },
+                {
+                    field: 'fSpecialFinancialExpense',
+                    title: '财政专项拨款收入'
+                },
+                {
+                    field: 'fGovernmentFunds',
+                    title: '政府性基金收入'
+                },
+                {
+                    field: 'fCapitalOperationExpense',
+                    title: '国有资本经营预算收入'
+                },
+                {
+                    field: 'fSuperiorSubsidy',
+                    title: '上级补助收入'
+                },
+                {
+                    field: 'fUnpeerFinancialAllocation',
+                    title: '非同级财政拨款收入'
+                },
+                {
+                    field: 'fEnterpriseEducationExpense',
+                    title: '企业办学中企业拨款'
+                },
+                {
+                    field: 'fSocialTrainingExpense',
+                    title: '社会培训收入'
+                },
+                {
+                    field: 'fTechnologyTransactionFee',
+                    title: '技术产权交易收入'
+                },
+                {
+                    field: 'fOtherServicesFee',
+                    title: '其他社会服务收入'
+                },
+                {
+                    field: 'fSchoolEnterpriseFee',
+                    title: '校办企业投资收益'
+                },
+                {
+                    field: 'fOtherFunding',
+                    title: '其他投资收益'
+                },
+                {
+                    field: 'fSchoolEnterpriseDonation',
+                    title: '校企合作捐赠收入'
+                },
+                {
+                    field: 'fModernApprenticeDonation',
+                    title: '现代学徒制捐赠收入'
+                },
+                {
+                    field: 'fOtherDonation',
+                    title: '其他捐赠收入'
+                },
+                {
+                    field: 'fOtherIncome',
+                    title: '其他收入'
+                },
+                {
+                    field: 'fInformant',
+                    title: '填报人'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.fId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.fId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

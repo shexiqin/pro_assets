@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbstuLeaveMapper">
+    
+    <resultMap type="TbstuLeave" id="TbstuLeaveResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fNum"    column="f_num"    />
+        <result property="fName"    column="f_name"    />
+        <result property="fSex"    column="f_sex"    />
+        <result property="fNation"    column="f_nation"    />
+        <result property="fPhone"    column="f_phone"    />
+        <result property="fGrade"    column="f_grade"    />
+        <result property="fCampus"    column="f_campus"    />
+        <result property="fFaculties"    column="f_faculties"    />
+        <result property="fMajor"    column="f_major"    />
+        <result property="fClass"    column="f_class"    />
+        <result property="fType"    column="f_type"    />
+        <result property="fStarttime"    column="f_starttime"    />
+        <result property="fFlg"    column="f_flg"    />
+        <result property="fEmergencycontacts"    column="f_emergencycontacts"    />
+        <result property="fDate"    column="f_date"    />
+        <result property="fActualdate"    column="f_actualdate"    />
+        <result property="fTimecancelleave"    column="f_timecancelleave"    />
+        <result property="fReasontakingleave"    column="f_reasontakingleave"    />
+        <result property="fApprover"    column="f_approver"    />
+        <result property="fStatus"    column="f_status"    />
+        <result property="fDestination"    column="f_destination"    />
+        <result property="fDormitoryname"    column="f_dormitoryname"    />
+        <result property="fRoomnumber"    column="f_roomnumber"    />
+        <result property="fBednumber"    column="f_bednumber"    />
+        <result property="fOriginatinglocation"    column="f_originatinglocation"    />
+    </resultMap>
+
+    <sql id="selectTbstuLeaveVo">
+        select f_id, f_num, f_name, f_sex, f_nation, f_phone, f_grade, f_campus, f_faculties, f_major, f_class, f_type, f_starttime, f_flg, f_emergencycontacts, f_date, f_actualdate, f_timecancelleave, f_reasontakingleave, f_approver, f_status, f_destination, f_dormitoryname, f_roomnumber, f_bednumber, f_originatinglocation from tbstu_leave
+    </sql>
+
+    <select id="selectTbstuLeaveList" parameterType="TbstuLeave" resultMap="TbstuLeaveResult">
+        <include refid="selectTbstuLeaveVo"/>
+        <where>  
+            <if test="fId != null "> and f_id = #{fId}</if>
+            <if test="fNum != null  and fNum != ''"> and f_num = #{fNum}</if>
+            <if test="fName != null  and fName != ''"> and f_name like concat('%', #{fName}, '%')</if>
+            <if test="fSex != null  and fSex != ''"> and f_sex = #{fSex}</if>
+            <if test="fNation != null  and fNation != ''"> and f_nation = #{fNation}</if>
+            <if test="fPhone != null  and fPhone != ''"> and f_phone = #{fPhone}</if>
+            <if test="fGrade != null  and fGrade != ''"> and f_grade = #{fGrade}</if>
+            <if test="fCampus != null  and fCampus != ''"> and f_campus = #{fCampus}</if>
+            <if test="fFaculties != null  and fFaculties != ''"> and f_faculties = #{fFaculties}</if>
+            <if test="fMajor != null  and fMajor != ''"> and f_major = #{fMajor}</if>
+            <if test="fClass != null  and fClass != ''"> and f_class = #{fClass}</if>
+            <if test="fType != null  and fType != ''"> and f_type = #{fType}</if>
+            <if test="fStarttime != null "> and f_starttime = #{fStarttime}</if>
+            <if test="fFlg != null  and fFlg != ''"> and f_flg = #{fFlg}</if>
+            <if test="fEmergencycontacts != null  and fEmergencycontacts != ''"> and f_emergencycontacts = #{fEmergencycontacts}</if>
+            <if test="fDate != null "> and f_date = #{fDate}</if>
+            <if test="fActualdate != null "> and f_actualdate = #{fActualdate}</if>
+            <if test="fTimecancelleave != null "> and f_timecancelleave = #{fTimecancelleave}</if>
+            <if test="fReasontakingleave != null  and fReasontakingleave != ''"> and f_reasontakingleave = #{fReasontakingleave}</if>
+            <if test="fApprover != null  and fApprover != ''"> and f_approver = #{fApprover}</if>
+            <if test="fStatus != null  and fStatus != ''"> and f_status = #{fStatus}</if>
+            <if test="fDestination != null  and fDestination != ''"> and f_destination = #{fDestination}</if>
+            <if test="fDormitoryname != null  and fDormitoryname != ''"> and f_dormitoryname like concat('%', #{fDormitoryname}, '%')</if>
+            <if test="fRoomnumber != null  and fRoomnumber != ''"> and f_roomnumber like concat('%', #{fRoomnumber}, '%')</if>
+            <if test="fBednumber != null  and fBednumber != ''"> and f_bednumber = #{fBednumber}</if>
+            <if test="fOriginatinglocation != null  and fOriginatinglocation != ''"> and f_originatinglocation = #{fOriginatinglocation}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbstuLeaveByFId" parameterType="Long" resultMap="TbstuLeaveResult">
+        <include refid="selectTbstuLeaveVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbstuLeave" parameterType="TbstuLeave" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbstu_leave
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fNum != null">f_num,</if>
+            <if test="fName != null">f_name,</if>
+            <if test="fSex != null">f_sex,</if>
+            <if test="fNation != null">f_nation,</if>
+            <if test="fPhone != null">f_phone,</if>
+            <if test="fGrade != null">f_grade,</if>
+            <if test="fCampus != null">f_campus,</if>
+            <if test="fFaculties != null">f_faculties,</if>
+            <if test="fMajor != null">f_major,</if>
+            <if test="fClass != null">f_class,</if>
+            <if test="fType != null">f_type,</if>
+            <if test="fStarttime != null">f_starttime,</if>
+            <if test="fFlg != null">f_flg,</if>
+            <if test="fEmergencycontacts != null">f_emergencycontacts,</if>
+            <if test="fDate != null">f_date,</if>
+            <if test="fActualdate != null">f_actualdate,</if>
+            <if test="fTimecancelleave != null">f_timecancelleave,</if>
+            <if test="fReasontakingleave != null">f_reasontakingleave,</if>
+            <if test="fApprover != null">f_approver,</if>
+            <if test="fStatus != null">f_status,</if>
+            <if test="fDestination != null">f_destination,</if>
+            <if test="fDormitoryname != null">f_dormitoryname,</if>
+            <if test="fRoomnumber != null">f_roomnumber,</if>
+            <if test="fBednumber != null">f_bednumber,</if>
+            <if test="fOriginatinglocation != null">f_originatinglocation,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fNum != null">#{fNum},</if>
+            <if test="fName != null">#{fName},</if>
+            <if test="fSex != null">#{fSex},</if>
+            <if test="fNation != null">#{fNation},</if>
+            <if test="fPhone != null">#{fPhone},</if>
+            <if test="fGrade != null">#{fGrade},</if>
+            <if test="fCampus != null">#{fCampus},</if>
+            <if test="fFaculties != null">#{fFaculties},</if>
+            <if test="fMajor != null">#{fMajor},</if>
+            <if test="fClass != null">#{fClass},</if>
+            <if test="fType != null">#{fType},</if>
+            <if test="fStarttime != null">#{fStarttime},</if>
+            <if test="fFlg != null">#{fFlg},</if>
+            <if test="fEmergencycontacts != null">#{fEmergencycontacts},</if>
+            <if test="fDate != null">#{fDate},</if>
+            <if test="fActualdate != null">#{fActualdate},</if>
+            <if test="fTimecancelleave != null">#{fTimecancelleave},</if>
+            <if test="fReasontakingleave != null">#{fReasontakingleave},</if>
+            <if test="fApprover != null">#{fApprover},</if>
+            <if test="fStatus != null">#{fStatus},</if>
+            <if test="fDestination != null">#{fDestination},</if>
+            <if test="fDormitoryname != null">#{fDormitoryname},</if>
+            <if test="fRoomnumber != null">#{fRoomnumber},</if>
+            <if test="fBednumber != null">#{fBednumber},</if>
+            <if test="fOriginatinglocation != null">#{fOriginatinglocation},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbstuLeave" parameterType="TbstuLeave">
+        update tbstu_leave
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fNum != null">f_num = #{fNum},</if>
+            <if test="fName != null">f_name = #{fName},</if>
+            <if test="fSex != null">f_sex = #{fSex},</if>
+            <if test="fNation != null">f_nation = #{fNation},</if>
+            <if test="fPhone != null">f_phone = #{fPhone},</if>
+            <if test="fGrade != null">f_grade = #{fGrade},</if>
+            <if test="fCampus != null">f_campus = #{fCampus},</if>
+            <if test="fFaculties != null">f_faculties = #{fFaculties},</if>
+            <if test="fMajor != null">f_major = #{fMajor},</if>
+            <if test="fClass != null">f_class = #{fClass},</if>
+            <if test="fType != null">f_type = #{fType},</if>
+            <if test="fStarttime != null">f_starttime = #{fStarttime},</if>
+            <if test="fFlg != null">f_flg = #{fFlg},</if>
+            <if test="fEmergencycontacts != null">f_emergencycontacts = #{fEmergencycontacts},</if>
+            <if test="fDate != null">f_date = #{fDate},</if>
+            <if test="fActualdate != null">f_actualdate = #{fActualdate},</if>
+            <if test="fTimecancelleave != null">f_timecancelleave = #{fTimecancelleave},</if>
+            <if test="fReasontakingleave != null">f_reasontakingleave = #{fReasontakingleave},</if>
+            <if test="fApprover != null">f_approver = #{fApprover},</if>
+            <if test="fStatus != null">f_status = #{fStatus},</if>
+            <if test="fDestination != null">f_destination = #{fDestination},</if>
+            <if test="fDormitoryname != null">f_dormitoryname = #{fDormitoryname},</if>
+            <if test="fRoomnumber != null">f_roomnumber = #{fRoomnumber},</if>
+            <if test="fBednumber != null">f_bednumber = #{fBednumber},</if>
+            <if test="fOriginatinglocation != null">f_originatinglocation = #{fOriginatinglocation},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbstuLeaveByFId" parameterType="Long">
+        delete from tbstu_leave where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbstuLeaveByFIds" parameterType="String">
+        delete from tbstu_leave where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

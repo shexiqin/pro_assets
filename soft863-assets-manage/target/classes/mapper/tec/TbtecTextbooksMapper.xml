@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbtecTextbooksMapper">
+    
+    <resultMap type="TbtecTextbooks" id="TbtecTextbooksResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fCourseName"    column="f_course_name"    />
+        <result property="fCourseCode"    column="f_course_code"    />
+        <result property="fBookName"    column="f_book_name"    />
+        <result property="fIsLegal"    column="f_is_legal"    />
+        <result property="fIsbn"    column="f_isbn"    />
+        <result property="fPublisher"    column="f_publisher"    />
+        <result property="fEditionDate"    column="f_edition_date"    />
+        <result property="fFirEditName"    column="f_fir_edit_name"    />
+        <result property="fFirEditUnit"    column="f_fir_edit_unit"    />
+        <result property="fUsedNum"    column="f_used_num"    />
+        <result property="fIsEducate"    column="f_is_educate"    />
+        <result property="fIsCountry"    column="f_is_country"    />
+        <result property="fPlanning"    column="f_planning"    />
+        <result property="fLevel"    column="f_level"    />
+        <result property="fBookType"    column="f_book_type"    />
+        <result property="fField"    column="f_field"    />
+        <result property="fBookFeatures"    column="f_book_features"    />
+        <result property="fFiller"    column="f_filler"    />
+    </resultMap>
+
+    <sql id="selectTbtecTextbooksVo">
+        select f_id, f_course_name, f_course_code, f_book_name, f_is_legal, f_isbn, f_publisher, f_edition_date, f_fir_edit_name, f_fir_edit_unit, f_used_num, f_is_educate, f_is_country, f_planning, f_level, f_book_type, f_field, f_book_features, f_filler from tbtec_textbooks
+    </sql>
+
+    <select id="selectTbtecTextbooksList" parameterType="TbtecTextbooks" resultMap="TbtecTextbooksResult">
+        <include refid="selectTbtecTextbooksVo"/>
+        <where>  
+            <if test="fCourseName != null  and fCourseName != ''"> and f_course_name like concat('%', #{fCourseName}, '%')</if>
+            <if test="fBookName != null  and fBookName != ''"> and f_book_name like concat('%', #{fBookName}, '%')</if>
+            <if test="fIsbn != null  and fIsbn != ''"> and f_isbn = #{fIsbn}</if>
+            <if test="fFiller != null  and fFiller != ''"> and f_filler like concat('%', #{fFiller}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectTbtecTextbooksByFId" parameterType="Long" resultMap="TbtecTextbooksResult">
+        <include refid="selectTbtecTextbooksVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbtecTextbooks" parameterType="TbtecTextbooks" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbtec_textbooks
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fCourseName != null and fCourseName != ''">f_course_name,</if>
+            <if test="fCourseCode != null and fCourseCode != ''">f_course_code,</if>
+            <if test="fBookName != null and fBookName != ''">f_book_name,</if>
+            <if test="fIsLegal != null">f_is_legal,</if>
+            <if test="fIsbn != null and fIsbn != ''">f_isbn,</if>
+            <if test="fPublisher != null and fPublisher != ''">f_publisher,</if>
+            <if test="fEditionDate != null">f_edition_date,</if>
+            <if test="fFirEditName != null">f_fir_edit_name,</if>
+            <if test="fFirEditUnit != null">f_fir_edit_unit,</if>
+            <if test="fUsedNum != null and fUsedNum != ''">f_used_num,</if>
+            <if test="fIsEducate != null">f_is_educate,</if>
+            <if test="fIsCountry != null">f_is_country,</if>
+            <if test="fPlanning != null">f_planning,</if>
+            <if test="fLevel != null and fLevel != ''">f_level,</if>
+            <if test="fBookType != null">f_book_type,</if>
+            <if test="fField != null">f_field,</if>
+            <if test="fBookFeatures != null">f_book_features,</if>
+            <if test="fFiller != null and fFiller != ''">f_filler,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fCourseName != null and fCourseName != ''">#{fCourseName},</if>
+            <if test="fCourseCode != null and fCourseCode != ''">#{fCourseCode},</if>
+            <if test="fBookName != null and fBookName != ''">#{fBookName},</if>
+            <if test="fIsLegal != null">#{fIsLegal},</if>
+            <if test="fIsbn != null and fIsbn != ''">#{fIsbn},</if>
+            <if test="fPublisher != null and fPublisher != ''">#{fPublisher},</if>
+            <if test="fEditionDate != null">#{fEditionDate},</if>
+            <if test="fFirEditName != null">#{fFirEditName},</if>
+            <if test="fFirEditUnit != null">#{fFirEditUnit},</if>
+            <if test="fUsedNum != null and fUsedNum != ''">#{fUsedNum},</if>
+            <if test="fIsEducate != null">#{fIsEducate},</if>
+            <if test="fIsCountry != null">#{fIsCountry},</if>
+            <if test="fPlanning != null">#{fPlanning},</if>
+            <if test="fLevel != null and fLevel != ''">#{fLevel},</if>
+            <if test="fBookType != null">#{fBookType},</if>
+            <if test="fField != null">#{fField},</if>
+            <if test="fBookFeatures != null">#{fBookFeatures},</if>
+            <if test="fFiller != null and fFiller != ''">#{fFiller},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbtecTextbooks" parameterType="TbtecTextbooks">
+        update tbtec_textbooks
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fCourseName != null and fCourseName != ''">f_course_name = #{fCourseName},</if>
+            <if test="fCourseCode != null and fCourseCode != ''">f_course_code = #{fCourseCode},</if>
+            <if test="fBookName != null and fBookName != ''">f_book_name = #{fBookName},</if>
+            <if test="fIsLegal != null">f_is_legal = #{fIsLegal},</if>
+            <if test="fIsbn != null and fIsbn != ''">f_isbn = #{fIsbn},</if>
+            <if test="fPublisher != null and fPublisher != ''">f_publisher = #{fPublisher},</if>
+            <if test="fEditionDate != null">f_edition_date = #{fEditionDate},</if>
+            <if test="fFirEditName != null">f_fir_edit_name = #{fFirEditName},</if>
+            <if test="fFirEditUnit != null">f_fir_edit_unit = #{fFirEditUnit},</if>
+            <if test="fUsedNum != null and fUsedNum != ''">f_used_num = #{fUsedNum},</if>
+            <if test="fIsEducate != null">f_is_educate = #{fIsEducate},</if>
+            <if test="fIsCountry != null">f_is_country = #{fIsCountry},</if>
+            <if test="fPlanning != null">f_planning = #{fPlanning},</if>
+            <if test="fLevel != null and fLevel != ''">f_level = #{fLevel},</if>
+            <if test="fBookType != null">f_book_type = #{fBookType},</if>
+            <if test="fField != null">f_field = #{fField},</if>
+            <if test="fBookFeatures != null">f_book_features = #{fBookFeatures},</if>
+            <if test="fFiller != null and fFiller != ''">f_filler = #{fFiller},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbtecTextbooksByFId" parameterType="Long">
+        delete from tbtec_textbooks where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbtecTextbooksByFIds" parameterType="String">
+        delete from tbtec_textbooks where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

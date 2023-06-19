@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('学生预警列表')" />
+</head>
+<body class="gray-bg">
+<!--学生个人信息-->
+<div class="col-sm-12">
+    <div class="ibox">
+        <div class="ibox-content">
+            <h5>学生个人预警信息</h5>
+            <table class="table table-stripped small m-t-md">
+                <tbody>
+                <tr>
+                    <td class="no-borders">
+                        <i class="fa fa-circle text-navy"></i>
+                    </td>
+                    <td class="no-borders">
+                        学生学号
+                    </td>
+                    <td class="no-borders">
+                        [[${tbdiaWarnStu.fSno}]]
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <i class="fa fa-circle text-navy"></i>
+                    </td>
+                    <td>
+                        学生姓名
+                    </td>
+                    <td>
+                        [[${tbdiaWarnStu.fSname}]]
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <i class="fa fa-circle text-navy"></i>
+                    </td>
+                    <td>
+                        所属教师教工号
+                    </td>
+                    <td>
+                        [[${tbdiaWarnStu.fTno}]]
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <i class="fa fa-circle text-navy"></i>
+                    </td>
+                    <td>
+                        所属教师姓名
+                    </td>
+                    <td>
+                        [[${tbdiaWarnStu.fTname}]]
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

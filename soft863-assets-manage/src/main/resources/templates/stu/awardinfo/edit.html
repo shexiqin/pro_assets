@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改学生获奖信息')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-awardinfo-edit" th:object="${tbstuAwardinfo}">
+            <input name="fId" th:field="*{fId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">项目名称：</label>
+                <div class="col-sm-8">
+                    <input name="fProjectname" th:field="*{fProjectname}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">项目类别：</label>
+                <div class="col-sm-8">
+                    <input name="fProjectcategory" th:field="*{fProjectcategory}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">级别：</label>
+                <div class="col-sm-8">
+                    <select name="fLevel" class="form-control m-b" th:with="type=${@dict.getType('stu_get_level')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fLevel}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">获奖等级：</label>
+                <div class="col-sm-8">
+                    <input name="fAwardgrade" th:field="*{fAwardgrade}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">获奖日：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="fDateaward" th:value="${#dates.format(tbstuAwardinfo.fDateaward, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">获奖学生：</label>
+                <div class="col-sm-8">
+                    <input name="fSname" th:field="*{fSname}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">指导教师名单：</label>
+                <div class="col-sm-8">
+                    <input name="fListinstructors" th:field="*{fListinstructors}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "stu/awardinfo";
+        $("#form-awardinfo-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-awardinfo-edit').serialize());
+            }
+        }
+
+        $("input[name='fDateaward']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

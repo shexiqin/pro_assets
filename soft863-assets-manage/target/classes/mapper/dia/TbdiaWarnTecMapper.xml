@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbdiaWarnTecMapper">
+    
+    <resultMap type="TbdiaWarnStu" id="TbdiaWarnStuResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fSno"    column="f_sno"    />
+        <result property="fSname"    column="f_sname"    />
+        <result property="fTno"    column="f_tno"    />
+        <result property="fTname"    column="f_tname"    />
+        <result property="fWarnType"    column="f_warn_type"    />
+        <result property="fTime"    column="f_time"    />
+        <result property="fStatue"    column="f_statue"    />
+    </resultMap>
+
+    <sql id="selectTbdiaWarnTecVo">
+        select f_id, f_sno, f_sname, f_tno, f_tname, f_warn_type, f_time, f_statue from tbdia_warn_stu
+    </sql>
+
+    <select id="selectTbdiaWarnTecList" parameterType="TbdiaWarnStu" resultMap="TbdiaWarnStuResult">
+        <include refid="selectTbdiaWarnTecVo"/>
+        <where>  
+            <if test="fSno != null  and fSno != ''"> and f_sno = #{fSno}</if>
+            <if test="fTno != null  and fTno != ''"> and f_tno = #{fTno}</if>
+            <if test="fWarnType != null "> and f_warn_type = #{fWarnType}</if>
+            <if test="fStatue != null "> and f_statue = #{fStatue}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbdiaWarnTecByFId" parameterType="Long" resultMap="TbdiaWarnStuResult">
+        <include refid="selectTbdiaWarnTecVo"/>
+        where f_id = #{fId}
+    </select>
+
+    <select id="selectFacWarnList" resultType="java.util.Map">
+        select (case
+                    when ts.f_faculties = 1 then '计算机学院'
+                    when ts.f_faculties = 2 then '电气工程系'
+                    when ts.f_faculties = 3 then '会计系'
+                    when ts.f_faculties = 4 then '土木工程系'
+                    when ts.f_faculties = 5 then '音乐系'
+                    when ts.f_faculties = 6 then '空乘系'
+                    else '其他系' end) faculties,
+               count(1) count from tbdia_warn_stu tws left join tbdia_student ts on ts.f_no = tws.f_sno
+        group by ts.f_faculties limit 0,5;
+    </select>
+    <select id="selectWarnProportionList" resultType="java.util.Map">
+        select (case
+                    when t2.f_faculties = 1 then '计算机学院'
+                    when t2.f_faculties = 2 then '电气工程系'
+                    when t2.f_faculties = 3 then '会计系'
+                    when t2.f_faculties = 4 then '土木工程系'
+                    when t2.f_faculties = 5 then '音乐系'
+                    when t2.f_faculties = 6 then '空乘系'
+                    else '其他系' end) faculties,concat(count1/count2*100,'%') proportion from
+        (select ts.f_faculties,count(1) count2 from tbdia_warn_stu tws,tbdia_student ts where ts.f_no = tws.f_sno group by ts.f_faculties) t2 left join
+        (select ts.f_faculties,count(1) count1 from tbdia_warn_stu tws,tbdia_student ts where ts.f_no = tws.f_sno and tws.f_statue = 1 group by ts.f_faculties) t1
+        on t1.f_faculties = t2.f_faculties limit 0,5;
+    </select>
+    <select id="selectWarnList" resultType="java.util.Map">
+        select a1.month1,a1.count1,a2.count2 from
+            (select d.month month1,count(stu1.f_time) count1
+             from(
+                     select DATE_FORMAT((curdate() - INTERVAL 6 MONTH ),'%Y-%m') as 'month'
+                     UNION select DATE_FORMAT((curdate() - INTERVAL 5 MONTH ),'%Y-%m') as 'month'
+                     UNION select DATE_FORMAT((curdate() - INTERVAL 4 MONTH ),'%Y-%m') as 'month'
+                     UNION select DATE_FORMAT((curdate() - INTERVAL 3 MONTH ),'%Y-%m') as 'month'
+                     UNION select DATE_FORMAT((curdate() - INTERVAL 2 MONTH ),'%Y-%m') as 'month'
+                     UNION select DATE_FORMAT((curdate() - INTERVAL 1 MONTH ),'%Y-%m') as 'month'
+                 ) d
+                     left join tbdia_warn_stu stu1 on date_format(stu1.f_time,'%Y-%m') = d.month
+             group by month) a1
+                left join
+            (select d.month month2,count(stu1.f_time) count2
+             from(
+                     select DATE_FORMAT((curdate() - INTERVAL 6 MONTH ),'%Y-%m') as 'month'
+                     UNION select DATE_FORMAT((curdate() - INTERVAL 5 MONTH ),'%Y-%m') as 'month'
+                     UNION select DATE_FORMAT((curdate() - INTERVAL 4 MONTH ),'%Y-%m') as 'month'
+                     UNION select DATE_FORMAT((curdate() - INTERVAL 3 MONTH ),'%Y-%m') as 'month'
+                     UNION select DATE_FORMAT((curdate() - INTERVAL 2 MONTH ),'%Y-%m') as 'month'
+                     UNION select DATE_FORMAT((curdate() - INTERVAL 1 MONTH ),'%Y-%m') as 'month'
+                 ) d
+                     left join tbdia_warn_stu stu1 on date_format(stu1.f_time,'%Y-%m') = d.month where f_statue = 1
+             group by month) a2 on a1.month1 = a2.month2 order by month1 asc;
+    </select>
+
+
+    <insert id="insertTbdiaWarnTec" parameterType="TbdiaWarnStu">
+        insert into tbdia_warn_stu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fId != null">f_id,</if>
+            <if test="fSno != null">f_sno,</if>
+            <if test="fSname != null">f_sname,</if>
+            <if test="fTno != null">f_tno,</if>
+            <if test="fTname != null">f_tname,</if>
+            <if test="fWarnType != null">f_warn_type,</if>
+            <if test="fTime != null">f_time,</if>
+            <if test="fStatue != null">f_statue,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fId != null">#{fId},</if>
+            <if test="fSno != null">#{fSno},</if>
+            <if test="fSname != null">#{fSname},</if>
+            <if test="fTno != null">#{fTno},</if>
+            <if test="fTname != null">#{fTname},</if>
+            <if test="fWarnType != null">#{fWarnType},</if>
+            <if test="fTime != null">#{fTime},</if>
+            <if test="fStatue != null">#{fStatue},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbdiaWarnTec" parameterType="TbdiaWarnStu">
+        update tbdia_warn_stu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fSno != null">f_sno = #{fSno},</if>
+            <if test="fSname != null">f_sname = #{fSname},</if>
+            <if test="fTno != null">f_tno = #{fTno},</if>
+            <if test="fTname != null">f_tname = #{fTname},</if>
+            <if test="fWarnType != null">f_warn_type = #{fWarnType},</if>
+            <if test="fTime != null">f_time = #{fTime},</if>
+            <if test="fStatue != null">f_statue = #{fStatue},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <update id="updateAllTbdiaWarnTecByFIds" parameterType="String">
+        update tbdia_warn_stu set f_statue = 1
+        where f_id in
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </update>
+
+    <delete id="deleteTbdiaWarnTecByFId" parameterType="Long">
+        delete from tbdia_warn_stu where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbdiaWarnTecByFIds" parameterType="String">
+        delete from tbdia_warn_stu where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

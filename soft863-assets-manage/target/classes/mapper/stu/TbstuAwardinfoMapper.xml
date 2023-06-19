@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbstuAwardinfoMapper">
+    
+    <resultMap type="TbstuAwardinfo" id="TbstuAwardinfoResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fProjectname"    column="f_projectname"    />
+        <result property="fProjectcategory"    column="f_projectcategory"    />
+        <result property="fLevel"    column="f_level"    />
+        <result property="fAwardgrade"    column="f_awardgrade"    />
+        <result property="fDateaward"    column="f_dateaward"    />
+        <result property="fSname"    column="f_sname"    />
+        <result property="fListinstructors"    column="f_listinstructors"    />
+    </resultMap>
+
+    <sql id="selectTbstuAwardinfoVo">
+        select f_id, f_projectname, f_projectcategory, f_level, f_awardgrade, f_dateaward, f_sname, f_listinstructors from tbstu_awardinfo
+    </sql>
+
+    <select id="selectTbstuAwardinfoList" parameterType="TbstuAwardinfo" resultMap="TbstuAwardinfoResult">
+        <include refid="selectTbstuAwardinfoVo"/>
+        <where>  
+            <if test="fProjectname != null  and fProjectname != ''"> and f_projectname like concat('%', #{fProjectname}, '%')</if>
+            <if test="fProjectcategory != null  and fProjectcategory != ''"> and f_projectcategory = #{fProjectcategory}</if>
+            <if test="fLevel != null  and fLevel != ''"> and f_level = #{fLevel}</if>
+            <if test="fAwardgrade != null  and fAwardgrade != ''"> and f_awardgrade = #{fAwardgrade}</if>
+            <if test="fDateaward != null "> and f_dateaward = #{fDateaward}</if>
+            <if test="fSname != null  and fSname != ''"> and f_sname like concat('%', #{fSname}, '%')</if>
+            <if test="fListinstructors != null  and fListinstructors != ''"> and f_listinstructors like concat('%', #{fListinstructors}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectTbstuAwardinfoByFId" parameterType="Long" resultMap="TbstuAwardinfoResult">
+        <include refid="selectTbstuAwardinfoVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbstuAwardinfo" parameterType="TbstuAwardinfo" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbstu_awardinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fProjectname != null">f_projectname,</if>
+            <if test="fProjectcategory != null">f_projectcategory,</if>
+            <if test="fLevel != null">f_level,</if>
+            <if test="fAwardgrade != null">f_awardgrade,</if>
+            <if test="fDateaward != null">f_dateaward,</if>
+            <if test="fSname != null">f_sname,</if>
+            <if test="fListinstructors != null">f_listinstructors,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fProjectname != null">#{fProjectname},</if>
+            <if test="fProjectcategory != null">#{fProjectcategory},</if>
+            <if test="fLevel != null">#{fLevel},</if>
+            <if test="fAwardgrade != null">#{fAwardgrade},</if>
+            <if test="fDateaward != null">#{fDateaward},</if>
+            <if test="fSname != null">#{fSname},</if>
+            <if test="fListinstructors != null">#{fListinstructors},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbstuAwardinfo" parameterType="TbstuAwardinfo">
+        update tbstu_awardinfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fProjectname != null">f_projectname = #{fProjectname},</if>
+            <if test="fProjectcategory != null">f_projectcategory = #{fProjectcategory},</if>
+            <if test="fLevel != null">f_level = #{fLevel},</if>
+            <if test="fAwardgrade != null">f_awardgrade = #{fAwardgrade},</if>
+            <if test="fDateaward != null">f_dateaward = #{fDateaward},</if>
+            <if test="fSname != null">f_sname = #{fSname},</if>
+            <if test="fListinstructors != null">f_listinstructors = #{fListinstructors},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbstuAwardinfoByFId" parameterType="Long">
+        delete from tbstu_awardinfo where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbstuAwardinfoByFIds" parameterType="String">
+        delete from tbstu_awardinfo where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

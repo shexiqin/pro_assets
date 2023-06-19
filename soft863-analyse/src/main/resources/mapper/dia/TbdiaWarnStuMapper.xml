@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbdiaWarnStuMapper">
+    
+    <resultMap type="TbdiaWarnStu" id="TbdiaWarnStuResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fSno"    column="f_sno"    />
+        <result property="fSname"    column="f_sname"    />
+        <result property="fTno"    column="f_tno"    />
+        <result property="fTname"    column="f_tname"    />
+        <result property="fWarnType"    column="f_warn_type"    />
+        <result property="fTime"    column="f_time"    />
+        <result property="fStatue"    column="f_statue"    />
+    </resultMap>
+
+    <sql id="selectTbdiaWarnStuVo">
+        select f_id, f_sno, f_sname, f_tno, f_tname, f_warn_type, f_time, f_statue from tbdia_warn_stu
+    </sql>
+
+    <select id="selectTbdiaWarnStuList" parameterType="TbdiaWarnStu" resultMap="TbdiaWarnStuResult">
+        <include refid="selectTbdiaWarnStuVo"/>
+        <where>  
+            <if test="fSno != null  and fSno != ''"> and f_sno = #{fSno}</if>
+            <if test="fTno != null  and fTno != ''"> and f_tno = #{fTno}</if>
+            <if test="fWarnType != null "> and f_warn_type = #{fWarnType}</if>
+            <if test="fStatue != null "> and f_statue = #{fStatue}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbdiaWarnStuByFId" parameterType="Long" resultMap="TbdiaWarnStuResult">
+        <include refid="selectTbdiaWarnStuVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbdiaWarnStu" parameterType="TbdiaWarnStu">
+        insert into tbdia_warn_stu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fId != null">f_id,</if>
+            <if test="fSno != null">f_sno,</if>
+            <if test="fSname != null">f_sname,</if>
+            <if test="fTno != null">f_tno,</if>
+            <if test="fTname != null">f_tname,</if>
+            <if test="fWarnType != null">f_warn_type,</if>
+            <if test="fTime != null">f_time,</if>
+            <if test="fStatue != null">f_statue,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fId != null">#{fId},</if>
+            <if test="fSno != null">#{fSno},</if>
+            <if test="fSname != null">#{fSname},</if>
+            <if test="fTno != null">#{fTno},</if>
+            <if test="fTname != null">#{fTname},</if>
+            <if test="fWarnType != null">#{fWarnType},</if>
+            <if test="fTime != null">#{fTime},</if>
+            <if test="fStatue != null">#{fStatue},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbdiaWarnStu" parameterType="TbdiaWarnStu">
+        update tbdia_warn_stu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fSno != null">f_sno = #{fSno},</if>
+            <if test="fSname != null">f_sname = #{fSname},</if>
+            <if test="fTno != null">f_tno = #{fTno},</if>
+            <if test="fTname != null">f_tname = #{fTname},</if>
+            <if test="fWarnType != null">f_warn_type = #{fWarnType},</if>
+            <if test="fTime != null">f_time = #{fTime},</if>
+            <if test="fStatue != null">f_statue = #{fStatue},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbdiaWarnStuByFId" parameterType="Long">
+        delete from tbdia_warn_stu where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbdiaWarnStuByFIds" parameterType="String">
+        delete from tbdia_warn_stu where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+    <select id="queryMonthAndWarnCount" resultType="map">
+        select t1.mo months,count(1) counts from (select date_format(f_time,'%y-%m') mo from tbdia_warn_stu) t1
+        group by t1.mo ORDER BY t1.mo asc;
+    </select>
+
+    <select id="queryWarnTypeAndCount" resultType="map">
+        select count(1) value,
+       case f_warn_type
+when 0 then '逃课预警'
+when 1 then  '失联预警'
+when 2 then  '挂科预警'
+when 3 then '毕业预警'
+else '其它预警'
+        end as name
+
+from tbdia_warn_stu  group by f_warn_type
+    </select>
+
+    <select id="getCount" resultType="int">
+        select count(1) from tbdia_warn_stu
+    </select>
+
+    <select id="dealWarn" resultType="int">
+        select count(1) from tbdia_warn_stu where f_statue=1
+    </select>
+    <select id="noDealWarn" resultType="int">
+        select count(1) from tbdia_warn_stu where f_statue=0
+    </select>
+
+    <select id="getCurWarn" resultType="int">
+        select count(1) from
+                (select date_format(f_time,'%m') cur from tbdia_warn_stu) t
+        where t.cur=date_format(curdate(),'%m')
+    </select>
+
+    <select id="getGkWarn" resultType="TbdiaWarnStu">
+        select  b1.f_tname fTname,b1.f_tno fTno,b2.sname fSname,b2.sno fSno from tbdia_teach b1 right join
+        (select t1.f_name sname, t1.f_no sno,t1.f_clazz cla from tbdia_student t1 right join
+        (select  f_stu_id sno from tbdia_student_session_score where f_hanging_up=0) t2 on t1.f_no=t2.sno) b2 on b2.cla=b1.f_class;
+
+    </select>
+
+    <select id="getByWarn" resultType="TbdiaWarnStu">
+        select c2.f_no fSno,c2.f_name fSname,c1.f_tno fTno,c1.f_tname fTname from tbdia_teach c1 right join
+        (select b1.f_name,b2.f_no,b1.f_clazz from tbdia_student b1 right join
+        (select t2.f_no,t2.f_name from
+        (select f_name, f_no,date_format(f_graduationdate,'%y') yy from tbstu_info) t2 where yy=date_format(curdate(),'%y')) b2
+        on b1.f_no=b2.f_no) c2 on c2.f_clazz=c1.f_class;
+
+    </select>
+
+    <select id="getTkWarn" resultType="TbdiaWarnStu">
+        select b2.f_no fSno,b2.f_name fSname,b1.f_tno fTno,b1.f_tname fTname from tbdia_teach b1 right join
+        (select t1.f_name,t1.f_no,t2.f_stu_id ,t1.f_clazz from tbdia_student t1 right join
+        (select f_stu_id  from tbdia_student_session_score where f_absence_times>0) t2 on t1.f_no=t2.f_stu_id) b2
+        on b1.f_class=b2.f_clazz
+    </select>
+
+    <select id="getRadar" resultType="map">
+        select   case f_warn_type
+                     when 0 then '逃课预警'
+                     when 1 then  '失联预警'
+                     when 2 then  '挂科预警'
+                     when 3 then '毕业预警'
+                     else '其它预警'
+                     end as text,count(1) max
+        from tbdia_warn_stu  group by f_warn_type order by f_warn_type asc
+    </select>
+
+    <select id="getMaxWarnName" resultType="String">
+        select f_sname,count(1) num from tbdia_warn_stu group  by f_sname order by count(1) desc limit 0, 1
+    </select>
+
+    <select id="getWarnInfoByName" resultType="map">
+        select f_warn_type type ,count(1) num from tbdia_warn_stu where f_sname=#{name}
+        group by f_warn_type order by f_warn_type asc
+    </select>
+
+    <select id="getDealWarnMonth" resultType="map">
+        select t1.mo months,count(1) counts
+        from (select date_format(f_time,'%y-%m') mo,f_statue from tbdia_warn_stu) t1 where t1.f_statue=1
+        group by t1.mo ORDER BY t1.mo asc;
+    </select>
+
+    <select id="getWarnBySno" resultType="TbdiaWarnStu">
+        select f_sno fSno,f_sname fSname,f_tno fTno,f_tname fTname from tbdia_warn_stu where f_sno=#{sno} limit 0,1
+
+    </select>
+
+</mapper>

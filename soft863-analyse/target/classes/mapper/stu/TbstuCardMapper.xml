@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbstuCardMapper">
+    
+    <resultMap type="TbstuCard" id="TbstuCardResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fCardid"    column="f_cardid"    />
+        <result property="fSname"    column="f_sname"    />
+        <result property="fRemaining"    column="f_remaining"    />
+        <result property="fConsumption"    column="f_consumption"    />
+        <result property="fTime"    column="f_time"    />
+        <result property="fCardnum"    column="f_cardnum"    />
+        <result property="fLocation"    column="f_location"    />
+        <result property="fType"    column="f_type"    />
+    </resultMap>
+
+    <sql id="selectTbstuCardVo">
+        select f_id, f_cardid, f_sname, f_remaining, f_consumption, f_time, f_cardnum, f_location, f_type from tbstu_card
+    </sql>
+
+
+
+    <select id="selectTbstuCardList" parameterType="TbstuCard" resultMap="TbstuCardResult">
+        <include refid="selectTbstuCardVo"/>
+        <where>
+            <if test="fId != null "> and f_id = #{fId}</if>
+            <if test="fCardid != null  and fCardid != ''"> and f_cardid = #{fCardid}</if>
+            <if test="fSname != null  and fSname != ''"> and f_sname like concat('%', #{fSname}, '%')</if>
+            <if test="fSex != null "> and f_sex = #{fSex}</if>
+            <if test="fRemaining != null "> and f_remaining = #{fRemaining}</if>
+            <if test="fConsumption != null "> and f_consumption = #{fConsumption}</if>
+            <if test="fTime != null "> and f_time = #{fTime}</if>
+            <if test="fCardnum != null  and fCardnum != ''"> and f_cardnum = #{fCardnum}</if>
+            <if test="fLocation != null  and fLocation != ''"> and f_location = #{fLocation}</if>
+            <if test="fType != null  and fType != ''"> and f_type = #{fType}</if>
+        </where>
+    </select>
+
+
+    <select id="selectTbstuCardByFId" parameterType="Long" resultMap="TbstuCardResult">
+        <include refid="selectTbstuCardVo"/>
+        where f_id = #{fId}
+    </select>
+
+    <select id="queryCountPerHour" resultType="java.util.Map">
+        SELECT hours.hour, IFNULL(SUM(data.count), 0) AS count
+        FROM (
+            SELECT 0 AS hour
+            UNION SELECT 1 AS hour
+            UNION SELECT 2 AS hour
+            UNION SELECT 3 AS hour
+            UNION SELECT 4 AS hour
+            UNION SELECT 5 AS hour
+            UNION SELECT 6 AS hour
+            UNION SELECT 7 AS hour
+            UNION SELECT 8 AS hour
+            UNION SELECT 9 AS hour
+            UNION SELECT 10 AS hour
+            UNION SELECT 11 AS hour
+            UNION SELECT 12 AS hour
+            UNION SELECT 13 AS hour
+            UNION SELECT 14 AS hour
+            UNION SELECT 15 AS hour
+            UNION SELECT 16 AS hour
+            UNION SELECT 17 AS hour
+            UNION SELECT 18 AS hour
+            UNION SELECT 19 AS hour
+            UNION SELECT 20 AS hour
+            UNION SELECT 21 AS hour
+            UNION SELECT 22 AS hour
+            UNION SELECT 23 AS hour
+            ) AS hours
+            LEFT JOIN (
+            SELECT DATE_FORMAT(f_time, '%H') AS hour, COUNT(*) AS count
+            FROM tbstu_card
+
+            GROUP BY hour
+            ) AS data ON hours.hour = data.hour
+        GROUP BY hours.hour
+        order by hours.hour
+    </select>
+
+    <select id="queryCountPerMonth" resultType="java.util.Map">
+        select
+            case when t2.time=1 then '1'
+                 when t2.time=2 then '2'
+                 when t2.time=3 then '3'
+                 when t2.time=4 then '4'
+                 when t2.time=5 then '5'
+                 when t2.time=6 then '6'
+                 when t2.time=7 then '7'
+                 when t2.time=8 then '8'
+                 when t2.time=9 then '9'
+                 when t2.time=10 then '10'
+                 when t2.time=11 then '11'
+                 when t2.time=12 then '12' end month
+             ,sum(f_consumption) as money
+        from tbstu_card t1  left join (select  distinct month(f_time) time from  tbstu_card ) t2
+                                      on month(t1.f_time)=t2.time
+        group by t2.time
+        order by  t2.time
+    </select>
+
+
+    <select id="queryAllStuConsume" resultType="java.util.Map">
+        select  sum(t1.f_consumption) sum ,count(1) count
+        from tbstu_card t1 left join  (select  distinct   f_cardid from tbstu_card) t2
+        on t1.f_cardid =t2.f_cardid
+        where f_sex=0
+        group by t1.f_cardid
+    </select>
+    <select id="queryTenStuConsume" resultType="java.util.Map">
+        select  sum(t1.f_consumption) sum ,count(1) count
+        from tbstu_card t1 left join  (select  distinct   f_cardid from tbstu_card) t2
+        on t1.f_cardid =t2.f_cardid
+        where f_sex=1
+        group by t1.f_cardid
+    </select>
+
+    <select id="queryCountPerType" resultType="java.util.Map">
+        select
+            count(1) value,
+     case when t1.f_type = 1 then '饮食'
+          when t1.f_type = 2 then '服装'
+          when t1.f_type = 3 then '学习用品' end name
+from tbstu_card t1 left join (select distinct f_type from tbstu_card)  t2
+on  t1.f_type=t2.f_type
+group by t1.f_type
+
+    </select>
+
+
+    <insert id="insertTbstuCard" parameterType="TbstuCard" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbstu_card
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fCardid != null">f_cardid,</if>
+            <if test="fSname != null">f_sname,</if>
+            <if test="fSex != null">f_sex,</if>
+            <if test="fRemaining != null">f_remaining,</if>
+            <if test="fConsumption != null">f_consumption,</if>
+            <if test="fTime != null">f_time,</if>
+            <if test="fCardnum != null">f_cardnum,</if>
+            <if test="fLocation != null">f_location,</if>
+            <if test="fType != null">f_type,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fCardid != null">#{fCardid},</if>
+            <if test="fSname != null">#{fSname},</if>
+            <if test="fSex != null">#{fSex},</if>
+            <if test="fRemaining != null">#{fRemaining},</if>
+            <if test="fConsumption != null">#{fConsumption},</if>
+            <if test="fTime != null">#{fTime},</if>
+            <if test="fCardnum != null">#{fCardnum},</if>
+            <if test="fLocation != null">#{fLocation},</if>
+            <if test="fType != null">#{fType},</if>
+        </trim>
+    </insert>
+
+
+    <update id="updateTbstuCard" parameterType="TbstuCard">
+        update tbstu_card
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fCardid != null">f_cardid = #{fCardid},</if>
+            <if test="fSname != null">f_sname = #{fSname},</if>
+            <if test="fSex != null">f_sex = #{fSex},</if>
+            <if test="fRemaining != null">f_remaining = #{fRemaining},</if>
+            <if test="fConsumption != null">f_consumption = #{fConsumption},</if>
+            <if test="fTime != null">f_time = #{fTime},</if>
+            <if test="fCardnum != null">f_cardnum = #{fCardnum},</if>
+            <if test="fLocation != null">f_location = #{fLocation},</if>
+            <if test="fType != null">f_type = #{fType},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbstuCardByFId" parameterType="Long">
+        delete from tbstu_card where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbstuCardByFIds" parameterType="String">
+        delete from tbstu_card where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

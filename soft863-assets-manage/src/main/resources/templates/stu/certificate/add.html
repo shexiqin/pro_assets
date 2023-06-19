@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增职业技能等级证书获取（学工系统）')" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-certificate-add">
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">专业名称：</label>
+            <div class="col-sm-8">
+                <select name="fMajorname" class="form-control m-b" th:with="type=${@dict.getType('profession_code')}" required>
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">专业代码：</label>
+            <div class="col-sm-8">
+                <select name="fMajorcode" class="form-control m-b" th:with="type=${@dict.getType('profession_code')}" required>
+                    <option th:each="dict : ${type}" th:text="${dict.dictValue}" th:value="${dict.dictValue}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">证书名称：</label>
+            <div class="col-sm-8">
+                <input name="fName" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">发证机构：</label>
+            <div class="col-sm-8">
+                <input name="fIssuingauthority" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">证书等级：</label>
+            <div class="col-sm-8">
+                <select name="fLevel" class="form-control m-b" th:with="type=${@dict.getType('certificates_grade')}" required>
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">获取人数：</label>
+            <div class="col-sm-8">
+                <input name="fObtainnum" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">鉴定地点：</label>
+            <div class="col-sm-8">
+                <div class="radio-box" th:each="dict : ${@dict.getType('ident_addr')}">
+                    <input type="radio" th:id="${'fAssesssite_' + dict.dictCode}" name="fAssesssite" th:value="${dict.dictValue}" th:checked="${dict.default}" required>
+                    <label th:for="${'fAssesssite_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">社员考证人数：</label>
+            <div class="col-sm-8">
+                <input name="fExamnum" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">社员获证人数：</label>
+            <div class="col-sm-8">
+                <input name="fObtainhum" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">填报人：</label>
+            <div class="col-sm-8">
+                <input name="fInformant" class="form-control" type="text">
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+    var prefix = ctx + "stu/certificate"
+    $("#form-certificate-add").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-certificate-add').serialize());
+        }
+    }
+</script>
+</body>
+</html>

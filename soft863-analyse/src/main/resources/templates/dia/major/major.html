@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('专业画像列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>专业代码：</label>
+                                <input type="text" name="fCode"/>
+                            </li>
+                            <li>
+                                <label>专业方向：</label>
+                                <input type="text" name="fMaj"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="dia:major:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="dia:major:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="dia:major:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="dia:major:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+                <a class="btn btn-outline btn-info" href="/dia/major/detail" shiro:hasPermission="dia:major:detail">
+                    <i class="fa fa-male"></i> 画像
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+
+
+
+        var editFlag = [[${@permission.hasPermi('dia:major:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('dia:major:remove')}]];
+        var prefix = ctx + "dia/major";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                photoUrl: prefix + "/detail",
+                modalName: "专业画像",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'fCode',
+                    title: '专业代码',
+                },
+                {
+                    field: 'fMaj',
+                    title: '专业方向'
+                },
+                {
+                    field: 'fMchar',
+                    title: '课程性质'
+                },
+                {
+                    field: 'fMmethod',
+                    title: '考核方式'
+                },
+                {
+                    field: 'fMhour',
+                    title: '总学时'
+                },
+                {
+                    field: 'fMsorce',
+                    title: '学分'
+                },
+                {
+                    field: 'fMresource',
+                    title: '教学资源'
+                },
+                {
+                    field: 'fMnum',
+                    title: '招生人数'
+                },
+                {
+                    field: 'fMpartner',
+                    title: '校企合作'
+                },
+                {
+                    field: 'fMdevelop',
+                    title: '就业前景'
+                },
+                {
+                    field: 'fMentrollment',
+                    title: '招生对象'
+                },
+                {
+                    field: 'fTchnum',
+                    title: '师资力量'
+                },
+                {
+                    field: 'fMachievements',
+                    title: '教研成果'
+                },
+                {
+                    field: 'fMstunum',
+                    title: '专业在校人数'
+                },
+                {
+                    field: 'fMstarter',
+                    title: '开设时间'
+                },
+                {
+                    field: 'fMpass',
+                    title: '专业通过率'
+                },
+                {
+                    field: 'fPractice',
+                    title: '实习'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.fMid + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.fMid + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

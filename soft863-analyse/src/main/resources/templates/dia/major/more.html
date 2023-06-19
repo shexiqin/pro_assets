@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>统计</title>
+	<link rel="shortcut icon" href="favicon.ico">
+	<link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+	<link href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+	<link href="../static/css/animate.min.css" th:href="@{/css/animate.min.css}" rel="stylesheet"/>
+	<link href="../static/css/style.min.css" th:href="@{/css/style.min.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="col-sm-12">
+	<table align="center" id="bootstrap-table"></table>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+	$(function() {
+		var options = {
+			url: "/dia/major/list",
+			modalName: "更多",
+			columns: [
+				{
+					field: 'fCode',
+					title: '专业代码',
+				},
+				{
+					field: 'fMaj',
+					title: '专业方向'
+				},
+				{
+					field: 'fMpass',
+					title: '升学率'
+				}
+				]
+		};
+		$.table.init(options);
+	});
+</script>
+</body>
+</html>

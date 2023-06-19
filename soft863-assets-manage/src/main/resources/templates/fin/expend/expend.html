@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('学校经费支出列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+<!--            <div class="col-sm-12 search-collapse">-->
+<!--                <form id="formId">-->
+<!--                    <div class="select-list">-->
+<!--                        <ul>-->
+<!--                            <li>-->
+<!--                                <label>主键：</label>-->
+<!--                                <input type="text" name="fId"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>征地：</label>-->
+<!--                                <input type="text" name="fLandBuy"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>设施建设：</label>-->
+<!--                                <input type="text" name="fFacilityConstruction"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>设备采购&#45;&#45;合计：</label>-->
+<!--                                <input type="text" name="fFacilityBuy"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>教学、科研设备采购：</label>-->
+<!--                                <input type="text" name="fFacilityTeach"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>图书费：</label>-->
+<!--                                <input type="text" name="fBookBuy"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>实(验) 训耗材费：</label>-->
+<!--                                <input type="text" name="fPracticalFacility"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>教学仪器设备维修费：</label>-->
+<!--                                <input type="text" name="fTeachFacility"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>实习专项经费：</label>-->
+<!--                                <input type="text" name="fPracticeSpecial"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>聘请兼职教师经费*：</label>-->
+<!--                                <input type="text" name="fPartTimeTeach"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>体育维持费：</label>-->
+<!--                                <input type="text" name="fSports"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>思政工作专项经费*：</label>-->
+<!--                                <input type="text" name="fPoliticalSpecial"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>网络思政工作经费*：</label>-->
+<!--                                <input type="text" name="fPolitical"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>合作办学项目经费：</label>-->
+<!--                                <input type="text" name="fSchoolProject"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>实习责任保险费：</label>-->
+<!--                                <input type="text" name="fPracticeInsurance"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>其他日常教学经费：</label>-->
+<!--                                <input type="text" name="fOtherTeach"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>课程开发经费：</label>-->
+<!--                                <input type="text" name="fCourse"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>教材建设经费：</label>-->
+<!--                                <input type="text" name="fTextbook"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>教学改革经费：</label>-->
+<!--                                <input type="text" name="fTeachingReform"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>其他教改和科研经费：</label>-->
+<!--                                <input type="text" name="fEducationReform"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>科学研究经费：</label>-->
+<!--                                <input type="text" name="fResearch"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>技能大师工作室建设经费：</label>-->
+<!--                                <input type="text" name="fSkillStudio"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>高水平创新团队建设经费：</label>-->
+<!--                                <input type="text" name="fInnovateTeam"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>人才引进费：</label>-->
+<!--                                <input type="text" name="fTalents"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>教职工培训进修经费：</label>-->
+<!--                                <input type="text" name="fStaffTrain"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>其他师资队伍建设经费：</label>-->
+<!--                                <input type="text" name="fOfftcots"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>人员总工资：</label>-->
+<!--                                <input type="text" name="fSalary"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>教学、科研人员工资：</label>-->
+<!--                                <input type="text" name="fResearchPeople"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>学生活动经费：</label>-->
+<!--                                <input type="text" name="fActivity"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>大学生创新创业经费：</label>-->
+<!--                                <input type="text" name="fStartBusiness"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>心理健康专项经费：</label>-->
+<!--                                <input type="text" name="fMental"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>奖助学金：</label>-->
+<!--                                <input type="text" name="fScholarship"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>党务及思政工作队伍建设经费：</label>-->
+<!--                                <input type="text" name="fGovernment"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>偿还债务本金支出：</label>-->
+<!--                                <input type="text" name="fRepayment"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>其他支出：</label>-->
+<!--                                <input type="text" name="fOther"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>填报人：</label>-->
+<!--                                <input type="text" name="fCreator"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>-->
+<!--                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="fin:expend:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="fin:expend:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="fin:expend:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="fin:expend:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table" ></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('fin:expend:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('fin:expend:remove')}]];
+        var prefix = ctx + "fin/expend";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "学校经费支出",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'fId',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'fLandBuy',
+                    title: '征地'
+                },
+                {
+                    field: 'fFacilityConstruction',
+                    title: '设施建设'
+                },
+                {
+                    field: 'fFacilityBuy',
+                    title: '设备采购'
+                },
+                {
+                    field: 'fFacilityTeach',
+                    title: '教学设备采购'
+                },
+                {
+                    field: 'fBookBuy',
+                    title: '图书费'
+                },
+                {
+                    field: 'fPracticalFacility',
+                    title: '实训耗材费'
+                },
+                {
+                    field: 'fTeachFacility',
+                    title: '教学设备维修费'
+                },
+                {
+                    field: 'fPracticeSpecial',
+                    title: '实习专项经费'
+                },
+                {
+                    field: 'fPartTimeTeach',
+                    title: '兼职教师经费'
+                },
+                {
+                    field: 'fSports',
+                    title: '体育维持费'
+                },
+                {
+                    field: 'fPoliticalSpecial',
+                    title: '思政工作专项经费'
+                },
+                {
+                    field: 'fPolitical',
+                    title: '网络思政工作经费'
+                },
+                {
+                    field: 'fSchoolProject',
+                    title: '合作办学经费'
+                },
+                {
+                    field: 'fPracticeInsurance',
+                    title: '实习责任保险费'
+                },
+                {
+                    field: 'fOtherTeach',
+                    title: '其他日常教学经费'
+                },
+                {
+                    field: 'fCourse',
+                    title: '课程开发经费'
+                },
+                {
+                    field: 'fTextbook',
+                    title: '教材建设经费'
+                },
+                {
+                    field: 'fTeachingReform',
+                    title: '教学改革经费'
+                },
+                {
+                    field: 'fEducationReform',
+                    title: '其他教改和科研经费'
+                },
+                {
+                    field: 'fResearch',
+                    title: '科学研究经费'
+                },
+                {
+                    field: 'fSkillStudio',
+                    title: '技能大师工作室建设经费'
+                },
+                {
+                    field: 'fInnovateTeam',
+                    title: '高水平创新团队建设经费'
+                },
+                {
+                    field: 'fTalents',
+                    title: '人才引进费'
+                },
+                {
+                    field: 'fStaffTrain',
+                    title: '教职工培训进修经费'
+                },
+                {
+                    field: 'fOfftcots',
+                    title: '其他师资队伍建设经费'
+                },
+                {
+                    field: 'fSalary',
+                    title: '人员总工资'
+                },
+                {
+                    field: 'fResearchPeople',
+                    title: '科研人员工资'
+                },
+                {
+                    field: 'fActivity',
+                    title: '学生活动经费'
+                },
+                {
+                    field: 'fStartBusiness',
+                    title: '大学生创新创业经费'
+                },
+                {
+                    field: 'fMental',
+                    title: '心理健康专项经费'
+                },
+                {
+                    field: 'fScholarship',
+                    title: '奖助学金'
+                },
+                {
+                    field: 'fGovernment',
+                    title: '思政队伍建设经费'
+                },
+                {
+                    field: 'fRepayment',
+                    title: '偿还债务本金支出'
+                },
+                {
+                    field: 'fOther',
+                    title: '其他支出'
+                },
+                {
+                    field: 'fCreator',
+                    title: '填报人'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.fId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.fId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

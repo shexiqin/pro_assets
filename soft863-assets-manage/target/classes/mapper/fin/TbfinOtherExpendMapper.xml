@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbfinOtherExpendMapper">
+    
+    <resultMap type="TbfinOtherExpend" id="TbfinOtherExpendResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fLb"    column="f_lb"    />
+        <result property="fBolgb"    column="f_bolgb"    />
+        <result property="fFrodi"    column="f_frodi"    />
+        <result property="fPasp"    column="f_pasp"    />
+        <result property="fInformant"    column="f_informant"    />
+    </resultMap>
+
+    <sql id="selectTbfinOtherExpendVo">
+        select f_id, f_lb, f_bolgb, f_frodi, f_pasp, f_informant from tbfin_other_expend
+    </sql>
+
+    <select id="selectTbfinOtherExpendList" parameterType="TbfinOtherExpend" resultMap="TbfinOtherExpendResult">
+        <include refid="selectTbfinOtherExpendVo"/>
+        <where>  
+            <if test="fId != null "> and f_id = #{fId}</if>
+            <if test="fLb != null "> and f_lb = #{fLb}</if>
+            <if test="fBolgb != null "> and f_bolgb = #{fBolgb}</if>
+            <if test="fFrodi != null "> and f_frodi = #{fFrodi}</if>
+            <if test="fPasp != null "> and f_pasp = #{fPasp}</if>
+            <if test="fInformant != null  and fInformant != ''"> and f_informant = #{fInformant}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbfinOtherExpendByFId" parameterType="Integer" resultMap="TbfinOtherExpendResult">
+        <include refid="selectTbfinOtherExpendVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbfinOtherExpend" parameterType="TbfinOtherExpend">
+        insert into tbfin_other_expend
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fId != null">f_id,</if>
+            <if test="fLb != null">f_lb,</if>
+            <if test="fBolgb != null">f_bolgb,</if>
+            <if test="fFrodi != null">f_frodi,</if>
+            <if test="fPasp != null">f_pasp,</if>
+            <if test="fInformant != null">f_informant,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fId != null">#{fId},</if>
+            <if test="fLb != null">#{fLb},</if>
+            <if test="fBolgb != null">#{fBolgb},</if>
+            <if test="fFrodi != null">#{fFrodi},</if>
+            <if test="fPasp != null">#{fPasp},</if>
+            <if test="fInformant != null">#{fInformant},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbfinOtherExpend" parameterType="TbfinOtherExpend">
+        update tbfin_other_expend
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fLb != null">f_lb = #{fLb},</if>
+            <if test="fBolgb != null">f_bolgb = #{fBolgb},</if>
+            <if test="fFrodi != null">f_frodi = #{fFrodi},</if>
+            <if test="fPasp != null">f_pasp = #{fPasp},</if>
+            <if test="fInformant != null">f_informant = #{fInformant},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbfinOtherExpendByFId" parameterType="Integer">
+        delete from tbfin_other_expend where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbfinOtherExpendByFIds" parameterType="String">
+        delete from tbfin_other_expend where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

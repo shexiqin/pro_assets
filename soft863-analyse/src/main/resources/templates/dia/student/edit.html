@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改学生画像')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-student-edit" th:object="${tbdiaStudent}">
+        <input name="fId" th:field="*{fId}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">姓名：</label>
+            <div class="col-sm-8">
+                <input name="fName" th:field="*{fName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">学号：</label>
+            <div class="col-sm-8">
+                <input name="fNo" th:field="*{fNo}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">性别：</label>
+            <div class="col-sm-8">
+                <div class="radio-box" th:each="dict : ${@dict.getType('sys_user_sex')}">
+                    <input type="radio" th:id="${'fSex_' + dict.dictCode}" name="fSex" th:value="${dict.dictValue}" th:field="*{fSex}">
+                    <label th:for="${'fSex_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">出生日期：</label>
+            <div class="col-sm-8">
+                <div class="input-group date">
+                    <input name="fBirth" th:value="${#dates.format(tbdiaStudent.fBirth, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">院系：</label>
+            <div class="col-sm-8">
+                <select name="fFaculties" class="form-control m-b" th:with="type=${@dict.getType('stu_aculties')}">
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fFaculties}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">班级：</label>
+            <div class="col-sm-8">
+                <input name="fClazz" th:field="*{fClazz}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">专业：</label>
+            <div class="col-sm-8">
+                <select name="fMajor" class="form-control m-b" th:with="type=${@dict.getType('stu_major')}">
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fMajor}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">现在年级：</label>
+            <div class="col-sm-8">
+                <input name="fNowgrade" th:field="*{fNowgrade}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">学制：</label>
+            <div class="col-sm-8">
+                <select name="fAcademic" class="form-control m-b" th:with="type=${@dict.getType('tec_academic')}">
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fAcademic}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">民族：</label>
+            <div class="col-sm-8">
+                <select name="fNationality" class="form-control m-b" th:with="type=${@dict.getType('stu_nation')}">
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fNationality}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">身份证件号：</label>
+            <div class="col-sm-8">
+                <input name="fCardid" th:field="*{fCardid}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">出生地：</label>
+            <div class="col-sm-8">
+                <input name="fBirthplace" th:field="*{fBirthplace}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">政治面貌：</label>
+            <div class="col-sm-8">
+                <select name="fPoliticsstatus" class="form-control m-b" th:with="type=${@dict.getType('political_status')}">
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fPoliticsstatus}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">家庭经济情况：</label>
+            <div class="col-sm-8">
+                <input name="fFamMoney" th:field="*{fFamMoney}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">学生类别：</label>
+            <div class="col-sm-8">
+                <input name="fStucategory" th:field="*{fStucategory}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">学分绩点：</label>
+            <div class="col-sm-8">
+                <input name="fStuGpa" th:field="*{fStuGpa}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">请假次数：</label>
+            <div class="col-sm-8">
+                <input name="fLeaveNum" th:field="*{fLeaveNum}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">助学金次数：</label>
+            <div class="col-sm-8">
+                <input name="fStipendNum" th:field="*{fStipendNum}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">奖学金次数：</label>
+            <div class="col-sm-8">
+                <input name="fScholNum" th:field="*{fScholNum}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">获奖次数：</label>
+            <div class="col-sm-8">
+                <input name="fGainnum" th:field="*{fGainnum}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">剩余金额：</label>
+            <div class="col-sm-8">
+                <input name="fRemaining" th:field="*{fRemaining}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">消费金额：</label>
+            <div class="col-sm-8">
+                <input name="fConsumption" th:field="*{fConsumption}" class="form-control" type="text">
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: datetimepicker-js" />
+<script th:inline="javascript">
+    var prefix = ctx + "dia/student";
+    $("#form-student-edit").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-student-edit').serialize());
+        }
+    }
+
+    $("input[name='fBirth']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.quartz.mapper.SysJobLogMapper">
+
+    <resultMap type="SysJobLog" id="SysJobLogResult">
+        <result property="fId" column="f_id"/>
+        <result property="fTaskId" column="f_taskid"/>
+        <result property="fTaskName" column="f_task_name"/>
+        <result property="fLog" column="f_log"/>
+        <result property="fType" column="f_type"/>
+        <result property="fException" column="f_exception"/>
+        <result property="fTime" column="f_time"/>
+    </resultMap>
+    <resultMap type="SynTask" id="SynTaskResult">
+        <result property="fId" column="f_id"/>
+        <result property="fTaskId" column="f_task_id"/>
+        <result property="fTaskName" column="f_task_name"/>
+        <result property="fStatus" column="f_status"/>
+        <result property="fCreateTime" column="f_create_time"/>
+        <result property="fEndTime" column="f_end_time"/>
+    </resultMap>
+    <resultMap id="count" type="int">
+        <result property="count" column="count"/>
+    </resultMap>
+    <sql id="selectJobLogVo">
+        select f_id,f_taskid,f_task_name, f_log,f_type,f_exception,f_time
+        from tbsyn_tasklog
+    </sql>
+
+    <!--	<select id="selectJobLogList" parameterType="SysJobLog" resultMap="SysJobLogResult">
+            <include refid="selectJobLogVo"/>
+            <where>
+                <if test="jobName != null and jobName != ''">
+                    AND job_name like concat('%', #{jobName}, '%')
+                </if>
+                <if test="jobGroup != null and jobGroup != ''">
+                    AND job_group = #{jobGroup}
+                </if>
+                <if test="status != null and status != ''">
+                    AND status = #{status}
+                </if>
+                <if test="invokeTarget != null and invokeTarget != ''">
+                    AND invoke_target like concat('%', #{invokeTarget}, '%')
+                </if>
+                <if test="params.beginTime != null and params.beginTime != ''">&lt;!&ndash; 开始时间检索 &ndash;&gt;
+                    and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+                </if>
+                <if test="params.endTime != null and params.endTime != ''">&lt;!&ndash; 结束时间检索 &ndash;&gt;
+                    and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+                </if>
+            </where>
+        </select>
+        -->
+
+
+    <select id="selectAll" resultMap="count">
+        select count(*) count from tbdia_student
+    </select>
+    <!--
+        <select id="selectJobLogById" parameterType="Long" resultMap="SysJobLogResult">
+            <include refid="selectJobLogVo"/>
+            where job_log_id = #{jobLogId}
+        </select>
+
+        <delete id="deleteJobLogById" parameterType="Long">
+             delete from sys_job_log where job_log_id = #{jobLogId}
+         </delete>
+
+         <delete id="deleteJobLogByIds" parameterType="String">
+             delete from sys_job_log where job_log_id in
+             <foreach collection="array" item="jobLogId" open="(" separator="," close=")">
+                 #{jobLogId}
+            </foreach>
+         </delete>-->
+
+    <update id="cleanJobLog">
+        truncate table tbsyn_tasklog
+    </update>
+
+    <insert id="insertJobLog" parameterType="SysJobLog">
+        insert into tbsyn_tasklog(
+        <if test="fTaskId != null and fTaskId != 0">f_taskid,</if>
+        <if test="fTaskName != null and fTaskName != ''">f_task_name,</if>
+        <if test="fLog != null and fLog != ''">f_log,</if>
+        <if test="fType != '' and fType != null">f_type,</if>
+        <if test="fException != null and fException != ''">f_exception,</if>
+        f_time
+        )values(
+        <if test="fTaskId != null and fTaskId != 0">#{fTaskId},</if>
+        <if test="fTaskName != null and fTaskName != ''">#{fTaskName},</if>
+        <if test="fLog != null and fLog != ''">#{fLog},</if>
+        <if test="fType != '' and fType != null">#{fType},</if>
+        <if test="fException != null and fException != ''">#{fException},</if>
+        sysdate()
+        )
+    </insert>
+    <!--添加任务-->
+    <insert id="addTask" parameterType="SynTask">
+        insert into tbsyn_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fTaskId != null">f_task_id,</if>
+            <if test="fTaskName != null and fTaskName != ''">f_task_name,</if>
+            <if test="fStatus != null">f_status,</if>
+            <if test="fCreateTime != null">f_create_time,</if>
+            <if test="fEndTime != null">f_end_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fTaskId != null">#{fTaskId},</if>
+            <if test="fTaskName != null and fTaskName != ''">#{fTaskName},</if>
+            <if test="fStatus != null">#{fStatus},</if>
+            <if test="fCreateTime != null">#{fCreateTime},</if>
+            <if test="fEndTime != null">#{fEndTime},</if>
+        </trim>
+    </insert>
+</mapper> 

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('教材选用列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>课程名称：</label>
+                                <input type="text" name="fCourseName"/>
+                            </li>
+                            <li>
+                                <label>教材名称：</label>
+                                <input type="text" name="fBookName"/>
+                            </li>
+                            <li>
+                                <label>ISBN号：</label>
+                                <input type="text" name="fIsbn"/>
+                            </li>
+                            <li>
+                                <label>填报人：</label>
+                                <input type="text" name="fFiller"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="tec:textbooks:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="tec:textbooks:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="tec:textbooks:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="tec:textbooks:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('tec:textbooks:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('tec:textbooks:remove')}]];
+        var fIsLegalDatas = [[${@dict.getType('is_or_no')}]];
+        var fIsEducateDatas = [[${@dict.getType('is_or_no')}]];
+        var fIsCountryDatas = [[${@dict.getType('is_or_no')}]];
+        var fPlanningDatas = [[${@dict.getType('f_planning')}]];
+        var fBookTypeDatas = [[${@dict.getType('textbook_type')}]];
+        var prefix = ctx + "tec/textbooks";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "教材选用",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'fId',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'fCourseName',
+                    title: '课程名称'
+                },
+                {
+                    field: 'fCourseCode',
+                    title: '课程代码'
+                },
+                {
+                    field: 'fBookName',
+                    title: '教材名称'
+                },
+                {
+                    field: 'fIsLegal',
+                    title: '是否正式出版教材',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fIsLegalDatas, value);
+                    }
+                },
+                {
+                    field: 'fIsbn',
+                    title: 'ISBN号'
+                },
+                {
+                    field: 'fPublisher',
+                    title: '出版单位'
+                },
+                {
+                    field: 'fEditionDate',
+                    title: '版次日期'
+                },
+                {
+                    field: 'fFirEditName',
+                    title: '第一主编姓名'
+                },
+                {
+                    field: 'fFirEditUnit',
+                    title: '第一主编单位'
+                },
+                {
+                    field: 'fUsedNum',
+                    title: '使用数量'
+                },
+                {
+                    field: 'fIsEducate',
+                    title: '是否教育部统编教材',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fIsEducateDatas, value);
+                    }
+                },
+                {
+                    field: 'fIsCountry',
+                    title: '是否国家教材奖教材',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fIsCountryDatas, value);
+                    }
+                },
+                {
+                    field: 'fPlanning',
+                    title: '纳入规划教材情况',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fPlanningDatas, value);
+                    }
+                },
+                {
+                    field: 'fLevel',
+                    title: '适用层次'
+                },
+                {
+                    field: 'fBookType',
+                    title: '教材类型',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fBookTypeDatas, value);
+                    }
+                },
+                {
+                    field: 'fField',
+                    title: '对应领域'
+                },
+                {
+                    field: 'fBookFeatures',
+                    title: '教材特色'
+                },
+                {
+                    field: 'fFiller',
+                    title: '填报人'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.fId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.fId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

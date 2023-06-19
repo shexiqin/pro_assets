@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbstuAwardMapper">
+    
+    <resultMap type="TbstuAward" id="TbstuAwardResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fSno"    column="f_sno"    />
+        <result property="fSname"    column="f_sname"    />
+        <result property="fAwardType"    column="f_award_type"    />
+        <result property="fAwardReason"    column="f_award_reason"    />
+        <result property="fDateaward"    column="f_dateaward"    />
+    </resultMap>
+
+    <sql id="selectTbstuAwardVo">
+        select f_id, f_sno, f_sname, f_award_type, f_award_reason, f_dateaward from tbstu_award
+    </sql>
+
+    <select id="selectTbstuAwardList" parameterType="TbstuAward" resultMap="TbstuAwardResult">
+        <include refid="selectTbstuAwardVo"/>
+        <where>  
+            <if test="fSno != null "> and f_sno = #{fSno}</if>
+            <if test="fSname != null  and fSname != ''"> and f_sname like concat('%', #{fSname}, '%')</if>
+            <if test="fAwardType != null  and fAwardType != ''"> and f_award_type = #{fAwardType}</if>
+            <if test="fAwardReason != null  and fAwardReason != ''"> and f_award_reason = #{fAwardReason}</if>
+            <if test="fDateaward != null "> and f_dateaward = #{fDateaward}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbstuAwardByFId" parameterType="Long" resultMap="TbstuAwardResult">
+        <include refid="selectTbstuAwardVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbstuAward" parameterType="TbstuAward" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbstu_award
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fSno != null">f_sno,</if>
+            <if test="fSname != null and fSname != ''">f_sname,</if>
+            <if test="fAwardType != null and fAwardType != ''">f_award_type,</if>
+            <if test="fAwardReason != null and fAwardReason != ''">f_award_reason,</if>
+            <if test="fDateaward != null">f_dateaward,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fSno != null">#{fSno},</if>
+            <if test="fSname != null and fSname != ''">#{fSname},</if>
+            <if test="fAwardType != null and fAwardType != ''">#{fAwardType},</if>
+            <if test="fAwardReason != null and fAwardReason != ''">#{fAwardReason},</if>
+            <if test="fDateaward != null">#{fDateaward},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbstuAward" parameterType="TbstuAward">
+        update tbstu_award
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fSno != null">f_sno = #{fSno},</if>
+            <if test="fSname != null and fSname != ''">f_sname = #{fSname},</if>
+            <if test="fAwardType != null and fAwardType != ''">f_award_type = #{fAwardType},</if>
+            <if test="fAwardReason != null and fAwardReason != ''">f_award_reason = #{fAwardReason},</if>
+            <if test="fDateaward != null">f_dateaward = #{fDateaward},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbstuAwardByFId" parameterType="Long">
+        delete from tbstu_award where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbstuAwardByFIds" parameterType="String">
+        delete from tbstu_award where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

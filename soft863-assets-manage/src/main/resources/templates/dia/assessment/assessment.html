@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('助学金评估列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>学生工号：</label>
+                                <input type="text" name="fStud"/>
+                            </li>
+                            <li>
+                                <label>学生姓名：</label>
+                                <input type="text" name="fName"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="WeightSetting()" >
+                    评选权重设置
+                </a>
+                <a class="btn btn-primary" onclick="selection()" >
+                   评选范围
+                </a>
+
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('dia:assessment:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('dia:assessment:remove')}]];
+        var fMajorDatas = [[${@dict.getType('profession_code')}]];
+        var fClassDatas = [[${@dict.getType('stu_grade')}]];
+        var fStipendLevelDatas = [[${@dict.getType('award_type')}]];
+        var fFamMoneyDatas = [[${@dict.getType('f_fam_money')}]];
+        var prefix = ctx + "dia/assessment";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "助学金评估",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'fId',
+                    title: 'id',
+                    visible: false
+                },
+                {
+                    field: 'fNo',
+                    title: '学生工号'
+                },
+                {
+                    field: 'fName',
+                    title: '学生姓名'
+                },
+                {
+                    field: 'fStuGpa',
+                    title: '绩点'
+                },
+                {
+                    field: 'fLeaveNum',
+                    title: '请假次数'
+                },
+                {
+                    field: 'fMajor',
+                    title: '专业',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fMajorDatas, value);
+                    }
+                },
+                    {
+                        field: 'fClazz',
+                        title: '班级',
+                        formatter: function(value, row, index) {
+                            return $.table.selectDictLabel(fClassDatas, value);
+                        }
+                    },
+                {
+                    field: 'fConsumption',
+                    title: '校园卡消费统计'
+                },
+                {
+                    field: 'fComprehensiveScore',
+                    title: '综合分数'
+                },
+                {
+                    field: 'fFamMoney',
+                    title: '家庭经济情况',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fFamMoneyDatas, value);
+                    }
+                },
+                {
+                    field: 'fAssessmentResult',
+                    title: '评估分数'
+                },
+                {
+                    field: 'fStipendLevel',
+                    title: '助学金等极',
+
+                }
+              ]
+            };
+            $.table.init(options);
+        });
+    </script>
+<script>
+    function WeightSetting(){
+     $.modal.open("权重与设置",prefix+"/weight")
+    }
+    function selection(){
+        $.modal.open("评估条件",prefix+"/selection")
+    }
+</script>
+</body>
+</html>

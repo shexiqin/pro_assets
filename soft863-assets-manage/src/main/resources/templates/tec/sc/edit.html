@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改学生成绩')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-sc-edit" th:object="${tbdiaStudentSessionScore}">
+            <input name="fId" th:field="*{fId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学生工号：</label>
+                <div class="col-sm-8">
+                    <input name="fStuId" th:field="*{fStuId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">平均平时分：</label>
+                <div class="col-sm-8">
+                    <input name="fDailyPerAverage" th:field="*{fDailyPerAverage}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">缺勤次数：</label>
+                <div class="col-sm-8">
+                    <input name="fAbsenceTimes" th:field="*{fAbsenceTimes}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">综合分数：</label>
+                <div class="col-sm-8">
+                    <input name="fComprehensiveScore" th:field="*{fComprehensiveScore}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学分绩点：</label>
+                <div class="col-sm-8">
+                    <input name="fStuGpa" th:field="*{fStuGpa}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否挂科 ：</label>
+                <div class="col-sm-8">
+                    <input name="fHangingUp" th:field="*{fHangingUp}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否重修：</label>
+                <div class="col-sm-8">
+                    <input name="fRebuild" th:field="*{fRebuild}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学年：</label>
+                <div class="col-sm-8">
+                    <input name="fYear" th:field="*{fYear}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "tec/sc";
+        $("#form-sc-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-sc-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

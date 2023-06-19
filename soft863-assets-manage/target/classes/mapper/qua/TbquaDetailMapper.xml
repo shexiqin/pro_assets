@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbquaDetailMapper">
+    
+    <resultMap type="TbquaDetail" id="TbquaDetailResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fTaskid"    column="f_taskid"    />
+        <result property="fType"    column="f_type"    />
+        <result property="fDataid"    column="f_dataid"    />
+        <result property="fTbname"    column="f_tbname"    />
+        <result property="fSuggestion"    column="f_suggestion"    />
+        <result property="fStatus"    column="f_status"    />
+    </resultMap>
+
+    <sql id="selectTbquaDetailVo">
+        select f_id, f_taskid, f_type, f_dataid, f_tbname, f_suggestion, f_status from tbqua_detail
+    </sql>
+
+    <select id="selectTbquaDetailList" parameterType="TbquaDetail" resultMap="TbquaDetailResult">
+        <include refid="selectTbquaDetailVo"/>
+        <where>  
+            <if test="fTaskid != null "> and f_taskid = #{fTaskid}</if>
+            <if test="fType != null  and fType != ''"> and f_type = #{fType}</if>
+            <if test="fStatus != null  and fStatus != ''"> and f_status = #{fStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbquaDetailByFId" parameterType="Long" resultMap="TbquaDetailResult">
+        <include refid="selectTbquaDetailVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbquaDetail" parameterType="TbquaDetail" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbqua_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fTaskid != null">f_taskid,</if>
+            <if test="fType != null and fType != ''">f_type,</if>
+            <if test="fDataid != null and fDataid != ''">f_dataid,</if>
+            <if test="fTbname != null">f_tbname,</if>
+            <if test="fSuggestion != null and fSuggestion != ''">f_suggestion,</if>
+            <if test="fStatus != null and fStatus != ''">f_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fTaskid != null">#{fTaskid},</if>
+            <if test="fType != null and fType != ''">#{fType},</if>
+            <if test="fDataid != null and fDataid != ''">#{fDataid},</if>
+            <if test="fTbname != null">#{fTbname},</if>
+            <if test="fSuggestion != null and fSuggestion != ''">#{fSuggestion},</if>
+            <if test="fStatus != null and fStatus != ''">#{fStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbquaDetail" parameterType="TbquaDetail">
+        update tbqua_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fTaskid != null">f_taskid = #{fTaskid},</if>
+            <if test="fType != null and fType != ''">f_type = #{fType},</if>
+            <if test="fDataid != null and fDataid != ''">f_dataid = #{fDataid},</if>
+            <if test="fTbname != null">f_tbname = #{fTbname},</if>
+            <if test="fSuggestion != null and fSuggestion != ''">f_suggestion = #{fSuggestion},</if>
+            <if test="fStatus != null and fStatus != ''">f_status = #{fStatus},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbquaDetailByFId" parameterType="Long">
+        delete from tbqua_detail where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbquaDetailByFIds" parameterType="String">
+        delete from tbqua_detail where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

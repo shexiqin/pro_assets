@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbperStaffMapper">
+    
+    <resultMap type="TbperStaff" id="TbperStaffResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fDepartmentname"    column="f_departmentname"    />
+        <result property="fNumbering"    column="f_numbering"    />
+        <result property="fName"    column="f_name"    />
+        <result property="fSex"    column="f_sex"    />
+        <result property="fBirthdate"    column="f_birthdate"    />
+        <result property="fDegree"    column="f_degree"    />
+        <result property="fAcademicdegrees"    column="f_academicdegrees"    />
+        <result property="fDuties"    column="f_duties"    />
+        <result property="fPersonnelcategory"    column="f_personnelcategory"    />
+        <result property="fSpecialized"    column="f_specialized"    />
+        <result property="fDevelopment"    column="f_development"    />
+        <result property="fLssuingunit"    column="f_lssuingunit"    />
+        <result property="fGetdate"    column="f_getdate"    />
+        <result property="fExpertise"    column="f_expertise"    />
+        <result property="fCertificateeligibility"    column="f_certificateeligibility"    />
+        <result property="fProfessionalname"    column="f_professionalname"    />
+        <result property="fAdministrativemajor"    column="f_administrativemajor"    />
+        <result property="fFamousteachers"    column="f_famousteachers"    />
+        <result property="fFlgHead"    column="f_flg_head"    />
+        <result property="fFlgLeaders"    column="f_flg_leaders"    />
+        <result property="fYearsservice"    column="f_yearsservice"    />
+        <result property="fPoliticalStatus"    column="f_political_status"    />
+    </resultMap>
+
+    <sql id="selectTbperStaffVo">
+        select f_id, f_departmentname, f_numbering, f_name, f_sex, f_birthdate, f_degree, f_academicdegrees, f_duties, f_personnelcategory, f_specialized, f_development, f_lssuingunit, f_getdate, f_expertise, f_certificateeligibility, f_professionalname, f_administrativemajor, f_famousteachers, f_flg_head, f_flg_leaders, f_yearsservice, f_political_status from tbper_staff
+    </sql>
+
+    <select id="selectTbperStaffList" parameterType="TbperStaff" resultMap="TbperStaffResult">
+        <include refid="selectTbperStaffVo"/>
+        <where>  
+            <if test="fId != null "> and f_id = #{fId}</if>
+            <if test="fDepartmentname != null  and fDepartmentname != ''"> and f_departmentname like concat('%', #{fDepartmentname}, '%')</if>
+            <if test="fNumbering != null  and fNumbering != ''"> and f_numbering = #{fNumbering}</if>
+            <if test="fName != null  and fName != ''"> and f_name like concat('%', #{fName}, '%')</if>
+            <if test="fSex != null  and fSex != ''"> and f_sex = #{fSex}</if>
+            <if test="fBirthdate != null  and fBirthdate != ''"> and f_birthdate = #{fBirthdate}</if>
+            <if test="fDegree != null  and fDegree != ''"> and f_degree = #{fDegree}</if>
+            <if test="fAcademicdegrees != null  and fAcademicdegrees != ''"> and f_academicdegrees = #{fAcademicdegrees}</if>
+            <if test="fDuties != null  and fDuties != ''"> and f_duties = #{fDuties}</if>
+            <if test="fPersonnelcategory != null  and fPersonnelcategory != ''"> and f_personnelcategory = #{fPersonnelcategory}</if>
+            <if test="fSpecialized != null  and fSpecialized != ''"> and f_specialized = #{fSpecialized}</if>
+            <if test="fDevelopment != null  and fDevelopment != ''"> and f_development = #{fDevelopment}</if>
+            <if test="fLssuingunit != null  and fLssuingunit != ''"> and f_lssuingunit = #{fLssuingunit}</if>
+            <if test="fGetdate != null "> and f_getdate = #{fGetdate}</if>
+            <if test="fExpertise != null  and fExpertise != ''"> and f_expertise = #{fExpertise}</if>
+            <if test="fCertificateeligibility != null  and fCertificateeligibility != ''"> and f_certificateeligibility = #{fCertificateeligibility}</if>
+            <if test="fProfessionalname != null  and fProfessionalname != ''"> and f_professionalname like concat('%', #{fProfessionalname}, '%')</if>
+            <if test="fAdministrativemajor != null  and fAdministrativemajor != ''"> and f_administrativemajor = #{fAdministrativemajor}</if>
+            <if test="fFamousteachers != null  and fFamousteachers != ''"> and f_famousteachers = #{fFamousteachers}</if>
+            <if test="fFlgHead != null  and fFlgHead != ''"> and f_flg_head = #{fFlgHead}</if>
+            <if test="fFlgLeaders != null  and fFlgLeaders != ''"> and f_flg_leaders = #{fFlgLeaders}</if>
+            <if test="fYearsservice != null  and fYearsservice != ''"> and f_yearsservice = #{fYearsservice}</if>
+            <if test="fPoliticalStatus != null  and fPoliticalStatus != ''"> and f_political_status = #{fPoliticalStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbperStaffByFId" parameterType="Long" resultMap="TbperStaffResult">
+        <include refid="selectTbperStaffVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbperStaff" parameterType="TbperStaff">
+        insert into tbper_staff
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fId != null">f_id,</if>
+            <if test="fDepartmentname != null">f_departmentname,</if>
+            <if test="fNumbering != null">f_numbering,</if>
+            <if test="fName != null">f_name,</if>
+            <if test="fSex != null">f_sex,</if>
+            <if test="fBirthdate != null">f_birthdate,</if>
+            <if test="fDegree != null">f_degree,</if>
+            <if test="fAcademicdegrees != null">f_academicdegrees,</if>
+            <if test="fDuties != null">f_duties,</if>
+            <if test="fPersonnelcategory != null">f_personnelcategory,</if>
+            <if test="fSpecialized != null">f_specialized,</if>
+            <if test="fDevelopment != null">f_development,</if>
+            <if test="fLssuingunit != null">f_lssuingunit,</if>
+            <if test="fGetdate != null">f_getdate,</if>
+            <if test="fExpertise != null">f_expertise,</if>
+            <if test="fCertificateeligibility != null">f_certificateeligibility,</if>
+            <if test="fProfessionalname != null">f_professionalname,</if>
+            <if test="fAdministrativemajor != null">f_administrativemajor,</if>
+            <if test="fFamousteachers != null">f_famousteachers,</if>
+            <if test="fFlgHead != null">f_flg_head,</if>
+            <if test="fFlgLeaders != null">f_flg_leaders,</if>
+            <if test="fYearsservice != null">f_yearsservice,</if>
+            <if test="fPoliticalStatus != null">f_political_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fId != null">#{fId},</if>
+            <if test="fDepartmentname != null">#{fDepartmentname},</if>
+            <if test="fNumbering != null">#{fNumbering},</if>
+            <if test="fName != null">#{fName},</if>
+            <if test="fSex != null">#{fSex},</if>
+            <if test="fBirthdate != null">#{fBirthdate},</if>
+            <if test="fDegree != null">#{fDegree},</if>
+            <if test="fAcademicdegrees != null">#{fAcademicdegrees},</if>
+            <if test="fDuties != null">#{fDuties},</if>
+            <if test="fPersonnelcategory != null">#{fPersonnelcategory},</if>
+            <if test="fSpecialized != null">#{fSpecialized},</if>
+            <if test="fDevelopment != null">#{fDevelopment},</if>
+            <if test="fLssuingunit != null">#{fLssuingunit},</if>
+            <if test="fGetdate != null">#{fGetdate},</if>
+            <if test="fExpertise != null">#{fExpertise},</if>
+            <if test="fCertificateeligibility != null">#{fCertificateeligibility},</if>
+            <if test="fProfessionalname != null">#{fProfessionalname},</if>
+            <if test="fAdministrativemajor != null">#{fAdministrativemajor},</if>
+            <if test="fFamousteachers != null">#{fFamousteachers},</if>
+            <if test="fFlgHead != null">#{fFlgHead},</if>
+            <if test="fFlgLeaders != null">#{fFlgLeaders},</if>
+            <if test="fYearsservice != null">#{fYearsservice},</if>
+            <if test="fPoliticalStatus != null">#{fPoliticalStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbperStaff" parameterType="TbperStaff">
+        update tbper_staff
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fDepartmentname != null">f_departmentname = #{fDepartmentname},</if>
+            <if test="fNumbering != null">f_numbering = #{fNumbering},</if>
+            <if test="fName != null">f_name = #{fName},</if>
+            <if test="fSex != null">f_sex = #{fSex},</if>
+            <if test="fBirthdate != null">f_birthdate = #{fBirthdate},</if>
+            <if test="fDegree != null">f_degree = #{fDegree},</if>
+            <if test="fAcademicdegrees != null">f_academicdegrees = #{fAcademicdegrees},</if>
+            <if test="fDuties != null">f_duties = #{fDuties},</if>
+            <if test="fPersonnelcategory != null">f_personnelcategory = #{fPersonnelcategory},</if>
+            <if test="fSpecialized != null">f_specialized = #{fSpecialized},</if>
+            <if test="fDevelopment != null">f_development = #{fDevelopment},</if>
+            <if test="fLssuingunit != null">f_lssuingunit = #{fLssuingunit},</if>
+            <if test="fGetdate != null">f_getdate = #{fGetdate},</if>
+            <if test="fExpertise != null">f_expertise = #{fExpertise},</if>
+            <if test="fCertificateeligibility != null">f_certificateeligibility = #{fCertificateeligibility},</if>
+            <if test="fProfessionalname != null">f_professionalname = #{fProfessionalname},</if>
+            <if test="fAdministrativemajor != null">f_administrativemajor = #{fAdministrativemajor},</if>
+            <if test="fFamousteachers != null">f_famousteachers = #{fFamousteachers},</if>
+            <if test="fFlgHead != null">f_flg_head = #{fFlgHead},</if>
+            <if test="fFlgLeaders != null">f_flg_leaders = #{fFlgLeaders},</if>
+            <if test="fYearsservice != null">f_yearsservice = #{fYearsservice},</if>
+            <if test="fPoliticalStatus != null">f_political_status = #{fPoliticalStatus},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbperStaffByFId" parameterType="Long">
+        delete from tbper_staff where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbperStaffByFIds" parameterType="String">
+        delete from tbper_staff where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改课程设置')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-course-edit" th:object="${tbtecCourse}">
+            <input name="fId" th:field="*{fId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">专业名称：</label>
+                <div class="col-sm-8">
+                    <input name="fProName" th:field="*{fProName}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">专业代码：</label>
+                <div class="col-sm-8">
+                    <input name="fProCode" th:field="*{fProCode}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">专业层次：</label>
+                <div class="col-sm-8">
+                    <select name="fProLevel" class="form-control m-b" th:with="type=${@dict.getType('tec_pro_level')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fProLevel}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">学制：</label>
+                <div class="col-sm-8">
+                    <select name="fAcademic" class="form-control m-b" th:with="type=${@dict.getType('tec_academic')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fAcademic}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">培养方式(0普通班，1企业新型学徒制，2现代学徒制，3现代职教体系项目，4订单班，5其他)：</label>
+                <div class="col-sm-8">
+                    <select name="fCulMethods" class="form-control m-b" th:with="type=${@dict.getType('tec_cul')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fCulMethods}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">具体形式：</label>
+                <div class="col-sm-8">
+                    <select name="fSpecificForm" class="form-control m-b" th:with="type=${@dict.getType('tec_specific_form')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fSpecificForm}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">授课年级：</label>
+                <div class="col-sm-8">
+                    <input name="fGrade" th:field="*{fGrade}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">课程名称：</label>
+                <div class="col-sm-8">
+                    <input name="fCourseName" th:field="*{fCourseName}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">课程代码：</label>
+                <div class="col-sm-8">
+                    <input name="fCourseCode" th:field="*{fCourseCode}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">课程类型：</label>
+                <div class="col-sm-8">
+                    <select name="fCourseType" class="form-control m-b" th:with="type=${@dict.getType('tec_course_type')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fCourseType}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">课程属性：</label>
+                <div class="col-sm-8">
+                    <select name="fCourseAttr" class="form-control m-b" th:with="type=${@dict.getType('tec_attr')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fCourseAttr}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">公共基础课：</label>
+                <div class="col-sm-8">
+                    <input name="fPubCourses" th:field="*{fPubCourses}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">专业技能课：</label>
+                <div class="col-sm-8">
+                    <input name="fProCourses" th:field="*{fProCourses}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">课程性质：</label>
+                <div class="col-sm-8">
+                    <select name="fCourseNature" class="form-control m-b" th:with="type=${@dict.getType('tec_course_nature')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fCourseNature}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">开课学期：</label>
+                <div class="col-sm-8">
+                    <input name="fSemester" th:field="*{fSemester}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">开课单位名称：</label>
+                <div class="col-sm-8">
+                    <input name="fUnitName" th:field="*{fUnitName}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否校企合作开发课程：</label>
+                <div class="col-sm-8">
+                    <input name="fIsCooperation" th:field="*{fIsCooperation}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">合作企业名称：</label>
+                <div class="col-sm-8">
+                    <input name="fPartnerName" th:field="*{fPartnerName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">精品在线开放课程：</label>
+                <div class="col-sm-8">
+                    <input name="fQualityCourses" th:field="*{fQualityCourses}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否课证融通课程：</label>
+                <div class="col-sm-8">
+                    <select name="fIsFinancing" class="form-control m-b" th:with="type=${@dict.getType('current_flg')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fIsFinancing}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否网络教学或课程思政示范课程：</label>
+                <div class="col-sm-8">
+                    <select name="fIsDemonstration" class="form-control m-b" th:with="type=${@dict.getType('current_flg')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fIsDemonstration}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">课程总学时：</label>
+                <div class="col-sm-8">
+                    <input name="fTotalHours" th:field="*{fTotalHours}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">实践教学学时：</label>
+                <div class="col-sm-8">
+                    <input name="fPracticeHours" th:field="*{fPracticeHours}" class="form-control" type="text" required>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "tec/course";
+        $("#form-course-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-course-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

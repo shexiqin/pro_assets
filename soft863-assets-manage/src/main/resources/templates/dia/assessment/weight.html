@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('权重设置')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        评估分数= 绩点*比重*权重+综合成绩*比重*权重+加分项
+        <form class="form-horizontal m" id="form-assessment-set">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">绩点和分数权重比例：</label>
+                    <div class="col-sm-9" style="float: left;display:flex">
+                        <input type="text" name="gpaProportion"   th:value="${gpaProportion}" style="width: 30%" class="form-control"> : 
+                        <input type="text" name="gradeProportion"  th:value="${gradeProportion}" style="width: 30%" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">绩点占比：</label>
+                    <div class="col-sm-9">
+                        <input type="text" style="width: 60%" th:value="${gpaPercentage}" name="gpaPercentage">%
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">分数占比：</label>
+                    <div class="col-sm-9">
+                        <input type="text" style="width: 60%" th:value="${gradePercentage}" name="gradePercentage">%
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">家庭经济困难：</label>
+                    <div class="col-sm-9">
+                       <input name="extra1" style="width: 60%" th:value="${extra1}" type="text">&nbsp;分
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"> 家庭经济贫困：</label>
+                    <div class="col-sm-9">
+                        <input name="extra2" style="width: 60%" th:value="${extra2}" type="text">&nbsp;分
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">一等助学金数量：</label>
+                    <div class="col-sm-9">
+                        <input name="onePrizesNum" style="width: 60%" type="text" th:value="${onePrizesNum}" required>&nbsp;个
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">二等助学金数量：</label>
+                    <div class="col-sm-9">
+                        <input name="twoPrizesNum" style="width: 60%" th:value="${twoPrizesNum}" type="text" required>&nbsp;个
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">三等助学金数量：</label>
+                    <div class="col-sm-9">
+                        <input name="threePrizesNum" style="width: 60%" type="text" th:value="${threePrizesNum}" required> &nbsp;个
+                    </div>
+                </div>
+            </div>
+    </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "dia/assessment"
+        $("#form-assessment-set").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            var weight1 = document.getElementsByName("gpaPercentage")[0].value;
+            var weight2 = document.getElementsByName("gradePercentage")[0].value;
+            if (Number(weight1)+Number(weight2)==100){
+                if ($.validate.form()) {
+                    $.operate.save(prefix + "/weight", $('#form-assessment-set').serialize());
+                }
+            }else {
+                alert("权重占比总和必须为100");
+            }
+        }
+    </script>
+
+</body>
+</html>

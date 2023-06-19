@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbdiaTeacherEstimateMapper">
+    
+    <resultMap type="TbdiaTeacherEstimate" id="TbdiaTeacherEstimateResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fTname"    column="f_tname"    />
+        <result property="fTno"    column="f_tno"    />
+        <result property="fTeaQuality"    column="f_tea_quality"    />
+        <result property="fNationGainnum"    column="f_nation_gainnum"    />
+        <result property="fCourseScore"    column="f_course_score"    />
+        <result property="fWorkday"    column="f_workday"    />
+        <result property="fCommres"    column="f_commres"    />
+        <result property="fComment"    column="f_comment"    />
+    </resultMap>
+
+    <sql id="selectTbdiaTeacherEstimateVo">
+        select  f_id,f_tname, f_tno, f_tea_quality, f_nation_gainnum, f_course_score, f_workday,f_commres,f_comment from tbdia_teacher_estimate
+    </sql>
+
+    <select id="selectTbdiaTeacherEstimateList" parameterType="TbdiaTeacherEstimate" resultMap="TbdiaTeacherEstimateResult">
+        <include refid="selectTbdiaTeacherEstimateVo"/>
+        <where>  
+            <if test="fTname != null  and fTname != ''"> and f_tname like concat('%', #{fTname}, '%')</if>
+            <if test="fTno != null "> and f_tno = #{fTno}</if>
+        </where>
+    </select>
+<!--    <update id="updateComm" parameterMap="">-->
+<!--        -->
+<!--    </update>-->
+    <select id="selectTbdiaTeacherEstimateByFId" parameterType="Long" resultMap="TbdiaTeacherEstimateResult">
+        <include refid="selectTbdiaTeacherEstimateVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbdiaTeacherEstimate" parameterType="TbdiaTeacherEstimate" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbdia_teacher_estimate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fTname != null and fTname != ''">f_tname,</if>
+            <if test="fTno != null">f_tno,</if>
+            <if test="fTeaQuality != null">f_tea_quality,</if>
+            <if test="fNationGainnum != null">f_nation_gainnum,</if>
+            <if test="fCourseScore != null">f_course_score,</if>
+            <if test="fWorkday != null">f_workday,</if>
+            <if test="fCommres != null and fCommres != ''">f_commres,</if>
+            <if test="fComment != null">f_comment,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fTname != null and fTname != ''">#{fTname},</if>
+            <if test="fTno != null">#{fTno},</if>
+            <if test="fTeaQuality != null">#{fTeaQuality},</if>
+            <if test="fNationGainnum != null">#{fNationGainnum},</if>
+            <if test="fCourseScore != null">#{fCourseScore},</if>
+            <if test="fWorkday != null">#{fWorkday},</if>
+            <if test="fCommres != null and fCommres != ''">#{fCommres},</if>
+            <if test="fComment != null">#{fComment},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbdiaTeacherEstimate" parameterType="TbdiaTeacherEstimate">
+        update tbdia_teacher_estimate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fTname != null and fTname != ''">f_tname = #{fTname},</if>
+            <if test="fTno != null">f_tno = #{fTno},</if>
+            <if test="fTeaQuality != null">f_tea_quality = #{fTeaQuality},</if>
+            <if test="fNationGainnum != null">f_nation_gainnum = #{fNationGainnum},</if>
+            <if test="fCourseScore != null">f_course_score = #{fCourseScore},</if>
+            <if test="fWorkday != null">f_workday = #{fWorkday},</if>
+            <if test="fCommres != null and fCommres != ''">f_commres = #{fCommres},</if>
+            <if test="fComment != null">f_comment = #{fComment},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbdiaTeacherEstimateByFId" parameterType="Long">
+        delete from tbdia_teacher_estimate where f_tno = #{fTno}
+    </delete>
+
+    <delete id="deleteTbdiaTeacherEstimateByFIds" parameterType="String">
+        delete from tbdia_teacher_estimate where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteAll" parameterType="Integer">
+        delete from tbdia_teacher_estimate
+    </delete>
+</mapper>

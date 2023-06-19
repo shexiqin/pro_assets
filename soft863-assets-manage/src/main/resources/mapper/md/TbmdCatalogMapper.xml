@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbmdCatalogMapper">
+    
+    <resultMap type="TbmdCatalog" id="TbmdCatalogResult">
+        <result property="fDirectId"    column="f_direct_id"    />
+        <result property="fName"    column="f_name"    />
+        <result property="fCode"    column="f_code"    />
+        <result property="fParentId"    column="f_parent_id"    />
+        <result property="fDesc"    column="f_desc"    />
+        <result property="fState"    column="f_state"    />
+        <result property="fCreator"    column="f_creator"    />
+        <result property="fCreateTime"    column="f_create_time"    />
+        <result property="fModifier"    column="f_modifier"    />
+        <result property="fModifyTime"    column="f_modify_time"    />
+    </resultMap>
+
+    <sql id="selectTbmdCatalogVo">
+        select f_direct_id, f_name, f_code, f_parent_id, f_desc, f_state, f_creator, f_create_time, f_modifier, f_modify_time from tbmd_catalog
+    </sql>
+
+    <select id="selectTbmdCatalogList" parameterType="TbmdCatalog" resultMap="TbmdCatalogResult">
+        <include refid="selectTbmdCatalogVo"/>
+        <where>  
+            <if test="fName != null  and fName != ''"> and f_name like concat('%', #{fName}, '%')</if>
+            <if test="fCode != null "> and f_code = #{fCode}</if>
+            <if test="fState != null "> and f_state = #{fState}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbmdCatalogByFDirectId" parameterType="Long" resultMap="TbmdCatalogResult">
+        <include refid="selectTbmdCatalogVo"/>
+        where f_direct_id = #{fDirectId}
+    </select>
+        
+    <insert id="insertTbmdCatalog" parameterType="TbmdCatalog">
+        insert into tbmd_catalog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fDirectId != null">f_direct_id,</if>
+            <if test="fName != null">f_name,</if>
+            <if test="fCode != null">f_code,</if>
+            <if test="fParentId != null">f_parent_id,</if>
+            <if test="fDesc != null">f_desc,</if>
+            <if test="fState != null">f_state,</if>
+            <if test="fCreator != null">f_creator,</if>
+            <if test="fCreateTime != null">f_create_time,</if>
+            <if test="fModifier != null">f_modifier,</if>
+            <if test="fModifyTime != null">f_modify_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fDirectId != null">#{fDirectId},</if>
+            <if test="fName != null">#{fName},</if>
+            <if test="fCode != null">#{fCode},</if>
+            <if test="fParentId != null">#{fParentId},</if>
+            <if test="fDesc != null">#{fDesc},</if>
+            <if test="fState != null">#{fState},</if>
+            <if test="fCreator != null">#{fCreator},</if>
+            <if test="fCreateTime != null">#{fCreateTime},</if>
+            <if test="fModifier != null">#{fModifier},</if>
+            <if test="fModifyTime != null">#{fModifyTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbmdCatalog" parameterType="TbmdCatalog">
+        update tbmd_catalog
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fName != null">f_name = #{fName},</if>
+            <if test="fCode != null">f_code = #{fCode},</if>
+            <if test="fParentId != null">f_parent_id = #{fParentId},</if>
+            <if test="fDesc != null">f_desc = #{fDesc},</if>
+            <if test="fState != null">f_state = #{fState},</if>
+            <if test="fCreator != null">f_creator = #{fCreator},</if>
+            <if test="fCreateTime != null">f_create_time = #{fCreateTime},</if>
+            <if test="fModifier != null">f_modifier = #{fModifier},</if>
+            <if test="fModifyTime != null">f_modify_time = #{fModifyTime},</if>
+        </trim>
+        where f_direct_id = #{fDirectId}
+    </update>
+
+    <delete id="deleteTbmdCatalogByFDirectId" parameterType="Long">
+        delete from tbmd_catalog where f_direct_id = #{fDirectId}
+    </delete>
+
+    <delete id="deleteTbmdCatalogByFDirectIds" parameterType="String">
+        delete from tbmd_catalog where f_direct_id in 
+        <foreach item="fDirectId" collection="array" open="(" separator="," close=")">
+            #{fDirectId}
+        </foreach>
+    </delete>
+
+</mapper>

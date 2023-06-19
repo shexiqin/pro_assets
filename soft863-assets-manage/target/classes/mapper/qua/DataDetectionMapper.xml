@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.DataDetectionMapper">
+    <sql id="selectTbstuInfoVo">
+        select f_id              fId,
+               f_name            fName,
+               f_no              fNo,
+               f_sex             fSex,
+               f_birthday        fBirthday,
+               f_faculty         fFaculty,
+               f_major           fMajor,
+               f_grade           fGrade,
+               f_academic        fAcademic,
+               f_graduationdate  fGraduationdate,
+               f_examineenumber  fExamineenumber,
+               f_nation          fNation,
+               f_identitycard    fIdentitycard,
+               f_birthplace      fBirthplace,
+               f_zone            fZone,
+               f_hongkong        fHongkong,
+               f_politicsstatus  fPoliticsstatus,
+               f_censusregister  fCensusregister,
+               f_domicilearea    fDomicilearea,
+               f_class           fClass,
+               f_enrolltime      fEnrolltime,
+               f_category        fCategory,
+               f_cultivatelevels fCultivatelevels,
+               f_status          fStatus,
+               f_phone           fPhone,
+               f_email           fEmail,
+               f_qq              fQq,
+               f_wechat          fWechat,
+               f_address         fAddress,
+               f_familyphone     fFamilyphone
+        from tbstu_info
+    </sql>
+    <select id="stuLoseEduInfo" resultType="com.soft863.domain.TbstuInfo">
+        <include refid="selectTbstuInfoVo"/>
+        where f_name =''
+        or f_no =''
+        or f_sex =''
+        or f_faculty =''
+        or f_major =''
+        or f_grade =''
+        or f_academic =''
+        or f_graduationdate =''
+        or f_class =''
+        or f_cultivatelevels =''
+        or f_status =''
+    </select>
+    <select id="stuLosePerInfo" resultType="com.soft863.domain.TbstuInfo">
+        <include refid="selectTbstuInfoVo"/>
+        where f_birthday =''
+        or f_nation =''
+        or f_identitycard =''
+        or f_birthplace =''
+        or f_zone =''
+        or f_hongkong =''
+        or f_politicsstatus =''
+        or f_examineenumber =''
+        or f_censusregister =''
+        or f_domicilearea =''
+        or f_enrolltime =''
+        or f_category =''
+        or f_phone =''
+        or f_email =''
+        or f_qq =''
+        or f_wechat =''
+        or f_address =''
+        or f_familyphone =''
+    </select>
+
+    <sql id="selectTbperStaffVo">
+        select f_id                     fId,
+               f_departmentname         fDepartmentname,
+               f_numbering              fNumbering,
+               f_name                   fName,
+               f_sex                    fSex,
+               f_birthdate              fBirthdate,
+               f_degree                 fDegree,
+               f_academicdegrees        fAcademicdegrees,
+               f_duties                 fDuties,
+               f_personnelcategory      fPersonnelcategory,
+               f_specialized            fSpecialized,
+               f_development            fDevelopment,
+               f_lssuingunit            fLssuingunit,
+               f_getdate                fGetdate,
+               f_expertise              fExpertise,
+               f_certificateeligibility fCertificateeligibility,
+               f_professionalname       fProfessionalname,
+               f_administrativemajor    fAdministrativemajor,
+               f_famousteachers         fFamousteachers,
+               f_flg_head               fFlgHead,
+               f_flg_leaders            fFlgLeaders,
+               f_yearsservice           fYearsservice,
+               f_political_status       fPoliticalStatus
+        from tbper_staff
+    </sql>
+    <select id="teaLoseEduInfo" resultType="com.soft863.domain.TbperStaff">
+        <include refid="selectTbperStaffVo"/>
+        where f_departmentname is null
+        or f_numbering is null
+        or f_name is null
+        or f_sex IS NULL
+        or f_degree IS NULL
+        or f_academicdegrees IS NULL
+        or f_duties is null
+        or f_personnelcategory is null
+        or f_specialized is null
+        or f_development is null
+        or f_expertise is null
+        or f_professionalname is null
+        or f_famousteachers is null
+        or f_flg_head is null
+        or f_flg_leaders is null
+        or f_yearsservice is null
+    </select>
+    <select id="teaLosePerInfo" resultType="com.soft863.domain.TbperStaff">
+        <include refid="selectTbperStaffVo"/>
+        where f_birthdate IS NULL
+        or f_lssuingunit is null
+        or f_getdate is null
+        or f_certificateeligibility is null
+        or f_administrativemajor is null
+        or f_political_status is null
+    </select>
+    <select id="stuMore" resultType="com.soft863.domain.TbstuInfo">
+        <include refid="selectTbstuInfoVo"/>
+        <![CDATA[
+        WHERE DATE (f_graduationdate) < CURDATE()
+        ]]>
+    </select>
+    <select id="perMore" resultType="com.soft863.domain.TbperStaff">
+
+    </select>
+    <select id="isHave" parameterType="TbquaDetail" resultType="java.lang.Integer">
+        select count(1)
+        from tbqua_detail
+        where f_dataid = #{fDataid}
+          and f_tbname = #{fTbname}
+    </select>
+    <select id="count" parameterType="TbquaDetail" resultType="java.lang.Integer">
+        select count(1)
+        from tbqua_detail
+        where f_tbname = #{fTbname}
+          and f_type = #{fType}
+    </select>
+
+    <insert id="insertTbquaDetail" parameterType="TbquaDetail">
+        INSERT INTO tbqua_detail (f_taskid, f_type, f_dataid, f_tbname, f_suggestion)
+        VALUES (#{fTaskid}, #{fType}, #{fDataid}, #{fTbname}, #{fSuggestion})
+    </insert>
+
+
+</mapper>

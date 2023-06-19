@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('权重与等级设置')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-catalog-add">
+        评估得分=绩点*比重*权重+综合成绩*比重*权重+加分项*获奖次数
+        <hr>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">绩点与成绩比重：</label>
+            <div class="col-sm-2">
+                <input name="weight1"  style="width: 40px" type="text" required> :
+                <input name="weight2"  style="width: 40px" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">绩点权重占比：</label>
+            <div class="col-sm-3">
+                <input name="weight3" style="width: 40px" type="text" required>%
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">成绩权重占比：</label>
+            <div class="col-sm-2">
+                <input name="weight4" style="width: 40px" type="text" required>%
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">获奖加分：</label>
+            <div class="col-sm-2">
+                <input name="weight5" style="width: 40px" type="text">分
+            </div>
+        </div>
+        <hr>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">一等奖学金数量：</label>
+            <div class="col-sm-8">
+                <input name="weight6" style="width: 40px" type="text" required>个
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">二等奖学金数量：</label>
+            <div class="col-sm-8">
+                <input name="weight7" style="width: 40px" type="text" required>个
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">三等奖学金数量：</label>
+            <div class="col-sm-8">
+                <input name="weight8" style="width: 40px" type="text" required>个
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: datetimepicker-js" />
+<script th:inline="javascript">
+    var prefix = ctx + "dia/scholarshipAssessment";
+    $("#form-catalog-add").validate({
+        focusCleanup: true
+    });
+    function submitHandler() {
+        var weight3 = document.getElementsByName("weight3")[0].value;
+        var weight4 = document.getElementsByName("weight4")[0].value;
+        if (Number(weight3)+Number(weight4)==100){
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/weight", $('#form-catalog-add').serialize());
+            }
+        }else {
+            alert("权重占比总和必须为100");
+        }
+    }
+</script>
+</body>
+</html>

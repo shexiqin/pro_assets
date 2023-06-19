@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbsynTaskMapper">
+    
+    <resultMap type="TbsynTask" id="TbsynTaskResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fTaskId"    column="f_task_id"    />
+        <result property="fTaskName"    column="f_task_name"    />
+        <result property="fStatus"    column="f_status"    />
+        <result property="fCreateTime"    column="f_create_time"    />
+        <result property="fEndTime"    column="f_end_time"    />
+    </resultMap>
+
+    <sql id="selectTbsynTaskVo">
+        select f_id, f_task_id, f_task_name, f_status, f_create_time, f_end_time from tbsyn_task
+    </sql>
+
+    <select id="selectTbsynTaskList" parameterType="TbsynTask" resultMap="TbsynTaskResult">
+        <include refid="selectTbsynTaskVo"/>
+        <where>  
+            <if test="fTaskId != null "> and f_task_id = #{fTaskId}</if>
+            <if test="fTaskName != null  and fTaskName != ''"> and f_task_name like concat('%', #{fTaskName}, '%')</if>
+            <if test="fStatus != null  and fStatus != ''"> and f_status = #{fStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbsynTaskByFId" parameterType="Long" resultMap="TbsynTaskResult">
+        <include refid="selectTbsynTaskVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbsynTask" parameterType="TbsynTask">
+        insert into tbsyn_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fId != null">f_id,</if>
+            <if test="fTaskId != null">f_task_id,</if>
+            <if test="fTaskName != null and fTaskName != ''">f_task_name,</if>
+            <if test="fStatus != null">f_status,</if>
+            <if test="fCreateTime != null">f_create_time,</if>
+            <if test="fEndTime != null">f_end_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fId != null">#{fId},</if>
+            <if test="fTaskId != null">#{fTaskId},</if>
+            <if test="fTaskName != null and fTaskName != ''">#{fTaskName},</if>
+            <if test="fStatus != null">#{fStatus},</if>
+            <if test="fCreateTime != null">#{fCreateTime},</if>
+            <if test="fEndTime != null">#{fEndTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbsynTask" parameterType="TbsynTask">
+        update tbsyn_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fTaskId != null">f_task_id = #{fTaskId},</if>
+            <if test="fTaskName != null and fTaskName != ''">f_task_name = #{fTaskName},</if>
+            <if test="fStatus != null">f_status = #{fStatus},</if>
+            <if test="fCreateTime != null">f_create_time = #{fCreateTime},</if>
+            <if test="fEndTime != null">f_end_time = #{fEndTime},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbsynTaskByFId" parameterType="Long">
+        delete from tbsyn_task where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbsynTaskByFIds" parameterType="String">
+        delete from tbsyn_task where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

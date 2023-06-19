@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改助学金评估')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-assessment-selection" th:object="${tbdiaGrantsAssessment}">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">专业：</label>
+                <div class="col-sm-9">
+                    <select class="form-control" name="fMajor" th:with="type=${@dict.getType('profession_code')}">
+                        <option value="">所有</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}"  th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">班级：</label>
+                <div class="col-sm-9">
+                    <select name="fClazz" style="width: 80%" th:with="type=${@dict.getType('stu_grade')}">
+                        <option value="">所有</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">绩点（大于等于）：</label>
+                <div class="col-sm-9">
+                    <input style="width: 80%"type="text" th:value="${fStuGpa}" name="fStuGpa">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">校园卡消费(小于等于)：</label>
+                <div class="col-sm-9">
+                    <input style="width: 80%" type="text" th:value="${fConsumption}" name="fConsumption">&nbsp;元
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">请假次数（小于等于）：</label>
+                <div class="col-sm-9">
+                    <input name="fLeaveNum" style="width: 80%" th:value="${fLeaveNum}" type="text" >&nbsp;次
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+    var prefix = ctx + "dia/assessment";
+    $("#form-assessment-selection").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+            var b = confirm("这个操作需要重新选择权重");
+            if (b) {
+               if ($.validate.form()) {
+                        $.operate.save(prefix + "/selection", $('#form-assessment-selection').serialize());
+
+                }
+            }
+        }
+
+</script>
+</body>
+</html>

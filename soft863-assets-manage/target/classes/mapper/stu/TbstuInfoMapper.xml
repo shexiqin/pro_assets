@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbstuInfoMapper">
+    
+    <resultMap type="TbstuInfo" id="TbstuInfoResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fName"    column="f_name"    />
+        <result property="fNo"    column="f_no"    />
+        <result property="fSex"    column="f_sex"    />
+        <result property="fBirthday"    column="f_birthday"    />
+        <result property="fFaculty"    column="f_faculty"    />
+        <result property="fMajor"    column="f_major"    />
+        <result property="fGrade"    column="f_grade"    />
+        <result property="fAcademic"    column="f_academic"    />
+        <result property="fGraduationdate"    column="f_graduationdate"    />
+        <result property="fExamineenumber"    column="f_examineenumber"    />
+        <result property="fNation"    column="f_nation"    />
+        <result property="fIdentitycard"    column="f_identitycard"    />
+        <result property="fBirthplace"    column="f_birthplace"    />
+        <result property="fZone"    column="f_zone"    />
+        <result property="fHongkong"    column="f_hongkong"    />
+        <result property="fPoliticsstatus"    column="f_politicsstatus"    />
+        <result property="fCensusregister"    column="f_censusregister"    />
+        <result property="fDomicilearea"    column="f_domicilearea"    />
+        <result property="fClass"    column="f_class"    />
+        <result property="fEnrolltime"    column="f_enrolltime"    />
+        <result property="fCategory"    column="f_category"    />
+        <result property="fCultivatelevels"    column="f_cultivatelevels"    />
+        <result property="fStatus"    column="f_status"    />
+        <result property="fPhone"    column="f_phone"    />
+        <result property="fEmail"    column="f_email"    />
+        <result property="fQq"    column="f_qq"    />
+        <result property="fWechat"    column="f_wechat"    />
+        <result property="fAddress"    column="f_address"    />
+        <result property="fFamilyphone"    column="f_familyphone"    />
+    </resultMap>
+
+    <sql id="selectTbstuInfoVo">
+        select f_id, f_name, f_no, f_sex, f_birthday, f_faculty, f_major, f_grade, f_academic, f_graduationdate, f_examineenumber, f_nation, f_identitycard, f_birthplace, f_zone, f_hongkong, f_politicsstatus, f_censusregister, f_domicilearea, f_class, f_enrolltime, f_category, f_cultivatelevels, f_status, f_phone, f_email, f_qq, f_wechat, f_address, f_familyphone from tbstu_info
+    </sql>
+
+    <select id="selectTbstuInfoList" parameterType="TbstuInfo" resultMap="TbstuInfoResult">
+        <include refid="selectTbstuInfoVo"/>
+        <where>  
+            <if test="fName != null  and fName != ''"> and f_name like concat('%', #{fName}, '%')</if>
+            <if test="fNo != null  and fNo != ''"> and f_no = #{fNo}</if>
+            <if test="fSex != null  and fSex != ''"> and f_sex = #{fSex}</if>
+            <if test="fBirthday != null "> and f_birthday = #{fBirthday}</if>
+            <if test="fFaculty != null  and fFaculty != ''"> and f_faculty = #{fFaculty}</if>
+            <if test="fMajor != null  and fMajor != ''"> and f_major = #{fMajor}</if>
+            <if test="fAcademic != null  and fAcademic != ''"> and f_academic = #{fAcademic}</if>
+            <if test="fExamineenumber != null  and fExamineenumber != ''"> and f_examineenumber = #{fExamineenumber}</if>
+            <if test="fNation != null  and fNation != ''"> and f_nation = #{fNation}</if>
+            <if test="fPoliticsstatus != null  and fPoliticsstatus != ''"> and f_politicsstatus = #{fPoliticsstatus}</if>
+            <if test="fCensusregister != null  and fCensusregister != ''"> and f_censusregister = #{fCensusregister}</if>
+            <if test="fClass != null  and fClass != ''"> and f_class = #{fClass}</if>
+            <if test="fPhone != null  and fPhone != ''"> and f_phone = #{fPhone}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbstuInfoByFId" parameterType="Long" resultMap="TbstuInfoResult">
+        <include refid="selectTbstuInfoVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbstuInfo" parameterType="TbstuInfo" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbstu_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fName != null and fName != ''">f_name,</if>
+            <if test="fNo != null and fNo != ''">f_no,</if>
+            <if test="fSex != null">f_sex,</if>
+            <if test="fBirthday != null">f_birthday,</if>
+            <if test="fFaculty != null">f_faculty,</if>
+            <if test="fMajor != null">f_major,</if>
+            <if test="fGrade != null">f_grade,</if>
+            <if test="fAcademic != null">f_academic,</if>
+            <if test="fGraduationdate != null">f_graduationdate,</if>
+            <if test="fExamineenumber != null">f_examineenumber,</if>
+            <if test="fNation != null">f_nation,</if>
+            <if test="fIdentitycard != null">f_identitycard,</if>
+            <if test="fBirthplace != null">f_birthplace,</if>
+            <if test="fZone != null">f_zone,</if>
+            <if test="fHongkong != null">f_hongkong,</if>
+            <if test="fPoliticsstatus != null">f_politicsstatus,</if>
+            <if test="fCensusregister != null">f_censusregister,</if>
+            <if test="fDomicilearea != null">f_domicilearea,</if>
+            <if test="fClass != null">f_class,</if>
+            <if test="fEnrolltime != null">f_enrolltime,</if>
+            <if test="fCategory != null">f_category,</if>
+            <if test="fCultivatelevels != null">f_cultivatelevels,</if>
+            <if test="fStatus != null">f_status,</if>
+            <if test="fPhone != null">f_phone,</if>
+            <if test="fEmail != null">f_email,</if>
+            <if test="fQq != null">f_qq,</if>
+            <if test="fWechat != null">f_wechat,</if>
+            <if test="fAddress != null">f_address,</if>
+            <if test="fFamilyphone != null">f_familyphone,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fName != null and fName != ''">#{fName},</if>
+            <if test="fNo != null and fNo != ''">#{fNo},</if>
+            <if test="fSex != null">#{fSex},</if>
+            <if test="fBirthday != null">#{fBirthday},</if>
+            <if test="fFaculty != null">#{fFaculty},</if>
+            <if test="fMajor != null">#{fMajor},</if>
+            <if test="fGrade != null">#{fGrade},</if>
+            <if test="fAcademic != null">#{fAcademic},</if>
+            <if test="fGraduationdate != null">#{fGraduationdate},</if>
+            <if test="fExamineenumber != null">#{fExamineenumber},</if>
+            <if test="fNation != null">#{fNation},</if>
+            <if test="fIdentitycard != null">#{fIdentitycard},</if>
+            <if test="fBirthplace != null">#{fBirthplace},</if>
+            <if test="fZone != null">#{fZone},</if>
+            <if test="fHongkong != null">#{fHongkong},</if>
+            <if test="fPoliticsstatus != null">#{fPoliticsstatus},</if>
+            <if test="fCensusregister != null">#{fCensusregister},</if>
+            <if test="fDomicilearea != null">#{fDomicilearea},</if>
+            <if test="fClass != null">#{fClass},</if>
+            <if test="fEnrolltime != null">#{fEnrolltime},</if>
+            <if test="fCategory != null">#{fCategory},</if>
+            <if test="fCultivatelevels != null">#{fCultivatelevels},</if>
+            <if test="fStatus != null">#{fStatus},</if>
+            <if test="fPhone != null">#{fPhone},</if>
+            <if test="fEmail != null">#{fEmail},</if>
+            <if test="fQq != null">#{fQq},</if>
+            <if test="fWechat != null">#{fWechat},</if>
+            <if test="fAddress != null">#{fAddress},</if>
+            <if test="fFamilyphone != null">#{fFamilyphone},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbstuInfo" parameterType="TbstuInfo">
+        update tbstu_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fName != null and fName != ''">f_name = #{fName},</if>
+            <if test="fNo != null and fNo != ''">f_no = #{fNo},</if>
+            <if test="fSex != null">f_sex = #{fSex},</if>
+            <if test="fBirthday != null">f_birthday = #{fBirthday},</if>
+            <if test="fFaculty != null">f_faculty = #{fFaculty},</if>
+            <if test="fMajor != null">f_major = #{fMajor},</if>
+            <if test="fGrade != null">f_grade = #{fGrade},</if>
+            <if test="fAcademic != null">f_academic = #{fAcademic},</if>
+            <if test="fGraduationdate != null">f_graduationdate = #{fGraduationdate},</if>
+            <if test="fExamineenumber != null">f_examineenumber = #{fExamineenumber},</if>
+            <if test="fNation != null">f_nation = #{fNation},</if>
+            <if test="fIdentitycard != null">f_identitycard = #{fIdentitycard},</if>
+            <if test="fBirthplace != null">f_birthplace = #{fBirthplace},</if>
+            <if test="fZone != null">f_zone = #{fZone},</if>
+            <if test="fHongkong != null">f_hongkong = #{fHongkong},</if>
+            <if test="fPoliticsstatus != null">f_politicsstatus = #{fPoliticsstatus},</if>
+            <if test="fCensusregister != null">f_censusregister = #{fCensusregister},</if>
+            <if test="fDomicilearea != null">f_domicilearea = #{fDomicilearea},</if>
+            <if test="fClass != null">f_class = #{fClass},</if>
+            <if test="fEnrolltime != null">f_enrolltime = #{fEnrolltime},</if>
+            <if test="fCategory != null">f_category = #{fCategory},</if>
+            <if test="fCultivatelevels != null">f_cultivatelevels = #{fCultivatelevels},</if>
+            <if test="fStatus != null">f_status = #{fStatus},</if>
+            <if test="fPhone != null">f_phone = #{fPhone},</if>
+            <if test="fEmail != null">f_email = #{fEmail},</if>
+            <if test="fQq != null">f_qq = #{fQq},</if>
+            <if test="fWechat != null">f_wechat = #{fWechat},</if>
+            <if test="fAddress != null">f_address = #{fAddress},</if>
+            <if test="fFamilyphone != null">f_familyphone = #{fFamilyphone},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbstuInfoByFId" parameterType="Long">
+        delete from tbstu_info where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbstuInfoByFIds" parameterType="String">
+        delete from tbstu_info where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

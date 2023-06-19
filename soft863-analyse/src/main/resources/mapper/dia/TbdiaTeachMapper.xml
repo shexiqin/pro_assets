@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbdiaTeachMapper">
+    
+    <resultMap type="TbdiaTeach" id="TbdiaTeachResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fTno"    column="f_tno"    />
+        <result property="fTname"    column="f_tname"    />
+        <result property="fSex"    column="f_sex"    />
+        <result property="fBirth"    column="f_birth"    />
+        <result property="fPolit"    column="f_polit"    />
+        <result property="fNation"    column="f_nation"    />
+        <result property="fEdu"    column="f_edu"    />
+        <result property="fPost"    column="f_post"    />
+        <result property="fDept"    column="f_dept"    />
+        <result property="fPostType"    column="f_post_type"    />
+        <result property="fProCode"    column="f_pro_code"    />
+        <result property="fCourseId"    column="f_course_id"    />
+        <result property="fCourseScore"    column="f_course_score"    />
+        <result property="fProfess"    column="f_profess"    />
+        <result property="fSalary"    column="f_salary"    />
+        <result property="fWorkday"    column="f_workday"    />
+        <result property="fNationGainnum"    column="f_nation_gainnum"    />
+        <result property="fProvinGainnum"    column="f_provin_gainnum"    />
+        <result property="fTownGainnum"    column="f_town_gainnum"    />
+        <result property="fCounGainnum"    column="f_coun_gainnum"    />
+        <result property="fScoGainnum"    column="f_sco_gainnum"    />
+        <result property="fCommres"    column="f_commres"    />
+        <result property="fComment"    column="f_comment"    />
+    </resultMap>
+
+    <sql id="selectTbdiaTeachVo">
+        select f_id, f_tno, f_tname, f_sex, f_birth, f_polit, f_nation, f_edu, f_post, f_dept, f_post_type, f_pro_code, f_course_id, f_course_score, f_profess, f_salary, f_workday, f_nation_gainnum, f_provin_gainnum, f_town_gainnum, f_coun_gainnum, f_sco_gainnum, f_commres, f_comment from tbdia_teach
+    </sql>
+
+    <select id="selectTbdiaTeachList" parameterType="TbdiaTeach" resultMap="TbdiaTeachResult">
+        <include refid="selectTbdiaTeachVo"/>
+        <where>  
+            <if test="fId != null "> and f_id = #{fId}</if>
+            <if test="fTno != null "> and f_tno = #{fTno}</if>
+            <if test="fTname != null  and fTname != ''"> and f_tname like concat('%', #{fTname}, '%')</if>
+            <if test="fSex != null  and fSex != ''"> and f_sex = #{fSex}</if>
+            <if test="fBirth != null "> and f_birth = #{fBirth}</if>
+            <if test="fPolit != null  and fPolit != ''"> and f_polit = #{fPolit}</if>
+            <if test="fNation != null  and fNation != ''"> and f_nation = #{fNation}</if>
+            <if test="fEdu != null  and fEdu != ''"> and f_edu = #{fEdu}</if>
+            <if test="fPost != null  and fPost != ''"> and f_post = #{fPost}</if>
+            <if test="fDept != null  and fDept != ''"> and f_dept = #{fDept}</if>
+            <if test="fPostType != null  and fPostType != ''"> and f_post_type = #{fPostType}</if>
+            <if test="fProCode != null  and fProCode != ''"> and f_pro_code = #{fProCode}</if>
+            <if test="fCourseId != null  and fCourseId != ''"> and f_course_id = #{fCourseId}</if>
+            <if test="fCourseScore != null "> and f_course_score = #{fCourseScore}</if>
+            <if test="fProfess != null  and fProfess != ''"> and f_profess = #{fProfess}</if>
+            <if test="fSalary != null "> and f_salary = #{fSalary}</if>
+            <if test="fWorkday != null "> and f_workday = #{fWorkday}</if>
+            <if test="fNationGainnum != null "> and f_nation_gainnum = #{fNationGainnum}</if>
+            <if test="fProvinGainnum != null "> and f_provin_gainnum = #{fProvinGainnum}</if>
+            <if test="fTownGainnum != null "> and f_town_gainnum = #{fTownGainnum}</if>
+            <if test="fCounGainnum != null "> and f_coun_gainnum = #{fCounGainnum}</if>
+            <if test="fScoGainnum != null "> and f_sco_gainnum = #{fScoGainnum}</if>
+            <if test="fCommres != null  and fCommres != ''"> and f_commres = #{fCommres}</if>
+            <if test="fComment != null  and fComment != ''"> and f_comment = #{fComment}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbdiaTeachByFId" parameterType="Long" resultMap="TbdiaTeachResult">
+        <include refid="selectTbdiaTeachVo"/>
+        where f_id = #{fId}
+    </select>
+    <select id="selectTeacherByMajorCode" resultMap="TbdiaTeachResult">
+        <include refid="selectTbdiaTeachVo"/>
+        where f_pro_code = #{majorCode}
+    </select>
+    <select id="selectTeacherCount" resultType="java.util.Map">
+        select f_post name,count(1) value from tbdia_teach group by f_post
+    </select>
+
+    <insert id="insertTbdiaTeach" parameterType="TbdiaTeach" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbdia_teach
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fTno != null">f_tno,</if>
+            <if test="fTname != null and fTname != ''">f_tname,</if>
+            <if test="fSex != null and fSex != ''">f_sex,</if>
+            <if test="fBirth != null">f_birth,</if>
+            <if test="fPolit != null">f_polit,</if>
+            <if test="fNation != null">f_nation,</if>
+            <if test="fEdu != null">f_edu,</if>
+            <if test="fPost != null">f_post,</if>
+            <if test="fDept != null and fDept != ''">f_dept,</if>
+            <if test="fPostType != null">f_post_type,</if>
+            <if test="fProCode != null">f_pro_code,</if>
+            <if test="fCourseId != null">f_course_id,</if>
+            <if test="fCourseScore != null">f_course_score,</if>
+            <if test="fProfess != null">f_profess,</if>
+            <if test="fSalary != null">f_salary,</if>
+            <if test="fWorkday != null">f_workday,</if>
+            <if test="fNationGainnum != null">f_nation_gainnum,</if>
+            <if test="fProvinGainnum != null">f_provin_gainnum,</if>
+            <if test="fTownGainnum != null">f_town_gainnum,</if>
+            <if test="fCounGainnum != null">f_coun_gainnum,</if>
+            <if test="fScoGainnum != null">f_sco_gainnum,</if>
+            <if test="fCommres != null">f_commres,</if>
+            <if test="fComment != null">f_comment,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fTno != null">#{fTno},</if>
+            <if test="fTname != null and fTname != ''">#{fTname},</if>
+            <if test="fSex != null and fSex != ''">#{fSex},</if>
+            <if test="fBirth != null">#{fBirth},</if>
+            <if test="fPolit != null">#{fPolit},</if>
+            <if test="fNation != null">#{fNation},</if>
+            <if test="fEdu != null">#{fEdu},</if>
+            <if test="fPost != null">#{fPost},</if>
+            <if test="fDept != null and fDept != ''">#{fDept},</if>
+            <if test="fPostType != null">#{fPostType},</if>
+            <if test="fProCode != null">#{fProCode},</if>
+            <if test="fCourseId != null">#{fCourseId},</if>
+            <if test="fCourseScore != null">#{fCourseScore},</if>
+            <if test="fProfess != null">#{fProfess},</if>
+            <if test="fSalary != null">#{fSalary},</if>
+            <if test="fWorkday != null">#{fWorkday},</if>
+            <if test="fNationGainnum != null">#{fNationGainnum},</if>
+            <if test="fProvinGainnum != null">#{fProvinGainnum},</if>
+            <if test="fTownGainnum != null">#{fTownGainnum},</if>
+            <if test="fCounGainnum != null">#{fCounGainnum},</if>
+            <if test="fScoGainnum != null">#{fScoGainnum},</if>
+            <if test="fCommres != null">#{fCommres},</if>
+            <if test="fComment != null">#{fComment},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbdiaTeach" parameterType="TbdiaTeach">
+        update tbdia_teach
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fTno != null">f_tno = #{fTno},</if>
+            <if test="fTname != null and fTname != ''">f_tname = #{fTname},</if>
+            <if test="fSex != null and fSex != ''">f_sex = #{fSex},</if>
+            <if test="fBirth != null">f_birth = #{fBirth},</if>
+            <if test="fPolit != null">f_polit = #{fPolit},</if>
+            <if test="fNation != null">f_nation = #{fNation},</if>
+            <if test="fEdu != null">f_edu = #{fEdu},</if>
+            <if test="fPost != null">f_post = #{fPost},</if>
+            <if test="fDept != null and fDept != ''">f_dept = #{fDept},</if>
+            <if test="fPostType != null">f_post_type = #{fPostType},</if>
+            <if test="fProCode != null">f_pro_code = #{fProCode},</if>
+            <if test="fCourseId != null">f_course_id = #{fCourseId},</if>
+            <if test="fCourseScore != null">f_course_score = #{fCourseScore},</if>
+            <if test="fProfess != null">f_profess = #{fProfess},</if>
+            <if test="fSalary != null">f_salary = #{fSalary},</if>
+            <if test="fWorkday != null">f_workday = #{fWorkday},</if>
+            <if test="fNationGainnum != null">f_nation_gainnum = #{fNationGainnum},</if>
+            <if test="fProvinGainnum != null">f_provin_gainnum = #{fProvinGainnum},</if>
+            <if test="fTownGainnum != null">f_town_gainnum = #{fTownGainnum},</if>
+            <if test="fCounGainnum != null">f_coun_gainnum = #{fCounGainnum},</if>
+            <if test="fScoGainnum != null">f_sco_gainnum = #{fScoGainnum},</if>
+            <if test="fCommres != null">f_commres = #{fCommres},</if>
+            <if test="fComment != null">f_comment = #{fComment},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+
+    <delete id="deleteTbdiaTeachByFId" parameterType="Long">
+        delete from tbdia_teach where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbdiaTeachByFIds" parameterType="String">
+        delete from tbdia_teach where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+
+    <select id="electTbdiaTeachCouint1" resultType="int">
+       select  count(*)  from tbdia_teach <where>
+        f_post_type  !=2   or f_post_type is null
+    </where>
+    </select>
+
+    <select id="tbdiaTeachOutCount" resultType="java.lang.Integer">
+        select  count(*)  from tbdia_teach <where>
+        f_post_type  =2
+    </where>
+    </select>
+    <select id="tbdiaTeachAwardsCoun" resultType="java.lang.Integer">
+        select count(*) from tbdia_teach  where  (f_coun_gainnum+f_provin_gainnum+f_sco_gainnum+f_town_gainnum) >0
+    </select>
+    <select id="tbdiaTeachRescarchCount" resultType="java.lang.Integer">
+        select count(*)   from tbsci_results
+    </select>
+    <select id="tbdiaTeachByFId" resultType="com.soft863.domain.TbdiaTeach">
+        select f_id, f_tno, f_tname, f_sex, f_birth, f_polit, f_nation, f_edu, f_post, f_dept,
+               f_post_type, f_pro_code, f_course_id, f_course_score, f_profess, f_salary, f_workday,
+               f_nation_gainnum, f_provin_gainnum, f_town_gainnum, f_coun_gainnum, f_sco_gainnum, f_commres, f_comment from tbdia_teach where
+             f_id=#{fId}
+
+    </select>
+    <select id="tbdiaTeachSexCount1" resultType="java.lang.Integer">
+        select count(1) from  tbdia_teach where f_sex='0'
+    </select>
+    <select id="tbdiaTeachSexCount2" resultType="java.lang.Integer">
+        select count(1) from  tbdia_teach where f_sex='1'
+    </select>
+    <select id="tbdiaTeachAwardTypeCount1" resultType="java.lang.Integer">
+        select count(f_nation_gainnum)  from  tbdia_teach  where f_nation_gainnum>0
+    </select>
+    <select id="tbdiaTeachAwardTypeCount2" resultType="java.lang.Integer">
+        select count(f_provin_gainnum)  from  tbdia_teach  where f_provin_gainnum>0
+    </select>
+    <select id="tbdiaTeachAwardTypeCount3" resultType="java.lang.Integer">
+        select count(f_town_gainnum)  from  tbdia_teach  where  f_town_gainnum>0
+    </select>
+    <select id="getCountSexType" resultType="java.util.Map">
+        select count(f_sex) value ,f_sex name  from tbdia_teach  group by f_sex
+    </select>
+    <select id="getCountTeachType" resultType="java.util.Map">
+        select count(f_post_type) value ,f_post_type name from tbdia_teach  where f_post_type is not null
+        group by f_post_type
+    </select>
+    <select id="getTbdiaTeachAge" resultType="java.lang.Object">
+
+            select TIMESTAMPDIFF(YEAR ,f_birth,CURDATE()) AS age from tbdia_teach
+
+    </select>
+    <select id="getTbdiaTeachEdu" resultType="java.util.Map">
+        select count(f_edu) value ,f_edu name  from tbdia_teach  group by f_edu
+    </select>
+
+    <select id="getTbdiaTeachName" resultType="java.lang.Object">
+    select f_tname from tbdia_teach
+    </select>
+    <select id="selectTeacherType" resultType="java.util.Map">
+        select
+               case
+when  f_post_type=1 then '专职教师'
+when f_post_type=2  then '外聘教师'
+when f_post_type=3  then '其他'
+end name  ,count(1) value  from tbdia_teach group  by name
+    </select>
+
+
+</mapper>

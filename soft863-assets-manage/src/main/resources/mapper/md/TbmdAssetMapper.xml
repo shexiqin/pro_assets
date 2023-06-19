@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbmdAssetMapper">
+    
+    <resultMap type="TbmdAsset" id="TbmdAssetResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fCatalogCode"    column="f_catalog_code"    />
+        <result property="fTableCode"    column="f_table_code"    />
+        <result property="fTableName"    column="f_table_name"    />
+        <result property="fType"    column="f_type"    />
+        <result property="fDeployStatus"    column="f_deploy_status"    />
+        <result property="fGradeType"    column="f_grade_type"    />
+        <result property="fLabelName"    column="f_label_name"    />
+        <result property="fCreator"    column="f_creator"    />
+        <result property="fCreateTime"    column="f_create_time"    />
+        <result property="fModifier"    column="f_modifier"    />
+        <result property="fModifyTime"    column="f_modify_time"    />
+    </resultMap>
+
+    <sql id="selectTbmdAssetVo">
+        select f_id, f_catalog_code, f_table_code, f_table_name, f_type, f_deploy_status, f_grade_type, f_label_name, f_creator, f_create_time, f_modifier, f_modify_time from tbmd_asset
+    </sql>
+
+    <select id="selectTbmdAssetList" parameterType="TbmdAsset" resultMap="TbmdAssetResult">
+        <include refid="selectTbmdAssetVo"/>
+        <where>  
+            <if test="fCatalogCode != null "> and f_catalog_code = #{fCatalogCode}</if>
+            <if test="fTableCode != null "> and f_table_code = #{fTableCode}</if>
+            <if test="fTableName != null  and fTableName != ''"> and f_table_name like concat('%', #{fTableName}, '%')</if>
+            <if test="fType != null  and fType != ''"> and f_type = #{fType}</if>
+            <if test="fDeployStatus != null "> and f_deploy_status = #{fDeployStatus}</if>
+            <if test="fGradeType != null "> and f_grade_type = #{fGradeType}</if>
+            <if test="fCreateTime != null "> and f_create_time = #{fCreateTime}</if>
+            <if test="fModifyTime != null "> and f_modify_time = #{fModifyTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbmdAssetByFId" parameterType="Long" resultMap="TbmdAssetResult">
+        <include refid="selectTbmdAssetVo"/>
+        where f_id = #{fId}
+    </select>
+
+    <select id="selNum1" resultType="integer">
+        select count(f_grade_type)num from tbmd_asset group by f_grade_type
+    </select>
+    <select id="selTotal" resultType="java.lang.Integer">
+        select count(f_grade_type)from tbmd_asset
+    </select>
+    <select id="selPublish" resultType="java.lang.Integer">
+        select count(1)from tbmd_asset where f_deploy_status = 1
+    </select>
+    <select id="selShare" resultType="integer">
+        select count(1) from tbmd_share group by f_share_type
+    </select>
+
+
+    <insert id="insertTbmdAsset" parameterType="TbmdAsset">
+        insert into tbmd_asset
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fId != null">f_id,</if>
+            <if test="fCatalogCode != null">f_catalog_code,</if>
+            <if test="fTableCode != null">f_table_code,</if>
+            <if test="fTableName != null">f_table_name,</if>
+            <if test="fType != null">f_type,</if>
+            <if test="fDeployStatus != null">f_deploy_status,</if>
+            <if test="fGradeType != null">f_grade_type,</if>
+            <if test="fLabelName != null">f_label_name,</if>
+            <if test="fCreator != null">f_creator,</if>
+            <if test="fCreateTime != null">f_create_time,</if>
+            <if test="fModifier != null">f_modifier,</if>
+            <if test="fModifyTime != null">f_modify_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fId != null">#{fId},</if>
+            <if test="fCatalogCode != null">#{fCatalogCode},</if>
+            <if test="fTableCode != null">#{fTableCode},</if>
+            <if test="fTableName != null">#{fTableName},</if>
+            <if test="fType != null">#{fType},</if>
+            <if test="fDeployStatus != null">#{fDeployStatus},</if>
+            <if test="fGradeType != null">#{fGradeType},</if>
+            <if test="fLabelName != null">#{fLabelName},</if>
+            <if test="fCreator != null">#{fCreator},</if>
+            <if test="fCreateTime != null">#{fCreateTime},</if>
+            <if test="fModifier != null">#{fModifier},</if>
+            <if test="fModifyTime != null">#{fModifyTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbmdAsset" parameterType="TbmdAsset">
+        update tbmd_asset
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fCatalogCode != null">f_catalog_code = #{fCatalogCode},</if>
+            <if test="fTableCode != null">f_table_code = #{fTableCode},</if>
+            <if test="fTableName != null">f_table_name = #{fTableName},</if>
+            <if test="fType != null">f_type = #{fType},</if>
+            <if test="fDeployStatus != null">f_deploy_status = #{fDeployStatus},</if>
+            <if test="fGradeType != null">f_grade_type = #{fGradeType},</if>
+            <if test="fLabelName != null">f_label_name = #{fLabelName},</if>
+            <if test="fCreator != null">f_creator = #{fCreator},</if>
+            <if test="fCreateTime != null">f_create_time = #{fCreateTime},</if>
+            <if test="fModifier != null">f_modifier = #{fModifier},</if>
+            <if test="fModifyTime != null">f_modify_time = #{fModifyTime},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbmdAssetByFId" parameterType="Long">
+        delete from tbmd_asset where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbmdAssetByFIds" parameterType="String">
+        delete from tbmd_asset where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

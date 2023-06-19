@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改学生预警')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-stuwarn-edit" th:object="${tbdiaWarnStu}">
+            <input name="fId" th:field="*{fId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学生学号：</label>
+                <div class="col-sm-8">
+                    <input name="fSno" th:field="*{fSno}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学生姓名：</label>
+                <div class="col-sm-8">
+                    <input name="fSname" th:field="*{fSname}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">教工号：</label>
+                <div class="col-sm-8">
+                    <input name="fTno" th:field="*{fTno}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">教工姓名：</label>
+                <div class="col-sm-8">
+                    <input name="fTname" th:field="*{fTname}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">预警类型：</label>
+                <div class="col-sm-8">
+                    <select name="fWarnType" class="form-control m-b" th:with="type=${@dict.getType('dia_warn')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fWarnType}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">预警时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="fTime" th:value="${#dates.format(tbdiaWarnStu.fTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否处理预警：</label>
+                <div class="col-sm-8">
+                    <select name="fStatue" class="form-control m-b" th:with="type=${@dict.getType('dia_warn_deal')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fStatue}"></option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "dia/stuwarn";
+        $("#form-stuwarn-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-stuwarn-edit').serialize());
+            }
+        }
+
+        $("input[name='fTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

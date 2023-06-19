@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbmdCollectMapper">
+    
+    <resultMap type="TbmdCollect" id="TbmdCollectResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fUserid"    column="f_userid"    />
+        <result property="fUsername"    column="f_username"    />
+        <result property="fCatalogId"    column="f_catalog_id"    />
+        <result property="fCatalogName"    column="f_catalog_name"    />
+        <result property="fCreateTime"    column="f_create_time"    />
+    </resultMap>
+
+    <sql id="selectTbmdCollectVo">
+        select f_id, f_userid, f_username, f_catalog_id, f_catalog_name, f_create_time from tbmd_collect
+    </sql>
+
+    <select id="selectTbmdCollectList" parameterType="TbmdCollect" resultMap="TbmdCollectResult">
+        <include refid="selectTbmdCollectVo"/>
+        <where>  
+            <if test="fId != null "> and f_id = #{fId}</if>
+            <if test="fUserid != null "> and f_userid = #{fUserid}</if>
+            <if test="fUsername != null  and fUsername != ''"> and f_username like concat('%', #{fUsername}, '%')</if>
+            <if test="fCatalogId != null "> and f_catalog_id = #{fCatalogId}</if>
+            <if test="fCatalogName != null  and fCatalogName != ''"> and f_catalog_name like concat('%', #{fCatalogName}, '%')</if>
+            <if test="fCreateTime != null "> and f_create_time = #{fCreateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbmdCollectByFId" parameterType="Long" resultMap="TbmdCollectResult">
+        <include refid="selectTbmdCollectVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbmdCollect" parameterType="TbmdCollect">
+        insert into tbmd_collect
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fId != null">f_id,</if>
+            <if test="fUserid != null">f_userid,</if>
+            <if test="fUsername != null">f_username,</if>
+            <if test="fCatalogId != null">f_catalog_id,</if>
+            <if test="fCatalogName != null">f_catalog_name,</if>
+            <if test="fCreateTime != null">f_create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fId != null">#{fId},</if>
+            <if test="fUserid != null">#{fUserid},</if>
+            <if test="fUsername != null">#{fUsername},</if>
+            <if test="fCatalogId != null">#{fCatalogId},</if>
+            <if test="fCatalogName != null">#{fCatalogName},</if>
+            <if test="fCreateTime != null">#{fCreateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbmdCollect" parameterType="TbmdCollect">
+        update tbmd_collect
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fUserid != null">f_userid = #{fUserid},</if>
+            <if test="fUsername != null">f_username = #{fUsername},</if>
+            <if test="fCatalogId != null">f_catalog_id = #{fCatalogId},</if>
+            <if test="fCatalogName != null">f_catalog_name = #{fCatalogName},</if>
+            <if test="fCreateTime != null">f_create_time = #{fCreateTime},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbmdCollectByFId" parameterType="Long">
+        delete from tbmd_collect where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbmdCollectByFIds" parameterType="String">
+        delete from tbmd_collect where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

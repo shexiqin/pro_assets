@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('评估条件设置')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-assessment-selection" th:object="${tbdiaGrantsAssessment}">
+
+
+        <div class="form-group">
+            <!--<label class="col-sm-3 control-label">绩点（大于等于）：</label>
+            <div class="col-sm-8">
+                    <span>
+                    <input style="width: 80px" type="text" name="fStuGpa">
+                    </span>
+            </div>
+-->
+            <label class="col-sm-3 control-label">获奖次数：</label>
+            <div class="col-sm-9">
+                <input type="text" name="prizeCount" class="form-control" placeholder="1                                 单位：次  （大于等于）">
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+<!--            <label class="col-sm-3 control-label">校园卡消费(小于等于)：</label>
+            <div class="col-sm-8">
+                    <span>
+                    <input style="width: 40px" type="text" name="fClazz">元
+                    </span>
+            </div>-->
+
+            <label class="col-sm-3 control-label">工作年限：</label>
+            <div class="col-sm-9">
+                <input type="text" name="workyear" class="form-control" placeholder="1                                 单位：年  （大于等于）">
+            </div>
+
+        </div>
+
+        <div class="form-group">
+<!--            <label class="col-sm-3 control-label is-required">请假次数（小于等于）：</label>
+            <div class="col-sm-2">
+                <input name="fLeaveNum" style="width: 40px" type="text" >次
+            </div>
+        </div>-->
+
+        <label class="col-sm-3 control-label">课程评分：</label>
+        <div class="col-sm-9">
+            <input type="text" name="score" class="form-control" placeholder="60                                 单位：分  （大于等于）">
+        </div>
+
+    </form>
+</div>
+
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+    var prefix = ctx + "dia/assessment";
+    $("#form-assessment-selection").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        var b = confirm("111");
+        if (b) {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/list", $('#form-assessment-selection').serialize());
+            }
+        }
+    }
+
+</script>
+</body>
+</html>

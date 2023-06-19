@@ -1,0 +1,54 @@
+body{
+    padding: 0;
+    height: 100%;
+}
+/*顶部菜单*/
+.top-menu{
+    background: #FF9671;
+    height: 30%;
+    opacity: 0.7;
+}
+/*推荐全类型*/
+.main-allType{
+    background: #FFC75F;
+    height: 12%;
+    opacity: 0.7;
+}
+/*主层推荐*/
+.main-recommend{
+    background: #F9F871;
+    height: 72%;
+    opacity: 0.7;
+}
+/*主层各类型*/
+.main-eachType{
+    background: #FBEAFF;
+    height: 16%;
+    opacity: 0.7;
+}
+/*主层推荐走马灯*/
+.main-recommend-carousel{
+    float: left;
+    background: #0e8c8c;
+    padding-left: 20px;
+    padding-top: 20px;
+    width: 40%;
+    height: 100%;
+}
+/*主层推荐视频层*/
+.main-recommend-AV{
+    float: left;
+    display: inline-block;
+    margin-left: 20px;
+    background: #F3C5FF;
+    width: 58%;
+    height: 100%;
+    text-align: left;
+}
+/*主层推荐视频层-图片层*/
+.AV-img{
+    margin: 10px 10px 0px 5px;
+    height: 35%;
+    width: 88%;
+    border-radius: 5%;
+}

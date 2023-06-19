@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbstuClockinMapper">
+    
+    <resultMap type="TbstuClockin" id="TbstuClockinResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fStuid"    column="f_stuid"    />
+        <result property="fStuname"    column="f_stuname"    />
+        <result property="fLocation"    column="f_location"    />
+        <result property="fClocktime"    column="f_clocktime"    />
+    </resultMap>
+
+    <sql id="selectTbstuClockinVo">
+        select f_id, f_stuid, f_stuname, f_location, f_clocktime from tbstu_clockin
+    </sql>
+
+    <select id="selectTbstuClockinList" parameterType="TbstuClockin" resultMap="TbstuClockinResult">
+        <include refid="selectTbstuClockinVo"/>
+        <where>  
+            <if test="fStuname != null  and fStuname != ''"> and f_stuname like concat('%', #{fStuname}, '%')</if>
+            <if test="fClocktime != null "> and f_clocktime = #{fClocktime}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbstuClockinByFId" parameterType="Long" resultMap="TbstuClockinResult">
+        <include refid="selectTbstuClockinVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbstuClockin" parameterType="TbstuClockin" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbstu_clockin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fStuid != null">f_stuid,</if>
+            <if test="fStuname != null">f_stuname,</if>
+            <if test="fLocation != null">f_location,</if>
+            <if test="fClocktime != null">f_clocktime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fStuid != null">#{fStuid},</if>
+            <if test="fStuname != null">#{fStuname},</if>
+            <if test="fLocation != null">#{fLocation},</if>
+            <if test="fClocktime != null">#{fClocktime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbstuClockin" parameterType="TbstuClockin">
+        update tbstu_clockin
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fStuid != null">f_stuid = #{fStuid},</if>
+            <if test="fStuname != null">f_stuname = #{fStuname},</if>
+            <if test="fLocation != null">f_location = #{fLocation},</if>
+            <if test="fClocktime != null">f_clocktime = #{fClocktime},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbstuClockinByFId" parameterType="Long">
+        delete from tbstu_clockin where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbstuClockinByFIds" parameterType="String">
+        delete from tbstu_clockin where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

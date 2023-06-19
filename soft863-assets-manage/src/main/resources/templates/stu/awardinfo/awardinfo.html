@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('学生获奖信息列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>项目名称：</label>
+                                <input type="text" name="fProjectname"/>
+                            </li>
+                            <li>
+                                <label>项目类别：</label>
+                                <input type="text" name="fProjectcategory"/>
+                            </li>
+                            <li>
+                                <label>级别：</label>
+                                <select name="fLevel" th:with="type=${@dict.getType('stu_get_level')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>获奖等级：</label>
+                                <input type="text" name="fAwardgrade"/>
+                            </li>
+                            <li>
+                                <label>获奖日：</label>
+                                <input type="text" class="time-input" placeholder="请选择获奖日" name="fDateaward"/>
+                            </li>
+                            <li>
+                                <label>获奖学生：</label>
+                                <input type="text" name="fSname"/>
+                            </li>
+                            <li>
+                                <label>指导教师名单：</label>
+                                <input type="text" name="fListinstructors"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="stu:awardinfo:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="stu:awardinfo:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="stu:awardinfo:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="stu:awardinfo:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('stu:awardinfo:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('stu:awardinfo:remove')}]];
+        var fLevelDatas = [[${@dict.getType('stu_get_level')}]];
+        var prefix = ctx + "stu/awardinfo";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "学生获奖信息",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'fId',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'fProjectname',
+                    title: '项目名称'
+                },
+                {
+                    field: 'fProjectcategory',
+                    title: '项目类别'
+                },
+                {
+                    field: 'fLevel',
+                    title: '级别',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fLevelDatas, value);
+                    }
+                },
+                {
+                    field: 'fAwardgrade',
+                    title: '获奖等级'
+                },
+                {
+                    field: 'fDateaward',
+                    title: '获奖日'
+                },
+                {
+                    field: 'fSname',
+                    title: '获奖学生'
+                },
+                {
+                    field: 'fListinstructors',
+                    title: '指导教师名单'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.fId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.fId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

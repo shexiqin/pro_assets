@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('评估条件设置')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-catalog-add">
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">学分绩效（大于等于）：</label>
+            <div class="col-sm-3">
+                <input name="estimate1" style="width: 40px" type="text">分
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">综合成绩（大于等于）：</label>
+            <div class="col-sm-2">
+                <input name="estimate2" style="width: 40px" type="text" required>分
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">请假次数（小于等于）：</label>
+            <div class="col-sm-2">
+                <input name="estimate3" style="width: 40px" type="text" required>次
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required" required>缺勤次数（小于等于）：</label>
+            <div class="col-sm-2">
+                <input name="estimate4" style="width: 40px" type="text" required>次
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: datetimepicker-js" />
+<script th:inline="javascript">
+    var prefix = ctx + "dia/scholarshipAssessment";
+    $("#form-catalog-add").validate({
+        focusCleanup: true
+    });
+    function submitHandler() {
+        var flg = confirm("此操作会重置奖学金评估列表");
+        if (flg){
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/estimate", $('#form-catalog-add').serialize());
+            }
+        }
+    }
+</script>
+</body>
+</html>

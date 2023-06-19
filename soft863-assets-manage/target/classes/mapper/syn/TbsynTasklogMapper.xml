@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbsynTasklogMapper">
+    
+    <resultMap type="TbsynTasklog" id="TbsynTasklogResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fTaskid"    column="f_taskid"    />
+        <result property="fTaskName"    column="f_task_name"    />
+        <result property="fLog"    column="f_log"    />
+        <result property="fType"    column="f_type"    />
+        <result property="fTime"    column="f_time"    />
+        <result property="fException"    column="f_exception"    />
+    </resultMap>
+
+    <sql id="selectTbsynTasklogVo">
+        select f_id, f_taskid, f_task_name, f_log, f_type, f_time, f_exception from tbsyn_tasklog
+    </sql>
+
+    <select id="selectTbsynTasklogList" parameterType="TbsynTasklog" resultMap="TbsynTasklogResult">
+        <include refid="selectTbsynTasklogVo"/>
+        <where>  
+            <if test="fTaskName != null  and fTaskName != ''"> and f_task_name like concat('%', #{fTaskName}, '%')</if>
+            <if test="fLog != null  and fLog != ''"> and f_log like concat('%', #{fLog}, '%')</if>
+            <if test="fType != null  and fType != ''"> and f_type = #{fType}</if>
+            <if test="fException != null  and fException != ''"> and f_exception = #{fException}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbsynTasklogByFId" parameterType="Long" resultMap="TbsynTasklogResult">
+        <include refid="selectTbsynTasklogVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbsynTasklog" parameterType="TbsynTasklog">
+        insert into tbsyn_tasklog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fId != null">f_id,</if>
+            <if test="fTaskid != null">f_taskid,</if>
+            <if test="fTaskName != null">f_task_name,</if>
+            <if test="fLog != null">f_log,</if>
+            <if test="fType != null">f_type,</if>
+            <if test="fTime != null">f_time,</if>
+            <if test="fException != null">f_exception,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fId != null">#{fId},</if>
+            <if test="fTaskid != null">#{fTaskid},</if>
+            <if test="fTaskName != null">#{fTaskName},</if>
+            <if test="fLog != null">#{fLog},</if>
+            <if test="fType != null">#{fType},</if>
+            <if test="fTime != null">#{fTime},</if>
+            <if test="fException != null">#{fException},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbsynTasklog" parameterType="TbsynTasklog">
+        update tbsyn_tasklog
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fTaskid != null">f_taskid = #{fTaskid},</if>
+            <if test="fTaskName != null">f_task_name = #{fTaskName},</if>
+            <if test="fLog != null">f_log = #{fLog},</if>
+            <if test="fType != null">f_type = #{fType},</if>
+            <if test="fTime != null">f_time = #{fTime},</if>
+            <if test="fException != null">f_exception = #{fException},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbsynTasklogByFId" parameterType="Long">
+        delete from tbsyn_tasklog where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbsynTasklogByFIds" parameterType="String">
+        delete from tbsyn_tasklog where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

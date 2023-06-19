@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbtecCourseMapper">
+    
+    <resultMap type="TbtecCourse" id="TbtecCourseResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fProName"    column="f_pro_name"    />
+        <result property="fProCode"    column="f_pro_code"    />
+        <result property="fProLevel"    column="f_pro_level"    />
+        <result property="fAcademic"    column="f_academic"    />
+        <result property="fCulMethods"    column="f_cul_methods"    />
+        <result property="fSpecificForm"    column="f_specific_form"    />
+        <result property="fSourceType"    column="f_source_type"    />
+        <result property="fGrade"    column="f_grade"    />
+        <result property="fCourseName"    column="f_course_name"    />
+        <result property="fCourseCode"    column="f_course_code"    />
+        <result property="fCourseType"    column="f_course_type"    />
+        <result property="fCourseAttr"    column="f_course_attr"    />
+        <result property="fPubCourses"    column="f_pub_courses"    />
+        <result property="fProCourses"    column="f_pro_courses"    />
+        <result property="fCourseNature"    column="f_course_nature"    />
+        <result property="fSemester"    column="f_semester"    />
+        <result property="fUnitName"    column="f_unit_name"    />
+        <result property="fIsCooperation"    column="f_is_cooperation"    />
+        <result property="fPartnerName"    column="f_partner_name"    />
+        <result property="fQualityCourses"    column="f_quality_courses"    />
+        <result property="fIsFinancing"    column="f_is_financing"    />
+        <result property="fIsDemonstration"    column="f_is_demonstration"    />
+        <result property="fTotalHours"    column="f_total_hours"    />
+        <result property="fPracticeHours"    column="f_practice_hours"    />
+    </resultMap>
+
+    <sql id="selectTbtecCourseVo">
+        select f_id, f_pro_name, f_pro_code, f_pro_level, f_academic, f_cul_methods, f_specific_form, f_source_type, f_grade, f_course_name, f_course_code, f_course_type, f_course_attr, f_pub_courses, f_pro_courses, f_course_nature, f_semester, f_unit_name, f_is_cooperation, f_partner_name, f_quality_courses, f_is_financing, f_is_demonstration, f_total_hours, f_practice_hours from tbtec_course
+    </sql>
+
+    <select id="selectTbtecCourseList" parameterType="TbtecCourse" resultMap="TbtecCourseResult">
+        <include refid="selectTbtecCourseVo"/>
+        <where>  
+            <if test="fProName != null  and fProName != ''"> and f_pro_name like concat('%', #{fProName}, '%')</if>
+            <if test="fGrade != null  and fGrade != ''"> and f_grade = #{fGrade}</if>
+            <if test="fCourseName != null  and fCourseName != ''"> and f_course_name like concat('%', #{fCourseName}, '%')</if>
+            <if test="fPubCourses != null  and fPubCourses != ''"> and f_pub_courses = #{fPubCourses}</if>
+            <if test="fSemester != null  and fSemester != ''"> and f_semester = #{fSemester}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbtecCourseByFId" parameterType="Long" resultMap="TbtecCourseResult">
+        <include refid="selectTbtecCourseVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbtecCourse" parameterType="TbtecCourse" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbtec_course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fProName != null and fProName != ''">f_pro_name,</if>
+            <if test="fProCode != null and fProCode != ''">f_pro_code,</if>
+            <if test="fProLevel != null">f_pro_level,</if>
+            <if test="fAcademic != null">f_academic,</if>
+            <if test="fCulMethods != null">f_cul_methods,</if>
+            <if test="fSpecificForm != null and fSpecificForm != ''">f_specific_form,</if>
+            <if test="fSourceType != null and fSourceType != ''">f_source_type,</if>
+            <if test="fGrade != null and fGrade != ''">f_grade,</if>
+            <if test="fCourseName != null and fCourseName != ''">f_course_name,</if>
+            <if test="fCourseCode != null and fCourseCode != ''">f_course_code,</if>
+            <if test="fCourseType != null">f_course_type,</if>
+            <if test="fCourseAttr != null">f_course_attr,</if>
+            <if test="fPubCourses != null">f_pub_courses,</if>
+            <if test="fProCourses != null">f_pro_courses,</if>
+            <if test="fCourseNature != null">f_course_nature,</if>
+            <if test="fSemester != null and fSemester != ''">f_semester,</if>
+            <if test="fUnitName != null and fUnitName != ''">f_unit_name,</if>
+            <if test="fIsCooperation != null">f_is_cooperation,</if>
+            <if test="fPartnerName != null">f_partner_name,</if>
+            <if test="fQualityCourses != null">f_quality_courses,</if>
+            <if test="fIsFinancing != null">f_is_financing,</if>
+            <if test="fIsDemonstration != null">f_is_demonstration,</if>
+            <if test="fTotalHours != null and fTotalHours != ''">f_total_hours,</if>
+            <if test="fPracticeHours != null and fPracticeHours != ''">f_practice_hours,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fProName != null and fProName != ''">#{fProName},</if>
+            <if test="fProCode != null and fProCode != ''">#{fProCode},</if>
+            <if test="fProLevel != null">#{fProLevel},</if>
+            <if test="fAcademic != null">#{fAcademic},</if>
+            <if test="fCulMethods != null">#{fCulMethods},</if>
+            <if test="fSpecificForm != null and fSpecificForm != ''">#{fSpecificForm},</if>
+            <if test="fSourceType != null and fSourceType != ''">#{fSourceType},</if>
+            <if test="fGrade != null and fGrade != ''">#{fGrade},</if>
+            <if test="fCourseName != null and fCourseName != ''">#{fCourseName},</if>
+            <if test="fCourseCode != null and fCourseCode != ''">#{fCourseCode},</if>
+            <if test="fCourseType != null">#{fCourseType},</if>
+            <if test="fCourseAttr != null">#{fCourseAttr},</if>
+            <if test="fPubCourses != null">#{fPubCourses},</if>
+            <if test="fProCourses != null">#{fProCourses},</if>
+            <if test="fCourseNature != null">#{fCourseNature},</if>
+            <if test="fSemester != null and fSemester != ''">#{fSemester},</if>
+            <if test="fUnitName != null and fUnitName != ''">#{fUnitName},</if>
+            <if test="fIsCooperation != null">#{fIsCooperation},</if>
+            <if test="fPartnerName != null">#{fPartnerName},</if>
+            <if test="fQualityCourses != null">#{fQualityCourses},</if>
+            <if test="fIsFinancing != null">#{fIsFinancing},</if>
+            <if test="fIsDemonstration != null">#{fIsDemonstration},</if>
+            <if test="fTotalHours != null and fTotalHours != ''">#{fTotalHours},</if>
+            <if test="fPracticeHours != null and fPracticeHours != ''">#{fPracticeHours},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbtecCourse" parameterType="TbtecCourse">
+        update tbtec_course
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fProName != null and fProName != ''">f_pro_name = #{fProName},</if>
+            <if test="fProCode != null and fProCode != ''">f_pro_code = #{fProCode},</if>
+            <if test="fProLevel != null">f_pro_level = #{fProLevel},</if>
+            <if test="fAcademic != null">f_academic = #{fAcademic},</if>
+            <if test="fCulMethods != null">f_cul_methods = #{fCulMethods},</if>
+            <if test="fSpecificForm != null and fSpecificForm != ''">f_specific_form = #{fSpecificForm},</if>
+            <if test="fSourceType != null and fSourceType != ''">f_source_type = #{fSourceType},</if>
+            <if test="fGrade != null and fGrade != ''">f_grade = #{fGrade},</if>
+            <if test="fCourseName != null and fCourseName != ''">f_course_name = #{fCourseName},</if>
+            <if test="fCourseCode != null and fCourseCode != ''">f_course_code = #{fCourseCode},</if>
+            <if test="fCourseType != null">f_course_type = #{fCourseType},</if>
+            <if test="fCourseAttr != null">f_course_attr = #{fCourseAttr},</if>
+            <if test="fPubCourses != null">f_pub_courses = #{fPubCourses},</if>
+            <if test="fProCourses != null">f_pro_courses = #{fProCourses},</if>
+            <if test="fCourseNature != null">f_course_nature = #{fCourseNature},</if>
+            <if test="fSemester != null and fSemester != ''">f_semester = #{fSemester},</if>
+            <if test="fUnitName != null and fUnitName != ''">f_unit_name = #{fUnitName},</if>
+            <if test="fIsCooperation != null">f_is_cooperation = #{fIsCooperation},</if>
+            <if test="fPartnerName != null">f_partner_name = #{fPartnerName},</if>
+            <if test="fQualityCourses != null">f_quality_courses = #{fQualityCourses},</if>
+            <if test="fIsFinancing != null">f_is_financing = #{fIsFinancing},</if>
+            <if test="fIsDemonstration != null">f_is_demonstration = #{fIsDemonstration},</if>
+            <if test="fTotalHours != null and fTotalHours != ''">f_total_hours = #{fTotalHours},</if>
+            <if test="fPracticeHours != null and fPracticeHours != ''">f_practice_hours = #{fPracticeHours},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbtecCourseByFId" parameterType="Long">
+        delete from tbtec_course where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbtecCourseByFIds" parameterType="String">
+        delete from tbtec_course where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

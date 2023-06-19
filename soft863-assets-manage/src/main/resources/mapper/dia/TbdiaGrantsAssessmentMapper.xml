@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbdiaGrantsAssessmentMapper">
+    
+    <resultMap type="TbdiaGrantsAssessment" id="TbdiaGrantsAssessmentResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fNo"    column="f_no"    />
+        <result property="fName"    column="f_name"    />
+        <result property="fStuGpa"    column="f_stu_gpa"    />
+        <result property="fLeaveNum"    column="f_leave_num"    />
+        <result property="fMajor"    column="f_major"    />
+        <result property="fClazz"    column="f_clazz"    />
+        <result property="fConsumption"    column="f_consumption"    />
+        <result property="fComprehensiveScore"    column="f_comprehensive_score"    />
+        <result property="fStipendLevel"    column="f_stipend_level"    />
+        <result property="fAssessmentResult"    column="f_assessment_result"    />
+        <result property="fFamMoney"    column="f_fam_money"    />
+    </resultMap>
+
+    <sql id="selectTbdiaGrantsAssessmentVo">
+        select f_id, f_no, f_name, f_stu_gpa,  f_leave_num, f_major, f_clazz,
+               f_consumption, f_comprehensive_score, f_stipend_level, f_assessment_result, f_fam_money from tbdia_grants_assessment
+    </sql>
+    <insert id="insertAll">
+        insert into tbdia_grants_assessment ( f_no, f_name, f_stu_gpa, f_leave_num, f_major, f_clazz, f_consumption,
+                                              f_comprehensive_score, f_fam_money)
+        select f_no, f_name, f_stu_gpa, f_leave_num, f_major ,f_clazz, f_consumption,f_compisite_score,
+               f_fam_money
+        from tbdia_student
+        <where>
+        <if test="fNo != null  and fNo != ''"> and f_no = #{fNo}</if>
+        <if test="fName != null  and fName != ''"> and f_name like concat('%', #{fName}, '%')</if>
+        <if test="fStuGpa != null "> and f_stu_gpa &gt;= #{fStuGpa}</if>
+        <if test="fLeaveNum != null "> and f_leave_num &lt;=   #{fLeaveNum}</if>
+        <if test="fMajor != null  and fMajor != ''"> and f_major = #{fMajor}</if>
+        <if test="fClazz != null  and fClazz != ''"> and f_clazz = #{fClazz}</if>
+        <if test="fConsumption != null "> and f_consumption &lt;= #{fConsumption}</if>
+        <if test="fComprehensiveScore != null "> and f_comprehensive_score = #{fComprehensiveScore}</if>
+        <if test="fStipendLevel != null  and fStipendLevel != ''"> and f_stipend_level = #{fStipendLevel}</if>
+        <if test="fAssessmentResult != null  and fAssessmentResult != ''"> and f_assessment_result = #{fAssessmentResult}</if>
+    </where>
+    </insert>
+    <delete id="delAll">
+        delete from tbdia_grants_assessment
+    </delete>
+
+    <select id="selectTbdiaGrantsAssessmentList" parameterType="TbdiaGrantsAssessment" resultMap="TbdiaGrantsAssessmentResult">
+        <include refid="selectTbdiaGrantsAssessmentVo"/>
+        <where>  
+            <if test="fNo != null  and fNo != ''"> and f_no = #{fNo}</if>
+            <if test="fName != null  and fName != ''"> and f_name like concat('%', #{fName}, '%')</if>
+            <if test="fStuGpa != null "> and f_stu_gpa = #{fStuGpa}</if>
+            <if test="fLeaveNum != null "> and f_leave_num = #{fLeaveNum}</if>
+            <if test="fMajor != null  and fMajor != ''"> and f_major = #{fMajor}</if>
+            <if test="fClazz != null  and fClazz != ''"> and f_clazz = #{fClazz}</if>
+            <if test="fConsumption != null "> and f_consumption =#{fConsumption}</if>
+            <if test="fComprehensiveScore != null "> and f_comprehensive_score = #{fComprehensiveScore}</if>
+            <if test="fStipendLevel != null  and fStipendLevel != ''"> and f_stipend_level = #{fStipendLevel}</if>
+            <if test="fAssessmentResult != null  and fAssessmentResult != ''"> and f_assessment_result = #{fAssessmentResult}</if>
+            <if test="fFamMoney != null  and fFamMoney != ''"> and f_fam_money = #{fFamMoney}</if>
+        </where>
+        order by f_assessment_result desc
+    </select>
+    <select id="selectByKey" resultType="java.lang.String">
+        select config_value from sys_config where config_key=#{param}
+    </select>
+
+    <update id="updateTbdiaGrantsAssessment" parameterType="TbdiaGrantsAssessment">
+        update tbdia_grants_assessment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fNo != null">f_no = #{fNo},</if>
+            <if test="fName != null">f_name = #{fName},</if>
+            <if test="fStuGpa != null">f_stu_gpa = #{fStuGpa},</if>
+            <if test="fLeaveNum != null">f_leave_num = #{fLeaveNum},</if>
+            <if test="fMajor != null">f_major = #{fMajor},</if>
+            <if test="fClazz != null">f_clazz = #{fClazz},</if>
+            <if test="fConsumption != null">f_consumption = #{fConsumption},</if>
+            <if test="fComprehensiveScore != null">f_comprehensive_score = #{fComprehensiveScore},</if>
+            <if test="fStipendLevel != null">f_stipend_level = #{fStipendLevel},</if>
+            <if test="fAssessmentResult != null">f_assessment_result = #{fAssessmentResult},</if>
+            <if test="fFamMoney != null">f_fam_money = #{fFamMoney},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+    <update id="setValue">
+        update  sys_config set config_value=#{param2} where config_key=#{param1}
+    </update>
+
+
+</mapper>

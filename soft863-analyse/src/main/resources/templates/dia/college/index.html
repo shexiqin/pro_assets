@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<!--<html lang="zh" xmlns:th="http://www.thymeleaf.org">-->
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>统计</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+    <link href="../static/css/animate.min.css" th:href="@{/css/animate.min.css}" rel="stylesheet"/>
+    <link href="../static/css/style.min.css" th:href="@{/css/style.min.css}" rel="stylesheet"/>
+</head>
+
+<body class="gray-bg">
+
+<div id="college">
+
+    <div class="wrapper wrapper-content">
+
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <!--<span class="label label-primary pull-right">占用面积</span>-->
+                        <h5>学生人数</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 id="stu" class="no-margins"></h1>
+                        <div class="stat-percent font-bold text-navy">人</i>
+                        </div>
+                        <small>单位</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <!--<span class="label label-danger pull-right">建筑面积</span>-->
+                        <h5>教师人数</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins" id="teacher"></h1>
+                        <div class="stat-percent font-bold text-navy">人</i>
+                        </div>
+                        <small>单位</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <!--<span class="label label-primary pull-right">占用面积</span>-->
+                        <h5>占用面积</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins">{{cArea}}</h1>
+                        <div class="stat-percent font-bold text-navy">亩 </i>
+                        </div>
+                        <small>单位</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <!--<span class="label label-danger pull-right">建筑面积</span>-->
+                        <h5>建筑面积</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins">{{fArea}}</h1>
+                        <div class="stat-percent font-bold text-navy">万/平方米</i>
+                        </div>
+                        <small>单位</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>学院收支情况</h5>
+                    </div>
+                    <div class="ibox-content">
+
+                        <div class="echarts" id="echarts-bar-chart"></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>教资分析</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="echarts" id="echarts-pie-chart"></div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>专业列表</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up" @click="majorAsc()"></i>
+                                <i class="fa fa-chevron-down" @click="getMajor()"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table table-hover no-margins">
+                            <thead>
+                            <tr>
+                                <th>专业名</th>
+                                <th>招生人数</th>
+                                <th>专业评级</th>
+                                <th>就业率</th>
+                                <th>{{this.fMaj}}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="majorList in this.major" >
+                                <td v-text="majorList.fMaj"></td>
+                                <td>{{majorList.fMnum}}人</td>
+                                <td>{{majorList.fMdevelop}}</td>
+                                <td class="text-navy"><i class="fa fa-level-up"></i>{{majorList.fMpass}}%</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!--引入vue-->
+<script src="/plugins/vue/vue.js"></script>
+<script th:src="@{/plugins/vue/vue.js}"></script>
+<!--引入axios-->
+<script th:src="@{/plugins/axios/axios.min.js}"></script>
+<script th:src="@{/plugins/axios/request.js}"></script>
+<!--引入collegeJS-->
+<script th:src="@{/plugins/collegeJs/college.js}"></script>
+<script src="/plugins/collegeJs/college.js"></script>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/ajax/libs/flot/jquery.flot.js}"></script>
+<th:block th:include="include :: sparkline-js" />
+<!--echarts-->
+<th:block th:include="include :: echarts-js" />
+
+
+
+
+<script>
+    $(function (){
+        $.ajax({
+            url: '/dia/college/getAllStu',
+            success:function (data){
+                $("#stu").html(data)
+            }
+        })
+        $.ajax({
+            url: '/dia/college/getAllTeacher',
+            success:function (data){
+
+                $("#teacher").html(data)
+            }
+        })
+    })
+
+
+
+
+    $(function (){
+
+        /*饼状图*/
+        var chartDom = document.getElementById('echarts-pie-chart');
+        var myChart = echarts.init(chartDom);
+        var option01;
+
+            option01 = {
+                title: {
+                    text: '',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left'
+                },
+                series: [
+                    {
+                        name: '学历',
+                        type: 'pie',
+                        radius: '50%',
+                        data: [
+                        ],
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+
+            
+
+        $.ajax({
+            url:'/dia/college/getTeaEdu',
+            success:function (data){
+                console.log(data)
+                option01.series[0].data = data
+
+
+                var chartDom = document.getElementById('echarts-pie-chart');
+                var myChart = echarts.init(chartDom);
+                myChart.setOption(option01);
+            },
+        })
+
+
+        console.log(option01.title.text)
+
+
+
+
+
+
+
+        var chartDom = document.getElementById('echarts-bar-chart');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        option = {
+            legend: {},
+            tooltip: {},
+            dataset: {
+                source: [
+                    ['2021', 83.1, 73.4],
+                    ['2022', 86.4, 65.2],
+                    ['2023', 72.4, 53.9]
+                ]
+            },
+            xAxis: { type: 'category' },
+            yAxis: {},
+            // Declare several bar series, each will be mapped
+            // to a column of dataset.source by default.
+            series: [{ type: 'bar' }, { type: 'bar' }]
+        };
+
+
+        $.ajax({
+            url:'/dia/college/incAndExp',
+            success:function (data){
+                console.log(data)
+
+                option.dataset.source = data
+
+
+                var chartDom = document.getElementById('echarts-bar-chart');
+                var myChart = echarts.init(chartDom);
+                myChart.setOption(option);
+            },
+        })
+
+
+
+        option && myChart.setOption(option);
+    })
+
+
+
+
+    new Vue({
+        el:'#college',
+        data(){
+            return{
+                profile:'',
+                cArea:'',
+                fArea:'',
+                major:[{
+                    fMaj:'',
+                    fMnum:'',
+                    fMdevelop:'',
+                    fMpass:''
+                }]
+            }
+        },
+        computed:{
+
+        },
+        created(){
+            this.init();
+        },
+        methods:{
+
+            init(){
+                /*获取学校概括基本信息*/
+                this.getInfo()
+                /*获取专业就业前景情况*/
+                this.getMajor();
+
+            },
+            getInfo(){
+              getInfoData().then(res=>{
+                    this.profile=res.data[0]
+                    this.cArea=res.data[1]
+                    this.fArea=res.data[2]
+              })
+            },
+
+            getMajor(){
+                getMajorData().then(res=>{
+                    this.major = res.data
+                })
+            },
+
+            majorAsc(){
+                getMajorAscData().then(res=>{
+                    this.major = res.data
+                    console.log(res.data)
+                })
+            }
+
+        }
+
+    })
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+/*
+    $(document).ready(function () {
+        var data2 = [
+            [gd(2012, 1, 1), 7], [gd(2012, 1, 2), 6], [gd(2012, 1, 3), 4], [gd(2012, 1, 4), 8],
+            [gd(2012, 1, 5), 9], [gd(2012, 1, 6), 7], [gd(2012, 1, 7), 5], [gd(2012, 1, 8), 4],
+            [gd(2012, 1, 9), 7], [gd(2012, 1, 10), 8], [gd(2012, 1, 11), 9], [gd(2012, 1, 12), 6],
+            [gd(2012, 1, 13), 4], [gd(2012, 1, 14), 5], [gd(2012, 1, 15), 11], [gd(2012, 1, 16), 8],
+            [gd(2012, 1, 17), 8], [gd(2012, 1, 18), 11], [gd(2012, 1, 19), 11], [gd(2012, 1, 20), 6],
+            [gd(2012, 1, 21), 6], [gd(2012, 1, 22), 8], [gd(2012, 1, 23), 11], [gd(2012, 1, 24), 13],
+            [gd(2012, 1, 25), 7], [gd(2012, 1, 26), 9], [gd(2012, 1, 27), 9], [gd(2012, 1, 28), 8],
+            [gd(2012, 1, 29), 5], [gd(2012, 1, 30), 8], [gd(2012, 1, 31), 25]
+        ];
+
+        var data3 = [
+            [gd(2012, 1, 1), 800], [gd(2012, 1, 2), 500], [gd(2012, 1, 3), 600], [gd(2012, 1, 4), 700],
+            [gd(2012, 1, 5), 500], [gd(2012, 1, 6), 456], [gd(2012, 1, 7), 800], [gd(2012, 1, 8), 589],
+            [gd(2012, 1, 9), 467], [gd(2012, 1, 10), 876], [gd(2012, 1, 11), 689], [gd(2012, 1, 12), 700],
+            [gd(2012, 1, 13), 500], [gd(2012, 1, 14), 600], [gd(2012, 1, 15), 700], [gd(2012, 1, 16), 786],
+            [gd(2012, 1, 17), 345], [gd(2012, 1, 18), 888], [gd(2012, 1, 19), 888], [gd(2012, 1, 20), 888],
+            [gd(2012, 1, 21), 987], [gd(2012, 1, 22), 444], [gd(2012, 1, 23), 999], [gd(2012, 1, 24), 567],
+            [gd(2012, 1, 25), 786], [gd(2012, 1, 26), 666], [gd(2012, 1, 27), 888], [gd(2012, 1, 28), 900],
+            [gd(2012, 1, 29), 178], [gd(2012, 1, 30), 555], [gd(2012, 1, 31), 993]
+        ];
+
+
+        var dataset = [
+            {
+                label: "订单数",
+                data: data3,
+                color: "#1ab394",
+                bars: {
+                    show: true,
+                    align: "center",
+                    barWidth: 24 * 60 * 60 * 600,
+                    lineWidth: 0
+                }
+
+            }, {
+                label: "付款数",
+                data: data2,
+                yaxis: 2,
+                color: "#464f88",
+                lines: {
+                    lineWidth: 1,
+                    show: true,
+                    fill: true,
+                    fillColor: {
+                        colors: [{
+                            opacity: 0.2
+                        }, {
+                            opacity: 0.2
+                        }]
+                    }
+                },
+                splines: {
+                    show: false,
+                    tension: 0.6,
+                    lineWidth: 1,
+                    fill: 0.1
+                },
+            }
+        ];
+
+
+        var options = {
+            xaxis: {
+                mode: "time",
+                tickSize: [3, "day"],
+                tickLength: 0,
+                axisLabel: "Date",
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 12,
+                axisLabelFontFamily: 'Arial',
+                axisLabelPadding: 10,
+                color: "#838383"
+            },
+            yaxes: [{
+                position: "left",
+                max: 1070,
+                color: "#838383",
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 12,
+                axisLabelFontFamily: 'Arial',
+                axisLabelPadding: 3
+            }, {
+                position: "right",
+                clolor: "#838383",
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 12,
+                axisLabelFontFamily: ' Arial',
+                axisLabelPadding: 67
+            }
+            ],
+            legend: {
+                noColumns: 1,
+                labelBoxBorderColor: "#000000",
+                position: "nw"
+            },
+            grid: {
+                hoverable: false,
+                borderWidth: 0,
+                color: '#838383'
+            }
+        };
+
+        function gd(year, month, day) {
+            return new Date(year, month - 1, day).getTime();
+        }
+
+        var previousPoint = null,
+            previousLabel = null;
+
+        $.plot($("#flot-dashboard-chart"), dataset, options);
+    });*/
+-->
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbfinIncomeMapper">
+    
+    <resultMap type="TbfinIncome" id="TbfinIncomeResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fTuition"    column="f_tuition"    />
+        <result property="fAccommodationFee"    column="f_accommodation_fee"    />
+        <result property="fTrainingFee"    column="f_training_fee"    />
+        <result property="fAdultEducationFee"    column="f_adult_education_fee"    />
+        <result property="fOtherEducationFee"    column="f_other_education_fee"    />
+        <result property="fHorizontalResearchFee"    column="f_horizontal_research_fee"    />
+        <result property="fVerticalResearchFee"    column="f_vertical_research_fee"    />
+        <result property="fOtherResearchFee"    column="f_other_research_fee"    />
+        <result property="fAverageFinancialExpense"    column="f_average_financial_expense"    />
+        <result property="fSpecialFinancialExpense"    column="f_special_financial_expense"    />
+        <result property="fGovernmentFunds"    column="f_government_funds"    />
+        <result property="fCapitalOperationExpense"    column="f_capital_operation_expense"    />
+        <result property="fSuperiorSubsidy"    column="f_superior_subsidy"    />
+        <result property="fUnpeerFinancialAllocation"    column="f_unpeer_financial_allocation"    />
+        <result property="fEnterpriseEducationExpense"    column="f_enterprise_education_expense"    />
+        <result property="fSocialTrainingExpense"    column="f_social_training_expense"    />
+        <result property="fTechnologyTransactionFee"    column="f_technology_transaction_fee"    />
+        <result property="fOtherServicesFee"    column="f_other_services_fee"    />
+        <result property="fSchoolEnterpriseFee"    column="f_school_enterprise_fee"    />
+        <result property="fOtherFunding"    column="f_other_funding"    />
+        <result property="fSchoolEnterpriseDonation"    column="f_school_enterprise_donation"    />
+        <result property="fModernApprenticeDonation"    column="f_modern_apprentice_donation"    />
+        <result property="fOtherDonation"    column="f_other_donation"    />
+        <result property="fOtherIncome"    column="f_other_income"    />
+        <result property="fInformant"    column="f_informant"    />
+    </resultMap>
+
+    <sql id="selectTbfinIncomeVo">
+        select f_id, f_tuition, f_accommodation_fee, f_training_fee, f_adult_education_fee, f_other_education_fee, f_horizontal_research_fee, f_vertical_research_fee, f_other_research_fee, f_average_financial_expense, f_special_financial_expense, f_government_funds, f_capital_operation_expense, f_superior_subsidy, f_unpeer_financial_allocation, f_enterprise_education_expense, f_social_training_expense, f_technology_transaction_fee, f_other_services_fee, f_school_enterprise_fee, f_other_funding, f_school_enterprise_donation, f_modern_apprentice_donation, f_other_donation, f_other_income, f_informant from tbfin_income
+    </sql>
+
+    <select id="selectTbfinIncomeList" parameterType="TbfinIncome" resultMap="TbfinIncomeResult">
+        <include refid="selectTbfinIncomeVo"/>
+        <where>  
+            <if test="params.beginFTuition != null and params.beginFTuition != '' and params.endFTuition != null and params.endFTuition != ''"> and f_tuition between #{params.beginFTuition} and #{params.endFTuition}</if>
+            <if test="fInformant != null  and fInformant != ''"> and f_informant = #{fInformant}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbfinIncomeByFId" parameterType="Long" resultMap="TbfinIncomeResult">
+        <include refid="selectTbfinIncomeVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbfinIncome" parameterType="TbfinIncome" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbfin_income
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fTuition != null">f_tuition,</if>
+            <if test="fAccommodationFee != null">f_accommodation_fee,</if>
+            <if test="fTrainingFee != null">f_training_fee,</if>
+            <if test="fAdultEducationFee != null">f_adult_education_fee,</if>
+            <if test="fOtherEducationFee != null">f_other_education_fee,</if>
+            <if test="fHorizontalResearchFee != null">f_horizontal_research_fee,</if>
+            <if test="fVerticalResearchFee != null">f_vertical_research_fee,</if>
+            <if test="fOtherResearchFee != null">f_other_research_fee,</if>
+            <if test="fAverageFinancialExpense != null">f_average_financial_expense,</if>
+            <if test="fSpecialFinancialExpense != null">f_special_financial_expense,</if>
+            <if test="fGovernmentFunds != null">f_government_funds,</if>
+            <if test="fCapitalOperationExpense != null">f_capital_operation_expense,</if>
+            <if test="fSuperiorSubsidy != null">f_superior_subsidy,</if>
+            <if test="fUnpeerFinancialAllocation != null">f_unpeer_financial_allocation,</if>
+            <if test="fEnterpriseEducationExpense != null">f_enterprise_education_expense,</if>
+            <if test="fSocialTrainingExpense != null">f_social_training_expense,</if>
+            <if test="fTechnologyTransactionFee != null">f_technology_transaction_fee,</if>
+            <if test="fOtherServicesFee != null">f_other_services_fee,</if>
+            <if test="fSchoolEnterpriseFee != null">f_school_enterprise_fee,</if>
+            <if test="fOtherFunding != null">f_other_funding,</if>
+            <if test="fSchoolEnterpriseDonation != null">f_school_enterprise_donation,</if>
+            <if test="fModernApprenticeDonation != null">f_modern_apprentice_donation,</if>
+            <if test="fOtherDonation != null">f_other_donation,</if>
+            <if test="fOtherIncome != null">f_other_income,</if>
+            <if test="fInformant != null">f_informant,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fTuition != null">#{fTuition},</if>
+            <if test="fAccommodationFee != null">#{fAccommodationFee},</if>
+            <if test="fTrainingFee != null">#{fTrainingFee},</if>
+            <if test="fAdultEducationFee != null">#{fAdultEducationFee},</if>
+            <if test="fOtherEducationFee != null">#{fOtherEducationFee},</if>
+            <if test="fHorizontalResearchFee != null">#{fHorizontalResearchFee},</if>
+            <if test="fVerticalResearchFee != null">#{fVerticalResearchFee},</if>
+            <if test="fOtherResearchFee != null">#{fOtherResearchFee},</if>
+            <if test="fAverageFinancialExpense != null">#{fAverageFinancialExpense},</if>
+            <if test="fSpecialFinancialExpense != null">#{fSpecialFinancialExpense},</if>
+            <if test="fGovernmentFunds != null">#{fGovernmentFunds},</if>
+            <if test="fCapitalOperationExpense != null">#{fCapitalOperationExpense},</if>
+            <if test="fSuperiorSubsidy != null">#{fSuperiorSubsidy},</if>
+            <if test="fUnpeerFinancialAllocation != null">#{fUnpeerFinancialAllocation},</if>
+            <if test="fEnterpriseEducationExpense != null">#{fEnterpriseEducationExpense},</if>
+            <if test="fSocialTrainingExpense != null">#{fSocialTrainingExpense},</if>
+            <if test="fTechnologyTransactionFee != null">#{fTechnologyTransactionFee},</if>
+            <if test="fOtherServicesFee != null">#{fOtherServicesFee},</if>
+            <if test="fSchoolEnterpriseFee != null">#{fSchoolEnterpriseFee},</if>
+            <if test="fOtherFunding != null">#{fOtherFunding},</if>
+            <if test="fSchoolEnterpriseDonation != null">#{fSchoolEnterpriseDonation},</if>
+            <if test="fModernApprenticeDonation != null">#{fModernApprenticeDonation},</if>
+            <if test="fOtherDonation != null">#{fOtherDonation},</if>
+            <if test="fOtherIncome != null">#{fOtherIncome},</if>
+            <if test="fInformant != null">#{fInformant},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbfinIncome" parameterType="TbfinIncome">
+        update tbfin_income
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fTuition != null">f_tuition = #{fTuition},</if>
+            <if test="fAccommodationFee != null">f_accommodation_fee = #{fAccommodationFee},</if>
+            <if test="fTrainingFee != null">f_training_fee = #{fTrainingFee},</if>
+            <if test="fAdultEducationFee != null">f_adult_education_fee = #{fAdultEducationFee},</if>
+            <if test="fOtherEducationFee != null">f_other_education_fee = #{fOtherEducationFee},</if>
+            <if test="fHorizontalResearchFee != null">f_horizontal_research_fee = #{fHorizontalResearchFee},</if>
+            <if test="fVerticalResearchFee != null">f_vertical_research_fee = #{fVerticalResearchFee},</if>
+            <if test="fOtherResearchFee != null">f_other_research_fee = #{fOtherResearchFee},</if>
+            <if test="fAverageFinancialExpense != null">f_average_financial_expense = #{fAverageFinancialExpense},</if>
+            <if test="fSpecialFinancialExpense != null">f_special_financial_expense = #{fSpecialFinancialExpense},</if>
+            <if test="fGovernmentFunds != null">f_government_funds = #{fGovernmentFunds},</if>
+            <if test="fCapitalOperationExpense != null">f_capital_operation_expense = #{fCapitalOperationExpense},</if>
+            <if test="fSuperiorSubsidy != null">f_superior_subsidy = #{fSuperiorSubsidy},</if>
+            <if test="fUnpeerFinancialAllocation != null">f_unpeer_financial_allocation = #{fUnpeerFinancialAllocation},</if>
+            <if test="fEnterpriseEducationExpense != null">f_enterprise_education_expense = #{fEnterpriseEducationExpense},</if>
+            <if test="fSocialTrainingExpense != null">f_social_training_expense = #{fSocialTrainingExpense},</if>
+            <if test="fTechnologyTransactionFee != null">f_technology_transaction_fee = #{fTechnologyTransactionFee},</if>
+            <if test="fOtherServicesFee != null">f_other_services_fee = #{fOtherServicesFee},</if>
+            <if test="fSchoolEnterpriseFee != null">f_school_enterprise_fee = #{fSchoolEnterpriseFee},</if>
+            <if test="fOtherFunding != null">f_other_funding = #{fOtherFunding},</if>
+            <if test="fSchoolEnterpriseDonation != null">f_school_enterprise_donation = #{fSchoolEnterpriseDonation},</if>
+            <if test="fModernApprenticeDonation != null">f_modern_apprentice_donation = #{fModernApprenticeDonation},</if>
+            <if test="fOtherDonation != null">f_other_donation = #{fOtherDonation},</if>
+            <if test="fOtherIncome != null">f_other_income = #{fOtherIncome},</if>
+            <if test="fInformant != null">f_informant = #{fInformant},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbfinIncomeByFId" parameterType="Long">
+        delete from tbfin_income where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbfinIncomeByFIds" parameterType="String">
+        delete from tbfin_income where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

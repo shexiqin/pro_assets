@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbquaTaskMapper">
+
+    <resultMap type="TbquaTask" id="TbquaTaskResult">
+        <result property="fId" column="f_id"/>
+        <result property="fTask" column="f_task"/>
+        <result property="fName" column="f_name"/>
+        <result property="fState" column="f_state"/>
+        <result property="fRuleId" column="f_rule_id"/>
+        <result property="fType" column="f_type"/>
+        <result property="fRate" column="f_rate"/>
+        <result property="fForm" column="f_form"/>
+        <result property="fCreateTime" column="f_create_time"/>
+        <result property="fUpdateTime" column="f_update_time"/>
+        <result property="fStartTime" column="f_start_time"/>
+        <result property="fEndTime" column="f_end_time"/>
+    </resultMap>
+
+    <sql id="selectTbquaTaskVo">
+        select f_id,
+               f_task ,
+               f_name ,
+               f_state ,
+               f_rule_id ,
+               f_type ,
+               f_rate ,
+               f_form ,
+               f_create_time ,
+               f_update_time ,
+               f_start_time ,
+               f_end_time
+        from tbqua_task
+    </sql>
+
+    <sql id="selectTbquaTask">
+        select f_id fId,
+               f_task fTask,
+               f_name fName,
+               f_state fState,
+               f_rule_id fRuleId,
+               f_type fType,
+               f_rate fRate,
+               f_form fForm,
+               f_create_time fCreateTime,
+               f_update_time fUpdateTime,
+               f_start_time fStartTime,
+               f_end_time fEndTime
+        from tbqua_task
+    </sql>
+
+    <select id="selectTbquaTaskList" parameterType="TbquaTask" resultMap="TbquaTaskResult">
+        <include refid="selectTbquaTaskVo"/>
+        <where>
+            <if test="fTask != null ">and f_task = #{fTask}</if>
+            <if test="fName != null  and fName != ''">and f_name like concat('%', #{fName}, '%')</if>
+            <if test="fState != null ">and f_state = #{fState}</if>
+            <if test="fRuleId != null ">and f_rule_id = #{fRuleId}</if>
+            <if test="fType != null ">and f_type = #{fType}</if>
+            <if test="fForm != null ">and f_form = #{fForm}</if>
+            <if test="params.beginFCreateTime != null and params.beginFCreateTime != '' and params.endFCreateTime != null and params.endFCreateTime != ''">
+                and f_create_time between #{params.beginFCreateTime} and #{params.endFCreateTime}
+            </if>
+            <if test="params.beginFUpdateTime != null and params.beginFUpdateTime != '' and params.endFUpdateTime != null and params.endFUpdateTime != ''">
+                and f_update_time between #{params.beginFUpdateTime} and #{params.endFUpdateTime}
+            </if>
+            <if test="params.beginFStartTime != null and params.beginFStartTime != '' and params.endFStartTime != null and params.endFStartTime != ''">
+                and f_start_time between #{params.beginFStartTime} and #{params.endFStartTime}
+            </if>
+            <if test="params.beginFEndTime != null and params.beginFEndTime != '' and params.endFEndTime != null and params.endFEndTime != ''">
+                and f_end_time between #{params.beginFEndTime} and #{params.endFEndTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectTbquaTaskByFId" parameterType="Long" resultMap="TbquaTaskResult">
+        <include refid="selectTbquaTaskVo"/>
+        where f_id = #{fId}
+    </select>
+    <select id="selectByTaskId" resultType="com.soft863.domain.TbquaTask" parameterType="TbquaTask">
+        <include refid="selectTbquaTask"/>
+        where f_rule_id=#{fRuleId}
+    </select>
+
+
+    <insert id="insertTbquaTask" parameterType="TbquaTask" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbqua_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fTask != null">f_task,</if>
+            <if test="fName != null and fName != ''">f_name,</if>
+            <if test="fState != null">f_state,</if>
+            <if test="fRuleId != null">f_rule_id,</if>
+            <if test="fType != null">f_type,</if>
+            <if test="fRate != null and fRate != ''">f_rate,</if>
+            <if test="fForm != null">f_form,</if>
+            <if test="fCreateTime != null">f_create_time,</if>
+            <if test="fUpdateTime != null">f_update_time,</if>
+            <if test="fStartTime != null">f_start_time,</if>
+            <if test="fEndTime != null">f_end_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fTask != null">#{fTask},</if>
+            <if test="fName != null and fName != ''">#{fName},</if>
+            <if test="fState != null">#{fState},</if>
+            <if test="fRuleId != null">#{fRuleId},</if>
+            <if test="fType != null">#{fType},</if>
+            <if test="fRate != null and fRate != ''">#{fRate},</if>
+            <if test="fForm != null">#{fForm},</if>
+            <if test="fCreateTime != null">#{fCreateTime},</if>
+            <if test="fUpdateTime != null">#{fUpdateTime},</if>
+            <if test="fStartTime != null">#{fStartTime},</if>
+            <if test="fEndTime != null">#{fEndTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTbquaTask" parameterType="TbquaTask">
+        update tbqua_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fTask != null">f_task = #{fTask},</if>
+            <if test="fName != null and fName != ''">f_name = #{fName},</if>
+            <if test="fState != null">f_state = #{fState},</if>
+            <if test="fRuleId != null">f_rule_id = #{fRuleId},</if>
+            <if test="fType != null">f_type = #{fType},</if>
+            <if test="fRate != null and fRate != ''">f_rate = #{fRate},</if>
+            <if test="fForm != null">f_form = #{fForm},</if>
+            <if test="fCreateTime != null">f_create_time = #{fCreateTime},</if>
+            <if test="fUpdateTime != null">f_update_time = #{fUpdateTime},</if>
+            <if test="fStartTime != null">f_start_time = #{fStartTime},</if>
+            <if test="fEndTime != null">f_end_time = #{fEndTime},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbquaTaskByFId" parameterType="Long">
+        delete
+        from tbqua_task
+        where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbquaTaskByFIds" parameterType="String">
+        delete from tbqua_task where f_id in
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

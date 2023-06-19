@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改学校其他收入情况（财务系统）')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-otherIncome-edit" th:object="${tbfinOtherIncome}">
+            <input name="fId" th:field="*{fId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">信息网络设备采购：</label>
+                <div class="col-sm-8">
+                    <input name="fPoine" th:field="*{fPoine}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">国际交流合作经费：</label>
+                <div class="col-sm-8">
+                    <input name="fIeacf" th:field="*{fIeacf}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">混合所有制办学经费：</label>
+                <div class="col-sm-8">
+                    <input name="fMoef" th:field="*{fMoef}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">计提政府债券还本资金：</label>
+                <div class="col-sm-8">
+                    <input name="fWogbrf" th:field="*{fWogbrf}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">填报人：</label>
+                <div class="col-sm-8">
+                    <input name="fInformant" th:field="*{fInformant}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "fin/otherIncome";
+        $("#form-otherIncome-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-otherIncome-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

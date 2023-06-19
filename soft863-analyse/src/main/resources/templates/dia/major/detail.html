@@ -1,0 +1,325 @@
+﻿<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:include="include :: header('百度ECharts')" />
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>统计</title>
+	<link rel="shortcut icon" href="favicon.ico">
+	<link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+	<link href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+	<link href="../static/css/animate.min.css" th:href="@{/css/animate.min.css}" rel="stylesheet"/>
+	<link href="../static/css/style.min.css" th:href="@{/css/style.min.css}" rel="stylesheet"/>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="ibox float-e-margins">
+				<div class="echarts" id="main"></div>
+			</div>
+		</div>
+
+		<div class="col-sm-6">
+			<div class="ibox float-e-margins">
+				<div class="echarts" id="majorType"></div>
+			</div>
+		</div>
+
+	</div>
+	<div class="col-sm-18">
+		<div class="ibox float-e-margins">
+			<div style="float: right;">
+				<a onclick="more()">
+					<i class="fa fa-angle-double-right"></i> 更多
+				</a>
+			</div>
+			<div class=" echarts" id="echarts-zhexian"></div>
+
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+					<h5 align="center">在校人数排行榜（前五）</h5>
+					<div class="ibox-tools">
+						<a class="collapse-link">
+							<i class="fa fa-chevron-up"></i>
+						</a>
+						<a class="close-link">
+							<i class="fa fa-times"></i>
+						</a>
+					</div>
+				</div>
+				<div id="orderTable" class="ibox-content" th:fragment="orderTable">
+					<table class="table table-hover no-margins">
+						<thead>
+						<tr>
+							<td align="center">专业代码</td>
+							<td align="center">专业方向</td>
+							<td align="center">在校人数</td>
+						</tr>
+						</thead>
+							<tr th:each="TbdiaMajor:${majorList}">
+								<td align="center" th:text="${TbdiaMajor.fCode}"></td>
+								<td align="center" th:text="${TbdiaMajor.fMaj}"></td>
+								<td align="center" th:text="${TbdiaMajor.fMstunum}"></td>
+							</tr>
+
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+					<h5 align="center">升学率排行榜（前五）</h5>
+					<div class="ibox-tools">
+						<a class="collapse-link">
+							<i class="fa fa-chevron-up"></i>
+						</a>
+						<a class="close-link">
+							<i class="fa fa-times"></i>
+						</a>
+					</div>
+				</div>
+				<div id="mpassOrder" class="ibox-content" th:fragment="mpassOrder">
+					<table class="table table-hover no-margins">
+						<thead>
+						<tr>
+							<td align="center">专业代码</td>
+							<td align="center">专业方向</td>
+							<td align="center">升学率</td>
+						</tr>
+						</thead>
+						<tr th:each="major:${mpassList}">
+							<td align="center" th:text="${major.fCode}"></td>
+							<td align="center" th:text="${major.fMaj}"></td>
+							<td align="center" th:text="${major.fMpass}"></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</div>
+</body>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: echarts-js" />
+<script th:inline="javascript">
+	function more() {
+		var url= href ='dia/major/more';
+		$.modal.open('更多', url);
+	}
+
+	$(function () {
+		$.ajax({
+			url: '/dia/major/mstunumOrder',
+			dataType: "text",
+			type: 'POST',
+			success:function (data) {
+				$("#orderTable").html(data)
+				console.log(data)
+			}
+		})
+	});
+	$(function () {
+		$.ajax({
+			url: '/dia/major/mpassOrder',
+			dataType: "text",
+			type: 'POST',
+			success:function (data) {
+				$("#mpassOrder").html(data)
+				console.log(data)
+			}
+		})
+	});
+
+	var major = echarts.init(document.getElementById('majorType'));
+	var optionMajor = {
+		title: {
+			text: '专业类型',
+			left: 'left'
+		},
+		tooltip: {
+			trigger: 'item'
+		},
+		legend: {
+			top: '5%',
+			left: 'center'
+		},
+		series: [
+			{
+				name: '',
+				type: 'pie',
+				radius: ['55%', '75%'],
+				avoidLabelOverlap: false,
+				itemStyle: {
+					borderRadius: 8,
+					borderColor: '#fff',
+					borderWidth: 1
+				},
+				label: {
+					show: false,
+					position: 'center'
+				},
+				emphasis: {
+					label: {
+						show: true,
+						fontSize: 20,
+						fontWeight: 'bold'
+					}
+				},
+				labelLine: {
+					show: false
+				},
+				data: []
+
+			}
+		]
+	};
+	$(function () {
+		$.ajax({
+			url: '/dia/major/getMajor',
+			dataType: "json",
+			type: 'POST',
+
+			success: function (data) {
+
+				if (data != null && data != "" && data.length != 0) {
+					optionMajor.series[0].data=data
+				}
+				major.setOption(optionMajor)
+			},
+			error: function () {
+				alert("失败")
+			}
+		})
+	})
+	
+
+	var zhexian = echarts.init(document.getElementById('echarts-zhexian'));
+	var optionzhexian = {
+
+		    label: true,
+			title: {
+				text: '专业升学率'
+			},
+			xAxis: {
+				axisLabel: {
+					interval: 0,
+				},
+				name: '专业',
+				splitNumber: 20,
+				type: 'category',
+				data: '',
+			},
+			yAxis: {
+				name: '升学率',
+				min:0,  //取0为最小刻度
+				max: 100, //取100为最大刻度
+
+				scale: true, //自适应
+				minInterval: 0.01, //分割刻度
+			},
+			series: [
+				{
+					data:"",
+					type: 'line',
+					label: {
+						show: true,
+						textStyle: {
+							fontSize: 20,
+							color: 'black'
+						}
+					},
+					lineStyle: {
+						normal: {
+							color: 'blue',
+							width: 4,
+							type: 'dashed'
+						}
+					}
+				}
+			]
+		};
+	$(function () {
+		$.ajax({
+			url: '/dia/major/shengxue',
+			dataType: "json",
+			type: 'POST',
+
+			success: function (data) {
+
+				if(data != null && data != "" && data.length!=0){
+					optionzhexian.xAxis.data = data.majorName;
+					optionzhexian.series[0].data = data.mpass;
+				}
+				zhexian.setOption(optionzhexian)
+			},
+			error:function () {
+				alert("失败")
+			}
+		})
+	})
+
+
+
+
+
+		var bing = echarts.init(document.getElementById('main'));
+		var bingoption = {
+			title: {
+				text: '师资力量',
+				left: 'right'
+			},
+			tooltip: {
+				trigger: 'item'
+			},
+			legend: {
+				orient: 'vertical',
+				left: 'left'
+			},
+			series: [
+				{
+					name: '',
+					type: 'pie',
+					radius: '75%',
+					data:[],
+					emphasis: {
+						itemStyle: {
+							shadowBlur: 10,
+							shadowOffsetX: 0,
+							shadowColor: 'rgba(0, 0, 0, 0.5)'
+						}
+					}
+				}
+			]
+		};
+	$(function () {
+		$.ajax({
+			url: '/dia/major/teacher',
+			dataType: "json",
+			type: 'POST',
+
+			success: function (data) {
+				if(data != null && data != "" && data.length!=0){
+
+					console.log(data)
+
+					bingoption.series[0].data = data;
+				}
+				bing.setOption(bingoption)
+			},
+			error:function () {
+				alert("失败")
+			}
+		})
+	})
+
+</script>
+</body>
+</html>

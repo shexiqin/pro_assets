@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增学校经费支出')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-expend-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">征地：</label>
+                <div class="col-sm-8">
+                    <input name="fLandBuy" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">设施建设：</label>
+                <div class="col-sm-8">
+                    <input name="fFacilityConstruction" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">设备采购--合计：</label>
+                <div class="col-sm-8">
+                    <input name="fFacilityBuy" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">教学、科研设备采购：</label>
+                <div class="col-sm-8">
+                    <input name="fFacilityTeach" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">图书费：</label>
+                <div class="col-sm-8">
+                    <input name="fBookBuy" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">实(验) 训耗材费：</label>
+                <div class="col-sm-8">
+                    <input name="fPracticalFacility" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">教学仪器设备维修费：</label>
+                <div class="col-sm-8">
+                    <input name="fTeachFacility" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">实习专项经费：</label>
+                <div class="col-sm-8">
+                    <input name="fPracticeSpecial" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">聘请兼职教师经费*：</label>
+                <div class="col-sm-8">
+                    <input name="fPartTimeTeach" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">体育维持费：</label>
+                <div class="col-sm-8">
+                    <input name="fSports" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">思政工作专项经费*：</label>
+                <div class="col-sm-8">
+                    <input name="fPoliticalSpecial" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">网络思政工作经费*：</label>
+                <div class="col-sm-8">
+                    <input name="fPolitical" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">合作办学项目经费：</label>
+                <div class="col-sm-8">
+                    <input name="fSchoolProject" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">实习责任保险费：</label>
+                <div class="col-sm-8">
+                    <input name="fPracticeInsurance" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">其他日常教学经费：</label>
+                <div class="col-sm-8">
+                    <input name="fOtherTeach" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">课程开发经费：</label>
+                <div class="col-sm-8">
+                    <input name="fCourse" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">教材建设经费：</label>
+                <div class="col-sm-8">
+                    <input name="fTextbook" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">教学改革经费：</label>
+                <div class="col-sm-8">
+                    <input name="fTeachingReform" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">其他教改和科研经费：</label>
+                <div class="col-sm-8">
+                    <input name="fEducationReform" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">科学研究经费：</label>
+                <div class="col-sm-8">
+                    <input name="fResearch" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">技能大师工作室建设经费：</label>
+                <div class="col-sm-8">
+                    <input name="fSkillStudio" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">高水平创新团队建设经费：</label>
+                <div class="col-sm-8">
+                    <input name="fInnovateTeam" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">人才引进费：</label>
+                <div class="col-sm-8">
+                    <input name="fTalents" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">教职工培训进修经费：</label>
+                <div class="col-sm-8">
+                    <input name="fStaffTrain" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">其他师资队伍建设经费：</label>
+                <div class="col-sm-8">
+                    <input name="fOfftcots" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">人员总工资：</label>
+                <div class="col-sm-8">
+                    <input name="fSalary" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">教学、科研人员工资：</label>
+                <div class="col-sm-8">
+                    <input name="fResearchPeople" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学生活动经费：</label>
+                <div class="col-sm-8">
+                    <input name="fActivity" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">大学生创新创业经费：</label>
+                <div class="col-sm-8">
+                    <input name="fStartBusiness" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">心理健康专项经费：</label>
+                <div class="col-sm-8">
+                    <input name="fMental" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">奖助学金：</label>
+                <div class="col-sm-8">
+                    <input name="fScholarship" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">党务及思政工作队伍建设经费：</label>
+                <div class="col-sm-8">
+                    <input name="fGovernment" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">偿还债务本金支出：</label>
+                <div class="col-sm-8">
+                    <input name="fRepayment" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">其他支出：</label>
+                <div class="col-sm-8">
+                    <input name="fOther" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">填报人：</label>
+                <div class="col-sm-8">
+                    <input name="fCreator" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "fin/expend"
+        $("#form-expend-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-expend-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

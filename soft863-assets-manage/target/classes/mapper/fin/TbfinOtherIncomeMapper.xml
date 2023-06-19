@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbfinOtherIncomeMapper">
+    
+    <resultMap type="TbfinOtherIncome" id="TbfinOtherIncomeResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fPoine"    column="f_poine"    />
+        <result property="fIeacf"    column="f_ieacf"    />
+        <result property="fMoef"    column="f_moef"    />
+        <result property="fWogbrf"    column="f_wogbrf"    />
+        <result property="fInformant"    column="f_informant"    />
+    </resultMap>
+
+    <sql id="selectTbfinOtherIncomeVo">
+        select f_id, f_poine, f_ieacf, f_moef, f_wogbrf, f_informant from tbfin_other_income
+    </sql>
+
+    <select id="selectTbfinOtherIncomeList" parameterType="TbfinOtherIncome" resultMap="TbfinOtherIncomeResult">
+        <include refid="selectTbfinOtherIncomeVo"/>
+        <where>  
+            <if test="fId != null "> and f_id = #{fId}</if>
+            <if test="fPoine != null "> and f_poine = #{fPoine}</if>
+            <if test="fIeacf != null "> and f_ieacf = #{fIeacf}</if>
+            <if test="fMoef != null "> and f_moef = #{fMoef}</if>
+            <if test="fWogbrf != null "> and f_wogbrf = #{fWogbrf}</if>
+            <if test="fInformant != null  and fInformant != ''"> and f_informant = #{fInformant}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbfinOtherIncomeByFId" parameterType="Long" resultMap="TbfinOtherIncomeResult">
+        <include refid="selectTbfinOtherIncomeVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbfinOtherIncome" parameterType="TbfinOtherIncome" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbfin_other_income
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fPoine != null">f_poine,</if>
+            <if test="fIeacf != null">f_ieacf,</if>
+            <if test="fMoef != null">f_moef,</if>
+            <if test="fWogbrf != null">f_wogbrf,</if>
+            <if test="fInformant != null">f_informant,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fPoine != null">#{fPoine},</if>
+            <if test="fIeacf != null">#{fIeacf},</if>
+            <if test="fMoef != null">#{fMoef},</if>
+            <if test="fWogbrf != null">#{fWogbrf},</if>
+            <if test="fInformant != null">#{fInformant},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbfinOtherIncome" parameterType="TbfinOtherIncome">
+        update tbfin_other_income
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fPoine != null">f_poine = #{fPoine},</if>
+            <if test="fIeacf != null">f_ieacf = #{fIeacf},</if>
+            <if test="fMoef != null">f_moef = #{fMoef},</if>
+            <if test="fWogbrf != null">f_wogbrf = #{fWogbrf},</if>
+            <if test="fInformant != null">f_informant = #{fInformant},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbfinOtherIncomeByFId" parameterType="Long">
+        delete from tbfin_other_income where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbfinOtherIncomeByFIds" parameterType="String">
+        delete from tbfin_other_income where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

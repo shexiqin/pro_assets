@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbdiaCourseMapper">
+    
+    <resultMap type="TbdiaCourse" id="TbdiaCourseResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fCno"    column="f_cno"    />
+        <result property="fCname"    column="f_cname"    />
+        <result property="fMajor"    column="f_major"    />
+        <result property="fCtype"    column="f_ctype"    />
+        <result property="fCnum"    column="f_cnum"    />
+        <result property="fCeval"    column="f_ceval"    />
+        <result property="fCada"    column="f_cada"    />
+        <result property="fCval"    column="f_cval"    />
+        <result property="fClecture"    column="f_clecture"    />
+        <result property="fClevel"    column="f_clevel"    />
+        <result property="fClass"    column="f_class"    />
+        <result property="fChour"    column="f_chour"    />
+    </resultMap>
+
+    <sql id="selectTbdiaCourseVo">
+        select f_id, f_cno, f_cname, f_major, f_ctype, f_cnum, f_ceval, f_cada, f_cval, f_clecture, f_clevel, f_class, f_chour from tbdia_course
+    </sql>
+
+    <select id="selectTbdiaCourseList" parameterType="TbdiaCourse" resultMap="TbdiaCourseResult">
+        <include refid="selectTbdiaCourseVo"/>
+        <where>  
+            <if test="fId != null "> and f_id = #{fId}</if>
+            <if test="fCno != null  and fCno != ''"> and f_cno = #{fCno}</if>
+            <if test="fCname != null  and fCname != ''"> and f_cname like concat('%', #{fCname}, '%')</if>
+            <if test="fMajor != null  and fMajor != ''"> and f_major = #{fMajor}</if>
+            <if test="fCtype != null  and fCtype != ''"> and f_ctype = #{fCtype}</if>
+            <if test="fCnum != null "> and f_cnum = #{fCnum}</if>
+            <if test="fCeval != null "> and f_ceval = #{fCeval}</if>
+            <if test="fCada != null "> and f_cada = #{fCada}</if>
+            <if test="fCval != null  and fCval != ''"> and f_cval = #{fCval}</if>
+            <if test="fClecture != null  and fClecture != ''"> and f_clecture = #{fClecture}</if>
+            <if test="fClevel != null "> and f_clevel = #{fClevel}</if>
+            <if test="fClass != null  and fClass != ''"> and f_class = #{fClass}</if>
+            <if test="fChour != null "> and f_chour = #{fChour}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbdiaCourseByFId" parameterType="Long" resultMap="TbdiaCourseResult">
+        <include refid="selectTbdiaCourseVo"/>
+        where f_id = #{fId}
+    </select>
+    <select id="selectCourseByMajor" resultMap="TbdiaCourseResult">
+        <include refid="selectTbdiaCourseVo"/>
+        where f_major = #{majorName}
+    </select>
+
+    <insert id="insertTbdiaCourse" parameterType="TbdiaCourse" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbdia_course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fCno != null and fCno != ''">f_cno,</if>
+            <if test="fCname != null and fCname != ''">f_cname,</if>
+            <if test="fMajor != null">f_major,</if>
+            <if test="fCtype != null and fCtype != ''">f_ctype,</if>
+            <if test="fCnum != null">f_cnum,</if>
+            <if test="fCeval != null">f_ceval,</if>
+            <if test="fCada != null">f_cada,</if>
+            <if test="fCval != null">f_cval,</if>
+            <if test="fClecture != null">f_clecture,</if>
+            <if test="fClevel != null">f_clevel,</if>
+            <if test="fClass != null and fClass != ''">f_class,</if>
+            <if test="fChour != null">f_chour,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fCno != null and fCno != ''">#{fCno},</if>
+            <if test="fCname != null and fCname != ''">#{fCname},</if>
+            <if test="fMajor != null">#{fMajor},</if>
+            <if test="fCtype != null and fCtype != ''">#{fCtype},</if>
+            <if test="fCnum != null">#{fCnum},</if>
+            <if test="fCeval != null">#{fCeval},</if>
+            <if test="fCada != null">#{fCada},</if>
+            <if test="fCval != null">#{fCval},</if>
+            <if test="fClecture != null">#{fClecture},</if>
+            <if test="fClevel != null">#{fClevel},</if>
+            <if test="fClass != null and fClass != ''">#{fClass},</if>
+            <if test="fChour != null">#{fChour},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbdiaCourse" parameterType="TbdiaCourse">
+        update tbdia_course
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fCno != null and fCno != ''">f_cno = #{fCno},</if>
+            <if test="fCname != null and fCname != ''">f_cname = #{fCname},</if>
+            <if test="fMajor != null">f_major = #{fMajor},</if>
+            <if test="fCtype != null and fCtype != ''">f_ctype = #{fCtype},</if>
+            <if test="fCnum != null">f_cnum = #{fCnum},</if>
+            <if test="fCeval != null">f_ceval = #{fCeval},</if>
+            <if test="fCada != null">f_cada = #{fCada},</if>
+            <if test="fCval != null">f_cval = #{fCval},</if>
+            <if test="fClecture != null">f_clecture = #{fClecture},</if>
+            <if test="fClevel != null">f_clevel = #{fClevel},</if>
+            <if test="fClass != null and fClass != ''">f_class = #{fClass},</if>
+            <if test="fChour != null">f_chour = #{fChour},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbdiaCourseByFId" parameterType="Long">
+        delete from tbdia_course where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbdiaCourseByFIds" parameterType="String">
+        delete from tbdia_course where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('权重与等级设置')"/>
+    <th:block th:include="include :: datetimepicker-css"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-catalog-add">
+        <div class="col-md-6">
+            评估得分=绩点*比重*权重+综合成绩*比重*权重+加分项*获奖次数
+            <hr>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">绩点与成绩比重：</label>
+                <div class="form-inline" style="display: inline-block !important;">
+                    <input name="weight1" class="form-control"  style="width: 40px" type="text" required th:value="${#strings.arraySplit(weight,'.')[0]}"> :
+                    <input name="weight2" class="form-control"  style="width: 40px" type="text" required th:value="${#strings.arraySplit(weight,'.')[1]}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">绩点权重占比：</label>
+                <div class="form-inline">
+                    <input name="weight3" class="form-control" style="width: 40px" type="text" required th:value="${#strings.arraySplit(weight,'.')[2]}">%
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">成绩权重占比：</label>
+                <div class="form-inline">
+                    <input name="weight4" class="form-control" style="width: 40px" type="text" required th:value="${#strings.arraySplit(weight,'.')[3]}">%
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required" >获奖加分：</label>
+                <div class="form-inline">
+                    <input name="weight5" class="form-control" style="width: 40px" type="text" required th:value="${#strings.arraySplit(weight,'.')[4]}">分
+                </div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">一等奖学金数量：</label>
+                <div class="form-inline">
+                    <input name="weight6" class="form-control" style="width: 40px" type="text" required th:value="${#strings.arraySplit(weight,'.')[5]}">个
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">二等奖学金数量：</label>
+                <div class="form-inline">
+                    <input name="weight7" class="form-control" style="width: 40px" type="text" required th:value="${#strings.arraySplit(weight,'.')[6]}">个
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">三等奖学金数量：</label>
+                <div class="form-inline">
+                    <input name="weight8" class="form-control" style="width: 40px" type="text" required th:value="${#strings.arraySplit(weight,'.')[7]}">个
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: datetimepicker-js"/>
+<script th:inline="javascript">
+    var prefix = ctx + "dia/scholarshipAssessment";
+    $("#form-catalog-add").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        var weight3 = document.getElementsByName("weight3")[0].value;
+        var weight4 = document.getElementsByName("weight4")[0].value;
+        if (Number(weight3) + Number(weight4) == 100) {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/weight", $('#form-catalog-add').serialize());
+            }
+        } else {
+            alert("权重占比总和必须为100");
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbdiaMajorMapper">
+    
+    <resultMap type="TbdiaMajor" id="TbdiaMajorResult">
+        <result property="fMid"    column="f_mid"    />
+        <result property="fCode"    column="f_code"    />
+        <result property="fMaj"    column="f_maj"    />
+        <result property="fMchar"    column="f_mchar"    />
+        <result property="fMmethod"    column="f_mmethod"    />
+        <result property="fMhour"    column="f_mhour"    />
+        <result property="fMsorce"    column="f_msorce"    />
+        <result property="fMresource"    column="f_mresource"    />
+        <result property="fMnum"    column="f_mnum"    />
+        <result property="fMpartner"    column="f_mpartner"    />
+        <result property="fMdevelop"    column="f_mdevelop"    />
+        <result property="fMentrollment"    column="f_mentrollment"    />
+        <result property="fTchnum"    column="f_tchnum"    />
+        <result property="fMachievements"    column="f_machievements"    />
+        <result property="fMstunum"    column="f_mstunum"    />
+        <result property="fMstarter"    column="f_mstarter"    />
+        <result property="fMpass"    column="f_mpass"    />
+        <result property="fPractice"    column="f_practice"    />
+        <result property="fType"    column="f_type"    />
+    </resultMap>
+
+    <sql id="selectTbdiaMajorVo">
+        select f_mid, f_code, f_maj, f_mchar, f_mmethod, f_mhour, f_msorce, f_mresource, f_mnum, f_mpartner, f_mdevelop, f_mentrollment, f_tchnum, f_machievements, f_mstunum, f_mstarter, f_mpass, f_practice, f_type from tbdia_major
+    </sql>
+
+    <select id="selectTbdiaMajorList" parameterType="TbdiaMajor" resultMap="TbdiaMajorResult">
+        <include refid="selectTbdiaMajorVo"/>
+        <where>  
+            <if test="fMid != null "> and f_mid = #{fMid}</if>
+            <if test="fCode != null  and fCode != ''"> and f_code = #{fCode}</if>
+            <if test="fMaj != null  and fMaj != ''"> and f_maj = #{fMaj}</if>
+            <if test="fMchar != null  and fMchar != ''"> and f_mchar = #{fMchar}</if>
+            <if test="fMmethod != null  and fMmethod != ''"> and f_mmethod = #{fMmethod}</if>
+            <if test="fMhour != null "> and f_mhour = #{fMhour}</if>
+            <if test="fMsorce != null "> and f_msorce = #{fMsorce}</if>
+            <if test="fMresource != null  and fMresource != ''"> and f_mresource = #{fMresource}</if>
+            <if test="fMnum != null "> and f_mnum = #{fMnum}</if>
+            <if test="fMpartner != null  and fMpartner != ''"> and f_mpartner = #{fMpartner}</if>
+            <if test="fMdevelop != null  and fMdevelop != ''"> and f_mdevelop = #{fMdevelop}</if>
+            <if test="fMentrollment != null "> and f_mentrollment = #{fMentrollment}</if>
+            <if test="fTchnum != null "> and f_tchnum = #{fTchnum}</if>
+            <if test="fMachievements != null  and fMachievements != ''"> and f_machievements = #{fMachievements}</if>
+            <if test="fMstunum != null "> and f_mstunum = #{fMstunum}</if>
+            <if test="fMstarter != null "> and f_mstarter = #{fMstarter}</if>
+            <if test="fMpass != null "> and f_mpass = #{fMpass}</if>
+            <if test="fPractice != null  and fPractice != ''"> and f_practice = #{fPractice}</if>
+            <if test="fType != null  and fType != ''"> and f_type = #{fType}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbdiaMajorByFMid" parameterType="Long" resultMap="TbdiaMajorResult">
+        <include refid="selectTbdiaMajorVo"/>
+        where f_mid = #{fMid}
+    </select>
+
+    <select id="selectTeacher" resultType="com.soft863.domain.TbdiaTeach">
+    select * from techdiagdb.tbdia_teach where f_pro_code = #{majorCode}
+    </select>
+    <select id="selectMajorName" resultType="java.lang.String">
+        select f_maj from tbdia_major
+    </select>
+    <select id="selectMpass" resultType="java.lang.String">
+        select f_mpass from tbdia_major
+    </select>
+    <select id="selectMajorCount" resultType="java.util.Map">
+        select (
+                   case f_type
+                       when '0' then '学校自建'
+                       when '1' then '企业共建' end) name,count(1) value
+
+        from tbdia_major group by f_type
+    </select>
+    <select id="selectMajorOrder" resultMap="TbdiaMajorResult">
+        <include refid="selectTbdiaMajorVo"/> order by f_mstunum desc limit 0,6
+    </select>
+    <select id="selectMpassOrder" resultMap="TbdiaMajorResult">
+        <include refid="selectTbdiaMajorVo"/> order by f_mpass desc limit 0,6
+    </select>
+
+    <insert id="insertTbdiaMajor" parameterType="TbdiaMajor" useGeneratedKeys="true" keyProperty="fMid">
+        insert into tbdia_major
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fCode != null">f_code,</if>
+            <if test="fMaj != null and fMaj != ''">f_maj,</if>
+            <if test="fMchar != null and fMchar != ''">f_mchar,</if>
+            <if test="fMmethod != null">f_mmethod,</if>
+            <if test="fMhour != null">f_mhour,</if>
+            <if test="fMsorce != null">f_msorce,</if>
+            <if test="fMresource != null">f_mresource,</if>
+            <if test="fMnum != null">f_mnum,</if>
+            <if test="fMpartner != null">f_mpartner,</if>
+            <if test="fMdevelop != null">f_mdevelop,</if>
+            <if test="fMentrollment != null">f_mentrollment,</if>
+            <if test="fTchnum != null">f_tchnum,</if>
+            <if test="fMachievements != null">f_machievements,</if>
+            <if test="fMstunum != null">f_mstunum,</if>
+            <if test="fMstarter != null">f_mstarter,</if>
+            <if test="fMpass != null">f_mpass,</if>
+            <if test="fPractice != null">f_practice,</if>
+            <if test="fType != null">f_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fCode != null">#{fCode},</if>
+            <if test="fMaj != null and fMaj != ''">#{fMaj},</if>
+            <if test="fMchar != null and fMchar != ''">#{fMchar},</if>
+            <if test="fMmethod != null">#{fMmethod},</if>
+            <if test="fMhour != null">#{fMhour},</if>
+            <if test="fMsorce != null">#{fMsorce},</if>
+            <if test="fMresource != null">#{fMresource},</if>
+            <if test="fMnum != null">#{fMnum},</if>
+            <if test="fMpartner != null">#{fMpartner},</if>
+            <if test="fMdevelop != null">#{fMdevelop},</if>
+            <if test="fMentrollment != null">#{fMentrollment},</if>
+            <if test="fTchnum != null">#{fTchnum},</if>
+            <if test="fMachievements != null">#{fMachievements},</if>
+            <if test="fMstunum != null">#{fMstunum},</if>
+            <if test="fMstarter != null">#{fMstarter},</if>
+            <if test="fMpass != null">#{fMpass},</if>
+            <if test="fPractice != null">#{fPractice},</if>
+            <if test="fType != null">#{fType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbdiaMajor" parameterType="TbdiaMajor">
+        update tbdia_major
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fCode != null">f_code = #{fCode},</if>
+            <if test="fMaj != null and fMaj != ''">f_maj = #{fMaj},</if>
+            <if test="fMchar != null and fMchar != ''">f_mchar = #{fMchar},</if>
+            <if test="fMmethod != null">f_mmethod = #{fMmethod},</if>
+            <if test="fMhour != null">f_mhour = #{fMhour},</if>
+            <if test="fMsorce != null">f_msorce = #{fMsorce},</if>
+            <if test="fMresource != null">f_mresource = #{fMresource},</if>
+            <if test="fMnum != null">f_mnum = #{fMnum},</if>
+            <if test="fMpartner != null">f_mpartner = #{fMpartner},</if>
+            <if test="fMdevelop != null">f_mdevelop = #{fMdevelop},</if>
+            <if test="fMentrollment != null">f_mentrollment = #{fMentrollment},</if>
+            <if test="fTchnum != null">f_tchnum = #{fTchnum},</if>
+            <if test="fMachievements != null">f_machievements = #{fMachievements},</if>
+            <if test="fMstunum != null">f_mstunum = #{fMstunum},</if>
+            <if test="fMstarter != null">f_mstarter = #{fMstarter},</if>
+            <if test="fMpass != null">f_mpass = #{fMpass},</if>
+            <if test="fPractice != null">f_practice = #{fPractice},</if>
+            <if test="fType != null">f_type = #{fType},</if>
+
+        </trim>
+        where f_mid = #{fMid}
+    </update>
+
+    <delete id="deleteTbdiaMajorByFMid" parameterType="Long">
+        delete from tbdia_major where f_mid = #{fMid}
+    </delete>
+
+    <delete id="deleteTbdiaMajorByFMids" parameterType="String">
+        delete from tbdia_major where f_mid in 
+        <foreach item="fMid" collection="array" open="(" separator="," close=")">
+            #{fMid}
+        </foreach>
+    </delete>
+
+</mapper>

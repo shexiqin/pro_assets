@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改学校其他支出情况')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-otherExpend-edit" th:object="${tbfinOtherExpend}">
+            <input name="fId" th:field="*{fId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">贷款余额：</label>
+                <div class="col-sm-8">
+                    <select name="fLb" class="form-control m-b" th:with="type=${@dict.getType('fin_flb')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fLb}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">地方政府债券余额：</label>
+                <div class="col-sm-8">
+                    <input name="fBolgb" th:field="*{fBolgb}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">捐赠收入财政配比：</label>
+                <div class="col-sm-8">
+                    <input name="fFrodi" th:field="*{fFrodi}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">扶贫专项：</label>
+                <div class="col-sm-8">
+                    <select name="fPasp" class="form-control m-b" th:with="type=${@dict.getType('fin_fpasp')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fPasp}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">填报人：</label>
+                <div class="col-sm-8">
+                    <input name="fInformant" th:field="*{fInformant}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "fin/otherExpend";
+        $("#form-otherExpend-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-otherExpend-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

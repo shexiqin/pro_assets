@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('课程画像列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId" action="/dia/course/dia" method="get">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>课程号：</label>
+                                <input type="text" name="fCno" id="cnoID"/><span style="color: red">[[${msg}]]</span>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="dia:course:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="dia:course:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="dia:course:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="dia:course:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('dia:course:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('dia:course:remove')}]];
+        var teaType = [[${@dict.getType('tea_teacher_type')}]];
+        var prefix = ctx + "dia/course";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "课程画像",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'fId',
+                    title: '主键',
+                    visible: false
+                },
+                {
+                    field: 'fCno',
+                    title: '课程号'
+                },
+                {
+                    field: 'fCname',
+                    title: '课程名称'
+                },
+                {
+                    field: 'fMajor',
+                    title: '专业方向'
+                },
+                {
+                    field: 'fCtype',
+                    title: '课程类型'
+                },
+                {
+                    field: 'fCnum',
+                    title: '班级总人数'
+                },
+                {
+                    field: 'fCeval',
+                    title: '请假'
+                },
+                {
+                    field: 'fCada',
+                    title: '出勤人数'
+                },
+                {
+                    field: 'fCval',
+                    title: '课程价值'
+                },
+                {
+                    field: 'fClecture',
+                    title: '讲师'
+                },
+                {
+                    field: 'fClevel',
+                    title: '讲师职称',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(teaType, value);
+                    }
+                },
+                {
+                    field: 'fClass',
+                    title: '教室'
+                },
+                {
+                    field: 'fChour',
+                    title: '学时'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.fId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.fId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('&nbsp<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="toDia(\'' + row.fCno + '\')"><i class="fa fa-star"></i>画像</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+
+       /* function dia(){
+            var text=$("#cnoID").val();
+            if(text==null || text == ''){
+                alert("请输入正确的课程号生成画像");
+            }else {
+                document.getElementById("formId").submit();
+            }
+        };*/
+
+        function toDia(fCno){
+           location.href='/dia/course/todia/'+fCno;
+        }
+
+    </script>
+</body>
+</html>

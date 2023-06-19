@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbdiaStudentSessionScoreMapper">
+    
+    <resultMap type="TbdiaStudentSessionScore" id="TbdiaStudentSessionScoreResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fStuId"    column="f_stu_id"    />
+        <result property="fDailyPerAverage"    column="f_daily_per_average"    />
+        <result property="fAbsenceTimes"    column="f_absence_times"    />
+        <result property="fComprehensiveScore"    column="f_comprehensive_score"    />
+        <result property="fStuGpa"    column="f_stu_gpa"    />
+        <result property="fHangingUp"    column="f_hanging_up"    />
+        <result property="fRebuild"    column="f_rebuild"    />
+        <result property="fYear"    column="f_year"    />
+    </resultMap>
+
+    <sql id="selectTbdiaStudentSessionScoreVo">
+        select f_id, f_stu_id, f_daily_per_average, f_absence_times, f_comprehensive_score, f_stu_gpa, f_hanging_up, f_rebuild, f_year from tbdia_student_session_score
+    </sql>
+
+    <select id="selectTbdiaStudentSessionScoreList" parameterType="TbdiaStudentSessionScore" resultMap="TbdiaStudentSessionScoreResult">
+        <include refid="selectTbdiaStudentSessionScoreVo"/>
+        <where>  
+            <if test="fId != null "> and f_id = #{fId}</if>
+            <if test="fStuId != null  and fStuId != ''"> and f_stu_id = #{fStuId}</if>
+            <if test="fDailyPerAverage != null "> and f_daily_per_average = #{fDailyPerAverage}</if>
+            <if test="fAbsenceTimes != null "> and f_absence_times = #{fAbsenceTimes}</if>
+            <if test="fComprehensiveScore != null "> and f_comprehensive_score = #{fComprehensiveScore}</if>
+            <if test="fStuGpa != null "> and f_stu_gpa = #{fStuGpa}</if>
+            <if test="fHangingUp != null "> and f_hanging_up = #{fHangingUp}</if>
+            <if test="fRebuild != null "> and f_rebuild = #{fRebuild}</if>
+            <if test="fYear != null  and fYear != ''"> and f_year = #{fYear}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbdiaStudentSessionScoreByFId" parameterType="Long" resultMap="TbdiaStudentSessionScoreResult">
+        <include refid="selectTbdiaStudentSessionScoreVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbdiaStudentSessionScore" parameterType="TbdiaStudentSessionScore" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbdia_student_session_score
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fStuId != null">f_stu_id,</if>
+            <if test="fDailyPerAverage != null">f_daily_per_average,</if>
+            <if test="fAbsenceTimes != null">f_absence_times,</if>
+            <if test="fComprehensiveScore != null">f_comprehensive_score,</if>
+            <if test="fStuGpa != null">f_stu_gpa,</if>
+            <if test="fHangingUp != null">f_hanging_up,</if>
+            <if test="fRebuild != null">f_rebuild,</if>
+            <if test="fYear != null">f_year,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fStuId != null">#{fStuId},</if>
+            <if test="fDailyPerAverage != null">#{fDailyPerAverage},</if>
+            <if test="fAbsenceTimes != null">#{fAbsenceTimes},</if>
+            <if test="fComprehensiveScore != null">#{fComprehensiveScore},</if>
+            <if test="fStuGpa != null">#{fStuGpa},</if>
+            <if test="fHangingUp != null">#{fHangingUp},</if>
+            <if test="fRebuild != null">#{fRebuild},</if>
+            <if test="fYear != null">#{fYear},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbdiaStudentSessionScore" parameterType="TbdiaStudentSessionScore">
+        update tbdia_student_session_score
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fStuId != null">f_stu_id = #{fStuId},</if>
+            <if test="fDailyPerAverage != null">f_daily_per_average = #{fDailyPerAverage},</if>
+            <if test="fAbsenceTimes != null">f_absence_times = #{fAbsenceTimes},</if>
+            <if test="fComprehensiveScore != null">f_comprehensive_score = #{fComprehensiveScore},</if>
+            <if test="fStuGpa != null">f_stu_gpa = #{fStuGpa},</if>
+            <if test="fHangingUp != null">f_hanging_up = #{fHangingUp},</if>
+            <if test="fRebuild != null">f_rebuild = #{fRebuild},</if>
+            <if test="fYear != null">f_year = #{fYear},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbdiaStudentSessionScoreByFId" parameterType="Long">
+        delete from tbdia_student_session_score where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbdiaStudentSessionScoreByFIds" parameterType="String">
+        delete from tbdia_student_session_score where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.soft863.mapper.TbdiaScholarshipAssessmentMapper">
+
+
+    <insert id="insertScholarshipAssessment">
+        insert into tbdia_scholarship_assessment
+            (f_stu_id,
+            f_stu_name,
+            f_major,
+            f_class,
+            f_compisite_score,
+            f_stu_gpa,
+            f_gainnum)
+        values
+            <foreach collection="list" item="scholarshipAssessment" separator=",">
+                (#{scholarshipAssessment.fStuId},
+                #{scholarshipAssessment.fStuName},
+                #{scholarshipAssessment.fMajor},
+                #{scholarshipAssessment.fClass},
+                #{scholarshipAssessment.fCompisiteScore},
+                #{scholarshipAssessment.fStuGpa},
+                #{scholarshipAssessment.fGainnum})
+            </foreach>
+    </insert>
+
+
+    <update id="setScoreAndLevel">
+            update tbdia_scholarship_assessment
+            <set>
+                <if test="fAssessmentSocre!=null and fAssessmentSocre!=''">
+                f_assessment_socre= #{fAssessmentSocre},
+                </if>
+                <if test="fScholarshipLevel!=null and fScholarshipLevel!=''">
+                    f_scholarship_level= #{fScholarshipLevel}
+                </if>
+            </set>
+            where f_id=#{fId}
+    </update>
+
+
+
+    <delete id="delAll">
+        delete from tbdia_scholarship_assessment
+    </delete>
+
+
+    <select id="selAll" resultType="com.soft863.domain.TbdiaScholarshipAssessment">
+        select
+        f_id fId,
+        f_stu_id fStuId,
+        f_stu_name fStuName,
+        f_major fMajor,
+        f_class fClass,
+        f_compisite_score fCompisiteScore,
+        f_stu_gpa fStuGpa,
+        f_assessment_socre fAssessmentSocre,
+        f_gainnum fGainnum,
+        f_scholarship_level fScholarshipLevel
+        from tbdia_scholarship_assessment
+        <where>
+            <if test="fMajor != null and fMajor != ''">and f_major=#{fMajor}</if>
+            <if test="fClass != null and fClass != ''">and f_class=#{fClass}</if>
+        </where>
+        order by f_assessment_socre desc
+    </select>
+
+
+    <select id="selStudent" resultType="com.soft863.domain.TbdiaScholarshipAssessment">
+        select
+        f_no fStuId,
+        f_name fStuName,
+        f_major fMajor,
+        f_clazz fClass,
+        f_compisite_score fCompisiteScore,
+        f_stu_gpa fStuGpa,
+        f_gainnum fGainnum
+        from tbdia_student
+        <where>
+            f_stu_gpa &gt;= #{estimate1} and
+            f_compisite_score&gt;=#{estimate2} and
+            f_leave_num &lt;=#{estimate3} and
+            f_absenteeism &lt;=#{estimate4}
+        </where>
+    </select>
+    <select id="selEstimate" resultType="java.lang.String">
+         select config_value from sys_config where config_id=114
+    </select>
+    <select id="selWeight" resultType="java.lang.String">
+         select config_value from sys_config where config_id=113
+    </select>
+
+    <update id="updateWeight">
+        update sys_config set config_value=#{weight} where config_id=113
+    </update>
+    <update id="updateEstimate">
+        update sys_config set config_value=#{Estimate} where config_id=114
+    </update>
+</mapper>
+

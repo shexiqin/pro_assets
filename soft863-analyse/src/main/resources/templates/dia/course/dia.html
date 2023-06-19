@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('课程画像')" />
+    <th:block th:include="include :: header('百度ECharts')" />
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="/css/animate.min.css" rel="stylesheet"/>
+    <link href="/css/style.min.css" rel="stylesheet"/>
+    <style>
+        h1{
+            display:inline;
+        }
+        .milky{
+            font-size: 30px;   /*设置文字大小*/
+            color:#3366FF;  /*设置文字颜色*/
+            text-shadow: 0 8px 10px #6699FF;  /*设置文字阴影*/
+            font-weight: bolder;  /*设置文字宽度*/
+            text-align: center;  /*设置文字居中*/
+        }
+    </style>
+</head>
+<body class="gray-bg" style="height: 810px;">
+<div class="wrapper wrapper-content"  style="height: 780px;">
+    <div class="row" style="height: 40px"></div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label  pull-right" style="color: #007bff">班级</span>
+                    <h5>课程号</h5>
+                </div>
+                <div class="ibox-content">
+                    <span  style="color: black;font-size: 15px" >编号：</span><h1 class="milky" id="allnum"></h1><br><span class="label  pull-right" style="color: #20c997"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label  pull-right" style="color: #007bff">班级</span>
+                    <h5>课程名</h5>
+                </div>
+                <div class="ibox-content">
+                    <span  style="color: black;font-size: 15px" >名称：</span><h1 class="milky" id="ex">4</h1><br><span class="label  pull-right" style="color: #20c997"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label  pull-right" style="color: #007bff">班级</span>
+                    <h5>课程类型</h5>
+                </div>
+                <div class="ibox-content">
+                    <span  style="color: black;font-size: 15px" >类型：</span><h1 class="milky" id="test">275,800</h1><br><span class="label  pull-right" style="color: #20c997"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label  pull-right" style="font-size: 15px"><a href="/dia/course/course">返回</a>></span>
+                    <h5>专业方向</h5>
+                </div>
+                <div class="ibox-content">
+                    <span  style="color: black;font-size: 15px" >方向：</span><h1 class="milky" id="award">23</h1><br><span class="label  pull-right" style="color: #20c997;font-size: 8px" ></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-sm-3">
+            <div class="ibox-title">
+                <h5>学生挂科分析</h5>
+            </div>
+            <div class="ibox float-e-margins">
+                <div class="echarts" id="num0">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="ibox-title">
+                <h5>课程Top榜</h5>
+            </div>
+            <div class="ibox float-e-margins">
+            <div class="echarts" id="num" >
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox-title">
+                <h5>出勤请假分析</h5>
+            </div>
+            <div class="ibox float-e-margins">
+                <div class="echarts" id="num1">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label  pull-right" style="color: #007bff">班级</span>
+                    <h5>总人数</h5>
+                </div>
+                <div class="ibox-content">
+                    <span  style="color: black;font-size: 15px" >人数：</span><h1 class="milky" id="t1"></h1><br><span class="label  pull-right" style="color: #20c997">人</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label  pull-right" style="color: #007bff">班级</span>
+                    <h5>出勤人数</h5>
+                </div>
+                <div class="ibox-content">
+                    <span  style="color: black;font-size: 15px" >出勤：</span><h1 class="milky" id="t2">4</h1><br><span class="label  pull-right" style="color: #20c997">人</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label  pull-right" style="color: #007bff">班级</span>
+                    <h5>请假人数</h5>
+                </div>
+                <div class="ibox-content">
+                    <span  style="color: black;font-size: 15px" >请假：</span><h1 class="milky" id="t3" style="color: red">275,800</h1><br><span class="label  pull-right" style="color: #20c997">人</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>讲师</h5>
+                </div>
+                <div class="ibox-content">
+                    <span  style="color: black;font-size: 15px" >姓名：</span><h1 class="milky" id="t4">23</h1><br><span class="label  pull-right" style="color: #20c997;font-size: 8px" ></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label  pull-right" style="color: #007bff">班级</span>
+                    <h5>课程价值</h5>
+                </div>
+                <div class="ibox-content">
+                    <span  style="color: black;font-size: 15px" >评价：</span><h1 class="milky" id="t5" style="color: deeppink"></h1><br><span class="label  pull-right" style="color: #20c997"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label  pull-right" style="color: #007bff">班级</span>
+                    <h5>教室</h5>
+                </div>
+                <div class="ibox-content">
+                    <span  style="color: black;font-size: 15px" >名称：</span><h1 class="milky" id="t6">4</h1><br><span class="label  pull-right" style="color: #20c997"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label  pull-right" style="color: #007bff">班级</span>
+                    <h5>学时</h5>
+                </div>
+                <div class="ibox-content">
+                    <span  style="color: black;font-size: 15px" >时长：</span><h1 class="milky" id="t7">275,800</h1><br><span class="label  pull-right" style="color: #20c997">小时</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>课程平均分</h5>
+                </div>
+                <div class="ibox-content">
+                    <span  style="color: black;font-size: 15px" >分数：</span><h1 class="milky" id="t8" style="color: red">23</h1><br><span class="label  pull-right" style="color: #20c997;font-size: 8px" >分</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: echarts-js" />
+<th:block th:include="include :: footer" />
+<script type="text/javascript">
+
+    var ydata=[];
+    var xdata=[];
+    var chartDomA = document.getElementById('num');
+    var myChartA = echarts.init(chartDomA);
+    var optionA;
+    optionA = {
+        tooltip: {
+            trigger: "axis",
+        },
+        grid: {
+            left: "80",
+            right: "20",
+            bottom: "20",
+            top: "5",
+            containLabel: false,
+        },
+        xAxis: {
+            type: "value",
+            show: false,
+        },
+        yAxis: {
+            type: "category",
+            data: ydata,
+            axisLine: {
+                show: false,
+            },
+            axisTick: {
+                show: false,
+            },
+            axisLabel: {
+                margin: 70,
+                width: 70,
+                align: "left",
+                overflow: "truncate",
+                formatter: function (value, index) {
+                    let ind = index + 1;
+                    if (ind == ydata.length) {
+                        return "{one|" + (ydata.length - index) + "} {a|" + value + "}";
+                    } else if (ind + 1 == ydata.length) {
+                        return "{two|" + (ydata.length - index) + "} {b|" + value + "}";
+                    } else if (ind + 2 == ydata.length) {
+                        return (
+                            "{three|" + (ydata.length - index) + "} {c|" + value + "}"
+                        );
+                    }
+                    if (ydata.length - index > 9) {
+                        return (
+                            "{five|" + (ydata.length - index) + "} {d|" + value + "}"
+                        );
+                    }
+                    return "{four|" + (ydata.length - index) + "} {d|" + value + "}";
+                },
+                rich: {
+                    a: {
+                        color: "#59c9f9",
+                    },
+                    b: {
+                        color: "#59c9f9",
+                    },
+                    c: {
+                        color: "#59c9f9",
+                    },
+                    d: {
+                        color: "#59c9f9",
+                    },
+                    // 第一名
+                    one: {
+                        backgroundColor: "#E86452",
+                        color: "white",
+                        width: 12,
+                        height: 16,
+                        padding: [1, 0, 0, 5],
+                        borderRadius: 10,
+                        fontSize: 11,
+                    },
+                    // 第二名
+                    two: {
+                        backgroundColor: "#FF9845",
+                        color: "white",
+                        width: 12,
+                        height: 16,
+                        padding: [1, 0, 0, 5],
+                        borderRadius: 10,
+                        fontSize: 11,
+                    },
+                    // 第三名
+                    three: {
+                        backgroundColor: "#F6BD16",
+                        color: "white",
+                        width: 12,
+                        height: 16,
+                        padding: [1, 0, 0, 5],
+                        borderRadius: 10,
+                        fontSize: 11,
+                    },
+                    // 一位数
+                    four: {
+                        backgroundColor: "rgba(0,0,0,0.15)",
+                        color: "white",
+                        width: 12,
+                        height: 16,
+                        padding: [1, 0, 0, 5],
+                        borderRadius: 10,
+                        fontSize: 11,
+                    },
+                    // 两位数
+                    five: {
+                        backgroundColor: "rgba(0,0,0,0.15)",
+                        color: "white",
+                        width: 16,
+                        height: 16,
+                        padding: [1, 0, 0, 1],
+                        borderRadius: 10,
+                        fontSize: 11,
+                    },
+                },
+            },
+        },
+        series: [{
+            type: "bar",
+            showBackground: true,
+            label: {
+                show: true,
+                position: "right",
+                color: "rgba(0,0,0,0.45)",
+            },
+            barWidth: 10,
+            itemStyle: {
+                color: "#5B8FF9",
+            },
+            data: xdata
+        }, ]
+    };
+    $(function () {
+        $.ajax({
+            url:"/dia/course/top",
+            success: function (data) {
+                if(data != null && data != "" && data.length!=0){
+                    var obj =JSON.parse(data);
+                    ydata =obj[0];
+                    xdata =obj[1];
+                    optionA.series[0].data =xdata;
+                    optionA.yAxis.data = ydata;
+                }
+                optionA && myChartA.setOption(optionA);
+            }
+        })
+    });
+
+
+
+        var chartDom2 = document.getElementById('num0');
+        var myChart2 = echarts.init(chartDom2);
+        var option2;
+        option2 = {
+            title: {
+                text: '课程挂科分析',
+                subtext: '',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left'
+            },
+            series: [
+                {
+                    name: '',
+                    type: 'pie',
+                    radius: '50%',
+                    data: '',
+                    itemStyle:{
+                        normal: {
+
+                            color: function(params) {
+
+                                //渐变色列表，自定义自己需要的颜色
+
+                                var colorList = [
+
+                                    {
+
+                                        c1: "#696969",
+
+                                        c2: "black"
+
+                                    },
+                                    {
+
+                                        c1: "red",
+
+                                        c2: "#F04393"
+
+                                    }
+
+
+                                ];
+
+                                return new echarts.graphic.LinearGradient(1, 0, 0, 0, [
+
+                                    {
+
+                                        //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
+
+                                        offset: 0,
+
+                                        color: colorList[params.dataIndex].c1
+
+                                    },
+
+                                    {
+
+                                        offset: 1,
+
+                                        color: colorList[params.dataIndex].c2
+
+                                    }
+
+                                ]);
+
+                            }
+
+                        }
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        $(function () {
+            $.ajax({
+                url:"/dia/course/up/"+[[${no}]],
+                success: function (data) {
+                    if(data != null && data != "" && data.length!=0){
+                        var obj =JSON.parse(data);
+                        option2.series[0].data = obj;
+                    }
+                    option2 && myChart2.setOption(option2);
+                }
+            })
+        });
+
+        var chartDom3 = document.getElementById('num1');
+        var myChart3 = echarts.init(chartDom3);
+        var option3;
+
+        option3 = {
+            title: {
+                text: '考勤分析',
+                subtext: '',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left'
+            },
+            series: [
+                {
+                    name: '',
+                    type:'pie',
+                    radius:['25%','50%'],
+                    data: [
+                        {value: 1048, name: '男'},
+                        {value: 735, name: '女'}
+                    ],
+                    itemStyle:{
+                        normal: {
+
+                            color: function(params) {
+
+                                //渐变色列表，自定义自己需要的颜色
+
+                                var colorList = [
+
+                                    {
+
+                                        c1: "#4ad2ff",
+
+                                        c2: "#007bff"
+
+                                    },
+                                    {
+
+                                        c1: "red",
+
+                                        c2: "pink"
+
+                                    }
+
+                                ];
+
+                                return new echarts.graphic.LinearGradient(1, 0, 0, 0, [
+
+                                    {
+
+                                        //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
+
+                                        offset: 0,
+
+                                        color: colorList[params.dataIndex].c1
+
+                                    },
+
+                                    {
+
+                                        offset: 1,
+
+                                        color: colorList[params.dataIndex].c2
+
+                                    }
+
+                                ]);
+
+                            }
+
+                        }
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+        $(function () {
+            $.ajax({
+                url:"/dia/course/cada/"+[[${no}]],
+                success: function (data) {
+                    if(data != null && data != "" && data.length!=0){
+                        var obj =JSON.parse(data);
+                        option3.series[0].data = obj;
+                    }
+                    option3 && myChart3.setOption(option3);
+                }
+            })
+        });
+
+
+        $(function (){
+            $.ajax({
+                url:"/dia/course/dia/"+[[${no}]],
+                success: function (data) {
+                    if (data !=null && data !='' && data.length !=0){
+                        var obj =JSON.parse(data);
+                        console.log(obj);
+
+                        $('#allnum').html(obj.fCno);
+                        $('#ex').html(obj.fCname);
+                        $('#test').html(obj.fCtype);
+                        $('#award').html(obj.fMajor);
+                        $('#t1').html(obj.fCnum);
+                        $('#t2').html(obj.fCada);
+                        $('#t3').html(obj.fCeval);
+                        $('#t4').html(obj.fClecture);
+                        $('#t5').html(obj.fCval);
+                        $('#t6').html(obj.fClass);
+                        $('#t7').html(obj.fChour);
+                    }
+                }
+            })
+        });
+$(function (){
+    $.ajax({
+        url:"/dia/course/avg/"+[[${no}]],
+        success: function (data) {
+            if (data !=null && data !='' && data.length !=0){
+                var obj =JSON.parse(data);
+                $('#t8').html(obj);
+            }
+        }
+    })
+});
+
+</script>
+</body>
+</html>

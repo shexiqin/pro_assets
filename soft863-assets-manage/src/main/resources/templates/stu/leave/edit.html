@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改学生请假信息（学工系统）')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-leave-edit" th:object="${tbstuLeave}">
+            <input name="fId" th:field="*{fId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学号：</label>
+                <div class="col-sm-8">
+                    <input name="fNum" th:field="*{fNum}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">姓名：</label>
+                <div class="col-sm-8">
+                    <input name="fName" th:field="*{fName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">性别：</label>
+                <div class="col-sm-8">
+                    <select name="fSex" class="form-control m-b" th:with="type=${@dict.getType('sys_user_sex')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fSex}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">民族：</label>
+                <div class="col-sm-8">
+                    <select name="fNation" class="form-control m-b" th:with="type=${@dict.getType('stu_nation')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fNation}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">手机号：</label>
+                <div class="col-sm-8">
+                    <input name="fPhone" th:field="*{fPhone}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">年级：</label>
+                <div class="col-sm-8">
+                    <select name="fGrade" class="form-control m-b" th:with="type=${@dict.getType('stu_grade')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fGrade}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">校区：</label>
+                <div class="col-sm-8">
+                    <select name="fCampus" class="form-control m-b" th:with="type=${@dict.getType('stu_campus')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fCampus}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">院系：</label>
+                <div class="col-sm-8">
+                    <select name="fFaculties" class="form-control m-b" th:with="type=${@dict.getType('stu_aculties')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fFaculties}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">专业：</label>
+                <div class="col-sm-8">
+                    <select name="fMajor" class="form-control m-b" th:with="type=${@dict.getType('stu_major')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fMajor}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">班级：</label>
+                <div class="col-sm-8">
+                    <input name="fClass" th:field="*{fClass}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">请假类型：</label>
+                <div class="col-sm-8">
+                    <select name="fType" class="form-control m-b" th:with="type=${@dict.getType('stu_type')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fType}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">申请发起时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="fStarttime" th:value="${#dates.format(tbstuLeave.fStarttime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">需要离校：</label>
+                <div class="col-sm-8">
+                    <select name="fFlg" class="form-control m-b" th:with="type=${@dict.getType('current_flg')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{fFlg}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">紧急联系人手机号：</label>
+                <div class="col-sm-8">
+                    <input name="fEmergencycontacts" th:field="*{fEmergencycontacts}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">请假时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="fDate" th:value="${#dates.format(tbstuLeave.fDate, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">实际休假时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="fActualdate" th:value="${#dates.format(tbstuLeave.fActualdate, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">销假时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="fTimecancelleave" th:value="${#dates.format(tbstuLeave.fTimecancelleave, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">请假原因：</label>
+                <div class="col-sm-8">
+                    <input name="fReasontakingleave" th:field="*{fReasontakingleave}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">审批人：</label>
+                <div class="col-sm-8">
+                    <input name="fApprover" th:field="*{fApprover}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">请假状态：</label>
+                <div class="col-sm-8">
+                    <div class="radio-box" th:each="dict : ${@dict.getType('stu_status')}">
+                        <input type="radio" th:id="${'fStatus_' + dict.dictCode}" name="fStatus" th:value="${dict.dictValue}" th:field="*{fStatus}">
+                        <label th:for="${'fStatus_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">目的地：</label>
+                <div class="col-sm-8">
+                    <input name="fDestination" th:field="*{fDestination}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">宿舍楼名称：</label>
+                <div class="col-sm-8">
+                    <input name="fDormitoryname" th:field="*{fDormitoryname}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">房间号：</label>
+                <div class="col-sm-8">
+                    <input name="fRoomnumber" th:field="*{fRoomnumber}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">床位号：</label>
+                <div class="col-sm-8">
+                    <input name="fBednumber" th:field="*{fBednumber}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">发起位置：</label>
+                <div class="col-sm-8">
+                    <input name="fOriginatinglocation" th:field="*{fOriginatinglocation}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "stu/leave";
+        $("#form-leave-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-leave-edit').serialize());
+            }
+        }
+
+        $("input[name='fStarttime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='fDate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='fActualdate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='fTimecancelleave']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

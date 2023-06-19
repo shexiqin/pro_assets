@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbstuCertificateMapper">
+
+    <resultMap type="TbstuCertificate" id="TbstuCertificateResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fMajorname"    column="f_majorname"    />
+        <result property="fMajorcode"    column="f_majorcode"    />
+        <result property="fName"    column="f_name"    />
+        <result property="fIssuingauthority"    column="f_issuingauthority"    />
+        <result property="fLevel"    column="f_level"    />
+        <result property="fObtainnum"    column="f_obtainnum"    />
+        <result property="fAssesssite"    column="f_assesssite"    />
+        <result property="fExamnum"    column="f_examnum"    />
+        <result property="fObtainhum"    column="f_obtainhum"    />
+        <result property="fInformant"    column="f_informant"    />
+    </resultMap>
+
+    <sql id="selectTbstuCertificateVo">
+        select f_id, f_majorname, f_majorcode, f_name, f_issuingauthority, f_level, f_obtainnum, f_assesssite, f_examnum, f_obtainhum, f_informant from tbstu_certificate
+    </sql>
+
+    <select id="selectTbstuCertificateList" parameterType="TbstuCertificate" resultMap="TbstuCertificateResult">
+        <include refid="selectTbstuCertificateVo"/>
+        <where>
+            <if test="fMajorname != null  and fMajorname != ''"> and f_majorname = #{fMajorname}</if>
+            <if test="fMajorcode != null  and fMajorcode != ''"> and f_majorcode like concat('%', #{fMajorcode}, '%')</if>
+            <if test="fName != null  and fName != ''"> and f_name like concat('%', #{fName}, '%')</if>
+            <if test="fLevel != null  and fLevel != ''"> and f_level = #{fLevel}</if>
+            <if test="fAssesssite != null  and fAssesssite != ''"> and f_assesssite = #{fAssesssite}</if>
+        </where>
+    </select>
+
+    <select id="selectTbstuCertificateByFId" parameterType="Long" resultMap="TbstuCertificateResult">
+        <include refid="selectTbstuCertificateVo"/>
+        where f_id = #{fId}
+    </select>
+
+    <insert id="insertTbstuCertificate" parameterType="TbstuCertificate" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbstu_certificate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fMajorname != null and fMajorname != ''">f_majorname,</if>
+            <if test="fMajorcode != null and fMajorcode != ''">f_majorcode,</if>
+            <if test="fName != null and fName != ''">f_name,</if>
+            <if test="fIssuingauthority != null and fIssuingauthority != ''">f_issuingauthority,</if>
+            <if test="fLevel != null and fLevel != ''">f_level,</if>
+            <if test="fObtainnum != null and fObtainnum != ''">f_obtainnum,</if>
+            <if test="fAssesssite != null and fAssesssite != ''">f_assesssite,</if>
+            <if test="fExamnum != null">f_examnum,</if>
+            <if test="fObtainhum != null">f_obtainhum,</if>
+            <if test="fInformant != null">f_informant,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fMajorname != null and fMajorname != ''">#{fMajorname},</if>
+            <if test="fMajorcode != null and fMajorcode != ''">#{fMajorcode},</if>
+            <if test="fName != null and fName != ''">#{fName},</if>
+            <if test="fIssuingauthority != null and fIssuingauthority != ''">#{fIssuingauthority},</if>
+            <if test="fLevel != null and fLevel != ''">#{fLevel},</if>
+            <if test="fObtainnum != null and fObtainnum != ''">#{fObtainnum},</if>
+            <if test="fAssesssite != null and fAssesssite != ''">#{fAssesssite},</if>
+            <if test="fExamnum != null">#{fExamnum},</if>
+            <if test="fObtainhum != null">#{fObtainhum},</if>
+            <if test="fInformant != null">#{fInformant},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTbstuCertificate" parameterType="TbstuCertificate">
+        update tbstu_certificate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fMajorname != null and fMajorname != ''">f_majorname = #{fMajorname},</if>
+            <if test="fMajorcode != null and fMajorcode != ''">f_majorcode = #{fMajorcode},</if>
+            <if test="fName != null and fName != ''">f_name = #{fName},</if>
+            <if test="fIssuingauthority != null and fIssuingauthority != ''">f_issuingauthority = #{fIssuingauthority},</if>
+            <if test="fLevel != null and fLevel != ''">f_level = #{fLevel},</if>
+            <if test="fObtainnum != null and fObtainnum != ''">f_obtainnum = #{fObtainnum},</if>
+            <if test="fAssesssite != null and fAssesssite != ''">f_assesssite = #{fAssesssite},</if>
+            <if test="fExamnum != null">f_examnum = #{fExamnum},</if>
+            <if test="fObtainhum != null">f_obtainhum = #{fObtainhum},</if>
+            <if test="fInformant != null">f_informant = #{fInformant},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbstuCertificateByFId" parameterType="Long">
+        delete from tbstu_certificate where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbstuCertificateByFIds" parameterType="String">
+        delete from tbstu_certificate where f_id in
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

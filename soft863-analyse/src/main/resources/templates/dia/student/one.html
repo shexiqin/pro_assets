@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+  <th:block th:include="include :: header('群体学生画像列表')" />
+  <th:block th:include="include :: header('百度ECharts')" />
+  <link rel="shortcut icon" href="favicon.ico">
+  <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="/css/font-awesome.min.css" rel="stylesheet"/>
+  <link href="/css/animate.min.css" rel="stylesheet"/>
+  <link href="/css/style.min.css" rel="stylesheet"/>
+
+    <style>
+        h2 {
+            display:inline;
+            font-size: 20px;   /*设置文字大小*/
+            color:skyblue;  /*设置文字颜色*/
+            text-shadow: 0 8px 10px #f1b0b7;  /*设置文字阴影*/
+            font-weight: bolder;  /*设置文字宽度*/
+            text-align: center;  /*设置文字居中*/
+        }
+        h3 {
+            display:inline;
+        }
+    </style>
+</head>
+<body class="gray-bg" bgcolor="#161627">
+<div class="wrapper wrapper-content" style="background-color: #161627;border:none">
+    <div class="row" style="background-color: #161627;border:none">
+        <div class="col-sm-2"  style="height: 760px ;margin: 0;background-color: #161627;border:none">
+          <div class="ibox float-e-margins"  style="background-color: #161627;border:none">
+            <div class="ibox-title" style="background-color: #161627;border:none">
+                <span class="label  pull-left" style="color:orangered"> <b>基本信息</b></span>
+           </div>
+              <div class="ibox-content" style="background-color: #161627;border:none">
+                  <h3>&nbsp&nbsp学号&nbsp&nbsp：</h3><h2 class="no-margins" id="no"></h2>
+              </div>
+            <div class="ibox-content" style="background-color: #161627;border:none">
+              <h3>学生姓名：</h3><h2 class="no-margins" id="name"></h2>
+            </div>
+              <div class="ibox-content" style="background-color: #161627;border:none">
+                  <h3>&nbsp&nbsp性别&nbsp&nbsp：</h3><h2 class="no-margins" id="sex">男</h2>
+              </div>
+              <div class="ibox-content" style="background-color: #161627;border:none">
+                  <h3>&nbsp&nbsp民族&nbsp&nbsp：</h3><h2 class="no-margins" id="nat">23</h2>
+              </div>
+              <div class="ibox-content" style="background-color: #161627;border:none">
+                  <h3>出生日期：</h3> <h2 class="no-margins" id="birth">2020/03/18</h2>
+              </div>
+              <div class="ibox-content" style="background-color: #161627;border:none">
+                  <h3>身份证号：</h3> <h2 class="no-margins" id="ID">123456789009876543</h2>
+              </div>
+              <div class="ibox-content" style="background-color: #161627;border:none">
+                  <h3>&nbsp&nbsp籍贯&nbsp&nbsp：</h3> <h2 class="no-margins" id="birP">4</h2>
+              </div>
+              <div class="ibox-content" style="background-color: #161627;border:none">
+                  <h3>政治面貌：</h3> <h2 class="no-margins" id="poli">275,800</h2>
+              </div>
+              <div class="ibox-content" style="background-color: #161627;border:none">
+                  <h3>&nbsp&nbsp年级&nbsp&nbsp：</h3> <h2 class="no-margins" id="grade">2018</h2><span style="color: skyblue;float: right;font-size: 20px">级</span>
+              </div>
+                <div class="ibox-title" style="background-color: #161627;border:none">
+                    <span class="label  pull-left" style="color:orangered"> <b>班级信息</b></span>
+                </div>
+                <div class="ibox-content" style="background-color: #161627;border:none">
+                    <h3>&nbsp&nbsp院系&nbsp&nbsp：</h3><h2 class="no-margins" id="faculties"></h2>
+                </div>
+                <div class="ibox-content" style="background-color: #161627;border:none">
+                    <h3>&nbsp&nbsp班级&nbsp&nbsp：</h3> <h2 class="no-margins" id="class"></h2>
+                </div>
+          </div>
+        </div>
+
+
+
+        <div class="col-sm-3" style="height: 760px;margin: 0;background-color: #161627;border:none" >
+            <div class="ibox float-e-margins" style="background-color: #161627;border:none">
+              <div class="ibox-title" style="background-color: #161627;border:none">
+                  <span class="label  pull-left" style="color: orangered" > <b>个人画像</b></span>
+              </div>
+              <div style="width: 100%;height: 720px;background-color: #161627;border:none ">
+                <div class="content" style="width: 100%;height: 100%;background-color: #161627;border:none">
+                    <img src="" id="img"  style="width: 100%; height: 100%">
+                </div>
+              </div>
+            </div>
+        </div>
+
+
+
+        <div  class="col-sm-2" style=" height: 760px;margin: 0;background-color: #161627;border:none">
+            <div class="ibox float-e-margins" style="background-color: #161627;border:none">
+            <div class="ibox-title" style="background-color: #161627;border:none">
+                <span class="label  pull-left" style="color:orangered"> <b>成绩信息</b></span>
+            </div>
+            <div class="ibox-content" style="background-color: #161627;border:none">
+                <h3>学分绩点：</h3><h2 class="no-margins" id="gpa"></h2>
+            </div>
+            <div class="ibox-content" style="background-color: #161627;border:none">
+                <h3>综合成绩：</h3> <h2 class="no-margins" id="score" style="color: red"></h2><span  style="color: red;float: right;font-size: 20px">分</span>
+            </div>
+                <div class="ibox-title" style="background-color: #161627;border:none">
+                    <span class="label  pull-center" style="color:orangered"> <b>获奖信息</b></span>
+                </div>
+                <div class="ibox-content" style="background-color: #161627;border:none">
+                    <h3>奖金次数：</h3><h2 class="no-margins" id="award">23</h2><span  style="color: yellowgreen;float: right;font-size: 20px">次</span>
+                </div>
+                <div class="ibox-content" style="background-color: #161627;border:none">
+                    <h3>竞赛次数：</h3> <h2 class="no-margins" id="test">275,800</h2><span style="color: yellowgreen;float: right;font-size: 20px">次</span>
+                </div>
+                <div class="ibox-title" style="background-color: #161627;border:none">
+                    <span class="label  pull-center" style="color:orangered"> <b>考勤信息</b></span>
+                </div>
+                <div class="ibox-content" style="background-color: #161627;border:none">
+                    <h3>请假次数：</h3><h2 class="no-margins" id="lea">23</h2><span style="color: yellowgreen;float: right;font-size: 20px">次</span>
+                </div>
+                <div class="ibox-content" style="background-color: #161627;border:none">
+                    <h3>缺勤次数：</h3><h2 class="no-margins" id="absent">23</h2><span style="color: yellowgreen;float: right;font-size: 20px">次</span>
+                </div>
+                <div class="ibox-title" style="background-color: #161627;border:none">
+                    <span class="label  pull-center" style="color:orangered"> <b>其他信息</b></span>
+                    <div class="ibox-content" style="background-color: #161627;border:none">
+                        <h3>家庭情况：</h3><h2 class="no-margins" id="fam"></h2>
+                    </div>
+                    <div class="ibox-content" style="background-color: #161627;border:none">
+                        <h3>一卡通消费：</h3><h2 class="no-margins" id="com">23</h2><span  style="color: pink;float: right;font-size: 20px">元</span>
+                    </div>
+                    <div class="ibox-content" style="background-color: #161627;border:none">
+                        <h3>助学次数：</h3><h2 class="no-margins" id="help">23</h2><span  style="color: yellowgreen;float: right;font-size: 20px">次</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div  class="col-sm-5" style=" height: 760px;background-color: #161627;border:none">
+            <span class="label  pull-right" style="font-size: 20px"><a href="/dia/student/many">返回>></a></span>
+            <div class="ibox-title" style="background-color: #161627;border:none" >
+                <span class="label  pull-left" style="color:orangered"> <b>个人信息分析</b></span>
+                <div class="ibox float-e-margins"  style=" height: 340px;background-color: #161627;border:none">
+                    <div class="ibox-title" style=" height: 30px;background-color: #161627;border:none">
+                        <span style="color: honeydew"> <b>综合成绩分析</b></span>
+                    </div>
+                    <div class="ibox-content" style=" height: 310px;background-color: #161627;border:none">
+                    <div class="echarts" id="leida" style="height: 100%;border:1px;border-color:orange">
+                    </div>
+                    </div>
+                </div>
+                <div class="ibox float-e-margins"  style=" height: 330px;background-color: #161627;border:none">
+                    <div class="ibox-title" style=" height: 30px ;background-color: #161627;border:none">
+                        <span style="color: honeydew"> <b>学年成绩分析</b></span>
+                    </div>
+                    <div class="ibox-content" style=" height: 300px;background-color: #161627;border:none">
+                    <div class="echarts" id="yearSC" style="height: 100%;border:1px;border-color:orange">
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<th:block th:include="include :: echarts-js" />
+<th:block th:include="include :: footer" />
+<script type="text/javascript">
+
+    $(function (){
+        $.ajax({
+            url:"/dia/student/one/"+[[${no}]],
+            success: function (data) {
+                if(data != null && data != "" && data.length!=0){
+                    var stu=JSON.parse(data);
+
+                    var sch= stu.fScholNum;
+                    var test=stu.fGainnum;
+                    var bir=stu.fBirth;
+                    bir= timestampToTime(bir);
+                    var sex;
+                    var img;
+                    var faculties=stu.fFaculties;
+                    var gpa=stu.fStuGpa;
+                    var clazz=stu.fClazz;
+                    var no=stu.fNo;
+                    var birP=stu.fBirthplace;
+                    var nat=stu.fNationality;
+                    var pol=stu.fPoliticsstatus;
+                    var grade=stu.fNowgrade;
+                    var ID=stu.fCardid;
+                    var lea=stu.fLeaveNum;
+                    var con=stu.fConsumption;
+                    var help=stu.fStipendNum;
+                    var fam=stu.fFamMoney;
+
+                    if (fam==0){
+                        fam='优秀'
+                    }
+                    if (fam==1){
+                        fam='良好'
+                    }
+                    if (fam==3){
+                        fam='一般'
+                    }
+                    if (fam==2){
+                        fam='困难'
+                    }
+                    if (nat==1){
+                        nat='汉族';
+                    }else {
+                        nat='少数民族';
+                    }
+                    if (pol==0){
+                        pol='中共党员';
+                    }
+                    if (pol==1){
+                        pol='中共预备党员';
+                    }
+                    if (pol==2){
+                        pol='共青团员';
+                    }
+                    if (pol==8){
+                        pol='群众';
+                    }
+                    if (faculties==1){
+                        faculties='计算机系';
+                    }
+                    if (faculties==2){
+                        faculties='电气工程系';
+                    }
+                    if (faculties==3){
+                        faculties='会计系';
+                    }
+                    if (faculties==4){
+                        faculties='土木工程系';
+                    }
+                    if (faculties==5){
+                        faculties='音乐系';
+                    }
+                    if (faculties==6){
+                        faculties='空乘系';
+                    }
+                    if (stu.fSex==0){
+                        sex='男';
+                        img='/img/nan.png';
+                    }else {
+                        sex='女';
+                        img='/img/nv.png';
+                    }
+
+
+
+                    $("#name").html(stu.fName);
+                    $("#test").html(test);
+                    $("#award").html(sch);
+                    $("#img").attr('src',img);
+                    $("#birth").html(bir);
+                    $("#sex").html(sex);
+                    $("#faculties").html(faculties);
+                    $("#class").html(clazz);
+                    $("#gpa").html(gpa);
+                    $("#no").html(no);
+                    $("#poli").html(pol);
+                    $("#birP").html(birP);
+                    $("#nat").html(nat);
+                    $("#grade").html(grade);
+                    $("#ID").html(ID);
+                    $("#lea").html(lea);
+                    $("#help").html(help);
+                    $("#fam").html(fam);
+                    $("#com").html(con);
+
+                }
+            }
+        })
+    });
+
+    $(function (){
+       $.ajax({
+           url: "/dia/student/sc/"+[[${no}]],
+           success: function (data){
+               if(data != null && data != "" && data.length!=0) {
+                   var sc = JSON.parse(data);
+                   $("#score").html(sc);
+               }
+           }
+       })
+    });
+
+    $(function (){
+        $.ajax({
+            url: "/dia/student/absent/"+[[${no}]],
+            success: function (data){
+                if(data != null && data != "" && data.length!=0) {
+                    var ab = JSON.parse(data);
+                    $("#absent").html(ab);
+                }
+            }
+        })
+    });
+
+
+
+    var chartDom1 = document.getElementById('leida');
+    var myChart1 = echarts.init(chartDom1);
+    var option1;
+
+    const lineStyle = {
+        width: 1,
+        opacity: 0.5
+    };
+    const a=[];
+    option1 = {
+        backgroundColor: '#161627',
+        title: {
+            text: '综合成绩分析',
+            left: 'left',
+            textStyle: {
+                color: '#eee',
+                fontsize:10,
+            }
+        },
+        radar: {
+            indicator: [
+                { name: '综合成绩', max: 5 },
+                { name: '参赛成绩', max: 5 },
+                { name: '奖金成绩', max: 5 },
+                { name: '绩点成绩', max: 5 },
+                { name: '平时成绩', max: 5 },
+                { name: '考勤成绩', max: 5 }
+            ],
+            shape: 'circle',
+            splitNumber: 5,
+            axisName: {
+                color: 'rgb(238, 197, 102)'
+            },
+            splitLine: {
+                lineStyle: {
+                    color: [
+                        'rgba(238, 197, 102, 0.1)',
+                        'rgba(238, 197, 102, 0.2)',
+                        'rgba(238, 197, 102, 0.4)',
+                        'rgba(238, 197, 102, 0.6)',
+                        'rgba(238, 197, 102, 0.8)',
+                        'rgba(238, 197, 102, 1)'
+                    ].reverse()
+                }
+            },
+            splitArea: {
+                show: false
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(238, 197, 102, 0.5)'
+                }
+            },
+            name: {
+                rich: {
+                    a: {
+                        color: 'rgba(238, 197, 102, 0.5)',
+                        lineHeight: 20
+                    },
+                    b: {
+                        color: 'rgba(238, 197, 102, 0.5)',
+                        align: 'center'
+                    }
+                },
+                formatter: (a,b)=>{
+                    return `{a|${a}}：{b|5}`
+                }
+            }
+        },
+        series: [
+            {
+                name: '',
+                type: 'radar',
+                lineStyle: lineStyle,
+                data: '',
+                symbol: 'rect',
+                symbolSize: 8,
+                itemStyle: {
+                    color: '#F9713C'
+                },
+                areaStyle: {
+                    opacity: 0.1
+                },
+                //在拐点处显示数值
+                label: {
+                    normal: {
+                        show: true,
+                        formatter: (params) => {
+                            return params.value
+                        },
+                    },
+                },
+            }
+        ]
+    };
+
+
+    $(function () {
+        $.ajax({
+            url:"/dia/student/leida/"+[[${no}]],
+            success: function (data) {
+                if(data != null && data != "" && data.length!=0){
+                    var obj =JSON.parse(data)
+                    option1.series[0].data = obj;
+                }
+                option1 && myChart1.setOption(option1);
+            }
+        })
+    });
+
+
+
+
+
+    var chartDom2 = document.getElementById('yearSC');
+    var myChart2 = echarts.init(chartDom2);
+    var option2;
+
+    option2 = {
+        backgroundColor: '#161627',
+        title: {
+            text: '学年成绩分析',
+            left: 'left',
+            textStyle: {
+                color: '#eee',
+                fontsize:10,
+            }
+        },
+        xAxis: {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            axisLabel:{
+                textStyle: {
+                    color: '#eee',
+                    fontsize:10,
+                }
+            }
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel:{
+                textStyle: {
+                    color: '#eee',
+                    fontsize:10,
+                }
+            }
+        },
+        series: [
+            {
+                data: [150, 230, 224, 218, 135, 147, 260],
+                type: 'line',
+                color: "red", // 线条颜色
+                areaStyle: {
+                    color: "rgba(24,144,255,0.08)", // 区域背景色
+                },
+
+                itemStyle: {
+                    normal: {
+                        label: {
+                            show: true,
+                            color: "orange",//字体颜色设置
+                        }
+                    }
+                }
+            },
+        ]
+    };
+
+    $(function () {
+        $.ajax({
+            url:"/dia/student/yearSC/"+[[${no}]],
+            success: function (data) {
+                    var y =[];
+                    var s =[];
+                if(data != null && data != "" && data.length!=0){
+                    var obj =JSON.parse(data);
+                    y= obj[0];
+                    s =obj[1];
+                    option2.xAxis.data=y;
+                    option2.series[0].data = s;
+                }
+                option2 && myChart2.setOption(option2);
+            }
+        })
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //时间戳转日期
+    function timestampToTime(timestamp) {
+        var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1):date.getMonth()+1) + '-';
+        var D = (date.getDate()< 10 ? '0'+date.getDate():date.getDate())+ ' ';
+        return Y+M+D;
+    }
+</script>
+</body>
+</html>

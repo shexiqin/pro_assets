@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('教师画像列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>教工号：</label>
+                                <input type="text" name="fTno"/>
+                            </li>
+                            <li>
+                                <label>教师姓名：</label>
+                                <input type="text" name="fTname"/>
+                            </li>
+
+<!--                            <li>-->
+<!--                                <label>职务：</label>-->
+<!--                                <input type="text" name="fPost"/>-->
+<!--                            </li>-->
+                            <li>
+                                <label>院系：</label>
+                                <input type="text" name="fDept"/>
+                            </li>
+<!--                            <li>-->
+<!--                                <label>职工类别：</label>-->
+<!--                                <select name="fPostType" th:with="type=${@dict.getType('teach_type')}">-->
+<!--                                    <option value="">所有</option>-->
+<!--                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
+<!--                                </select>-->
+                            </li>
+<!--                            <li>-->
+<!--                                <label>专业代码：</label>-->
+<!--                                <input type="text" name="fProCode"/>-->
+<!--                            </li>-->
+
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="dia:teach:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="dia:teach:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="dia:teach:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="dia:teach:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+<!--                <a class="btn btn-warning" href="/dia/teach/teachindex" shiro:hasPermission="dia:teach:teachindex">-->
+<!--                    <i class="fa fa-download"></i> 画像-->
+<!--                </a>-->
+                <a class="btn btn-success" onclick="tj()" shiro:hasPermission="jw:student:tj">
+                    <i class="fa fa-download"></i> 画像
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('dia:teach:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('dia:teach:remove')}]];
+        var oneFlag = [[${@permission.hasPermi('dia:teach:oneTeach')}]];
+        var fSexDatas = [[${@dict.getType('sys_user_sex')}]];
+        var fPostTypeDatas = [[${@dict.getType('teach_type')}]];
+
+        var prefix = ctx + "dia/teach";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                oneUrl: prefix + "/oneTeach",
+                modalName: "教师画像",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'fId',
+                    title: '标识',
+                    visible: false
+                },
+                {
+                    field: 'fTno',
+                    title: '教工号'
+                },
+                {
+                    field: 'fTname',
+                    title: '教师姓名'
+                },
+                {
+                    field: 'fSex',
+                    title: '性别',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fSexDatas, value);
+                    }
+                },
+                {
+                    field: 'fBirth',
+                    title: '出生日期'
+                },
+                {
+                    field: 'fPolit',
+                    title: '政治面貌'
+                },
+                {
+                    field: 'fNation',
+                    title: '民族'
+                },
+                {
+                    field: 'fEdu',
+                    title: '学历'
+                },
+                {
+                    field: 'fPost',
+                    title: '职务'
+                },
+                {
+                    field: 'fDept',
+                    title: '院系'
+                },
+                {
+                    field: 'fPostType',
+                    title: '职工类别',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(fPostTypeDatas, value);
+                    }
+                },
+                {
+                    field: 'fProCode',
+                    title: '专业代码'
+                },
+                {
+                    field: 'fCourseId',
+                    title: '课程号'
+                },
+                {
+                    field: 'fCourseScore',
+                    title: '课程评分'
+                },
+                {
+                    field: 'fProfess',
+                    title: '专业领域'
+                },
+                {
+                    field: 'fSalary',
+                    title: '工资收入'
+                },
+                {
+                    field: 'fWorkday',
+                    title: '工作年限'
+                },
+                {
+                    field: 'fNationGainnum',
+                    title: '国家获奖次数'
+                },
+                {
+                    field: 'fProvinGainnum',
+                    title: '省级获奖次数'
+                },
+                {
+                    field: 'fTownGainnum',
+                    title: '市级获奖次数'
+                },
+                {
+                    field: 'fCounGainnum',
+                    title: '县区级获奖次数'
+                },
+                {
+                    field: 'fScoGainnum',
+                    title: '校级获奖次数'
+                },
+                {
+                    field: 'fCommres',
+                    title: '评定结果'
+                },
+                {
+                    field: 'fComment',
+                    title: '评价'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.fId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.fId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a class="btn btn-success btn-xs " onclick="tjone(\'' + row.fId + '\')">画像</a>');
+
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+        function tj(){
+            // 触发请求
+            var url = href="/dia/teach/teachindex";
+            // 调用封装好的 modal 模态框的方法 open方法，打开一个模态框
+            // 参数一：模态框的名字
+            // 参数二：模态框中页面展示的请求路径
+            $.modal.open('教师画像', url);
+        }
+
+        function tjone(fId){
+            // 触发请求
+            var url = href="/dia/teach/oneteach?fId="+fId;
+            // 调用封装好的 modal 模态框的方法 open方法，打开一个模态框
+            // 参数一：模态框的名字
+            // 参数二：模态框中页面展示的请求路径
+            $.modal.open('教师画像', url);
+        }
+    </script>
+</body>
+</html>

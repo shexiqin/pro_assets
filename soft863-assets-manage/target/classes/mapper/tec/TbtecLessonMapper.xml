@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft863.mapper.TbtecLessonMapper">
+    
+    <resultMap type="TbtecLesson" id="TbtecLessonResult">
+        <result property="fId"    column="f_id"    />
+        <result property="fTeacherNo"    column="f_teacher_no"    />
+        <result property="fTeacherName"    column="f_teacher_name"    />
+        <result property="fTeacherType"    column="f_teacher_type"    />
+        <result property="fProName"    column="f_pro_name"    />
+        <result property="fProCode"    column="f_pro_code"    />
+        <result property="fProLevel"    column="f_pro_level"    />
+        <result property="fAcademic"    column="f_academic"    />
+        <result property="fCulMethods"    column="f_cul_methods"    />
+        <result property="fSpcForm"    column="f_spc_form"    />
+        <result property="fSourceType"    column="f_source_type"    />
+        <result property="fGrade"    column="f_grade"    />
+        <result property="fCourseName"    column="f_course_name"    />
+        <result property="fCourseCode"    column="f_course_code"    />
+        <result property="fTecSemesters"    column="f_tec_semesters"    />
+        <result property="fClassName"    column="f_class_name"    />
+        <result property="fTecTask"    column="f_tec_task"    />
+        <result property="fTecTime"    column="f_tec_time"    />
+        <result property="fOnlineTime"    column="f_online_time"    />
+        <result property="fFiller"    column="f_filler"    />
+    </resultMap>
+
+    <sql id="selectTbtecLessonVo">
+        select f_id, f_teacher_no, f_teacher_name, f_teacher_type, f_pro_name, f_pro_code, f_pro_level, f_academic, f_cul_methods, f_spc_form, f_source_type, f_grade, f_course_name, f_course_code, f_tec_semesters, f_class_name, f_tec_task, f_tec_time, f_online_time, f_filler from tbtec_lesson
+    </sql>
+
+    <select id="selectTbtecLessonList" parameterType="TbtecLesson" resultMap="TbtecLessonResult">
+        <include refid="selectTbtecLessonVo"/>
+        <where>  
+            <if test="fTeacherName != null  and fTeacherName != ''"> and f_teacher_name like concat('%', #{fTeacherName}, '%')</if>
+            <if test="fTeacherType != null "> and f_teacher_type = #{fTeacherType}</if>
+            <if test="fProName != null  and fProName != ''"> and f_pro_name like concat('%', #{fProName}, '%')</if>
+            <if test="fProCode != null  and fProCode != ''"> and f_pro_code = #{fProCode}</if>
+            <if test="fProLevel != null "> and f_pro_level = #{fProLevel}</if>
+            <if test="fAcademic != null "> and f_academic = #{fAcademic}</if>
+            <if test="fCulMethods != null "> and f_cul_methods = #{fCulMethods}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbtecLessonByFId" parameterType="Long" resultMap="TbtecLessonResult">
+        <include refid="selectTbtecLessonVo"/>
+        where f_id = #{fId}
+    </select>
+        
+    <insert id="insertTbtecLesson" parameterType="TbtecLesson" useGeneratedKeys="true" keyProperty="fId">
+        insert into tbtec_lesson
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fTeacherNo != null">f_teacher_no,</if>
+            <if test="fTeacherName != null">f_teacher_name,</if>
+            <if test="fTeacherType != null">f_teacher_type,</if>
+            <if test="fProName != null">f_pro_name,</if>
+            <if test="fProCode != null">f_pro_code,</if>
+            <if test="fProLevel != null">f_pro_level,</if>
+            <if test="fAcademic != null">f_academic,</if>
+            <if test="fCulMethods != null">f_cul_methods,</if>
+            <if test="fSpcForm != null">f_spc_form,</if>
+            <if test="fSourceType != null">f_source_type,</if>
+            <if test="fGrade != null">f_grade,</if>
+            <if test="fCourseName != null">f_course_name,</if>
+            <if test="fCourseCode != null">f_course_code,</if>
+            <if test="fTecSemesters != null">f_tec_semesters,</if>
+            <if test="fClassName != null">f_class_name,</if>
+            <if test="fTecTask != null">f_tec_task,</if>
+            <if test="fTecTime != null">f_tec_time,</if>
+            <if test="fOnlineTime != null">f_online_time,</if>
+            <if test="fFiller != null">f_filler,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fTeacherNo != null">#{fTeacherNo},</if>
+            <if test="fTeacherName != null">#{fTeacherName},</if>
+            <if test="fTeacherType != null">#{fTeacherType},</if>
+            <if test="fProName != null">#{fProName},</if>
+            <if test="fProCode != null">#{fProCode},</if>
+            <if test="fProLevel != null">#{fProLevel},</if>
+            <if test="fAcademic != null">#{fAcademic},</if>
+            <if test="fCulMethods != null">#{fCulMethods},</if>
+            <if test="fSpcForm != null">#{fSpcForm},</if>
+            <if test="fSourceType != null">#{fSourceType},</if>
+            <if test="fGrade != null">#{fGrade},</if>
+            <if test="fCourseName != null">#{fCourseName},</if>
+            <if test="fCourseCode != null">#{fCourseCode},</if>
+            <if test="fTecSemesters != null">#{fTecSemesters},</if>
+            <if test="fClassName != null">#{fClassName},</if>
+            <if test="fTecTask != null">#{fTecTask},</if>
+            <if test="fTecTime != null">#{fTecTime},</if>
+            <if test="fOnlineTime != null">#{fOnlineTime},</if>
+            <if test="fFiller != null">#{fFiller},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbtecLesson" parameterType="TbtecLesson">
+        update tbtec_lesson
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fTeacherNo != null">f_teacher_no = #{fTeacherNo},</if>
+            <if test="fTeacherName != null">f_teacher_name = #{fTeacherName},</if>
+            <if test="fTeacherType != null">f_teacher_type = #{fTeacherType},</if>
+            <if test="fProName != null">f_pro_name = #{fProName},</if>
+            <if test="fProCode != null">f_pro_code = #{fProCode},</if>
+            <if test="fProLevel != null">f_pro_level = #{fProLevel},</if>
+            <if test="fAcademic != null">f_academic = #{fAcademic},</if>
+            <if test="fCulMethods != null">f_cul_methods = #{fCulMethods},</if>
+            <if test="fSpcForm != null">f_spc_form = #{fSpcForm},</if>
+            <if test="fSourceType != null">f_source_type = #{fSourceType},</if>
+            <if test="fGrade != null">f_grade = #{fGrade},</if>
+            <if test="fCourseName != null">f_course_name = #{fCourseName},</if>
+            <if test="fCourseCode != null">f_course_code = #{fCourseCode},</if>
+            <if test="fTecSemesters != null">f_tec_semesters = #{fTecSemesters},</if>
+            <if test="fClassName != null">f_class_name = #{fClassName},</if>
+            <if test="fTecTask != null">f_tec_task = #{fTecTask},</if>
+            <if test="fTecTime != null">f_tec_time = #{fTecTime},</if>
+            <if test="fOnlineTime != null">f_online_time = #{fOnlineTime},</if>
+            <if test="fFiller != null">f_filler = #{fFiller},</if>
+        </trim>
+        where f_id = #{fId}
+    </update>
+
+    <delete id="deleteTbtecLessonByFId" parameterType="Long">
+        delete from tbtec_lesson where f_id = #{fId}
+    </delete>
+
+    <delete id="deleteTbtecLessonByFIds" parameterType="String">
+        delete from tbtec_lesson where f_id in 
+        <foreach item="fId" collection="array" open="(" separator="," close=")">
+            #{fId}
+        </foreach>
+    </delete>
+
+</mapper>

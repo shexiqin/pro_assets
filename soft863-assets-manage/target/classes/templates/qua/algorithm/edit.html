@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改算法规则')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-algorithm-edit" th:object="${tbquaAlgorithm}">
+            <input name="fId" th:field="*{fId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">算法编码：</label>
+                <div class="col-sm-8">
+                    <input name="fCode" th:field="*{fCode}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">算法名称：</label>
+                <div class="col-sm-8">
+                    <input name="fName" th:field="*{fName}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">算法详情：</label>
+                <div class="col-sm-8">
+                    <textarea name="fDetail" class="form-control">[[*{fDetail}]]</textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "qua/algorithm";
+        $("#form-algorithm-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-algorithm-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>
